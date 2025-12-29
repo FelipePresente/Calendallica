@@ -29,8 +29,7 @@ This project focuses on a clean, grid-based architecture.
 
 1.  Clone the repository.
 2.  Open `index.html` in any modern web browser.
-3.  Click on a day in the calendar grid.
-4.  Use the notepad sidebar to write your daily tasks or thoughts.
+3.  Or just open the Github Pages version!
 
 ---
 
