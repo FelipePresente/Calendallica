@@ -1,6 +1,4 @@
-# Calendallica 📅
-
-A minimalist, dark-themed interactive calendar application designed for simplicity and focus.
+# Calendallica: a minimalist, dark-themed interactive calendar application designed for simplicity and focus.
 
 ![Calendallica Preview](src/icons/logo.png)
 
