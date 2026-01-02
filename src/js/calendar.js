@@ -67,6 +67,13 @@ let months = [
     }
 ]
 
+for (let i = 0; i < months.length; i++) {
+    const stored = localStorage.getItem(`notes${i}`)
+    if (stored) {
+        months[i].data = JSON.parse(stored)
+    }
+}
+
 let currentMonth = 0
 let day = 0
 
@@ -95,28 +102,26 @@ function renderDays() {
     calendar.innerHTML = ""
     for (let i = 0; i < months[currentMonth].days; i++) {
         day++
-        calendar.innerHTML += `<div class="w-full aspect-square bg-stone-800/40 hover:bg-stone-800 hover:scale-[1.03] transition-all duration-200 rounded-lg flex flex-col p-3 cursor-pointer border border-stone-700/30 hover:border-stone-500 hover:shadow-lg group relative" onclick="openNote(${day})">
-            <span class="text-xl font-bold text-stone-600 group-hover:text-stone-300 transition-colors self-end">${day}</span>
+        calendar.innerHTML += `<div class="w-full aspect-square bg-stone-800/40 hover:bg-stone-800 hover:scale-[1.03] transition-all duration-200 rounded-xl flex justify-center items-center cursor-pointer border border-stone-700/30 hover:border-stone-500 hover:shadow-lg group relative" onclick ="saveNotes(${currentMonth}, ${day - 1})">
+            <span class="text-lg sm:text-xl font-bold text-stone-600 group-hover:text-stone-300 transition-colors">${day}</span>
         </div>`
     }
 } renderDays()
 
-let selectedDay = 0
-
-function openNote(noteDay) {
-    selectedDay = noteDay
+function saveNotes(month, note) {
+    const target = months[month].data
     textInput.classList.remove('hidden')
-    let storedNotes = localStorage.getItem('notes_' + currentMonth)
-    if (storedNotes) {
-        let notesArray = storedNotes.split(',')
-        months[currentMonth].data = notesArray
-        textInput.value = notesArray[selectedDay - 1] || ""
-    } else {
-        textInput.value = months[currentMonth].data[selectedDay - 1] || ""
+
+    if (target !== undefined && target[note] !== undefined) {
+        textInput.value = target[note]
+    } else if (target[note] === undefined) {
+        textInput.value = ""
+    }
+
+    textInput.oninput = function () {
+        target[note] = textInput.value
+        localStorage.setItem(`notes${month}`, JSON.stringify(target))
     }
 }
 
-textInput.oninput = function () {
-    months[currentMonth].data[selectedDay - 1] = textInput.value
-    localStorage.setItem('notes_' + currentMonth, months[currentMonth].data)
-}
+console.log(localStorage.notes0)
