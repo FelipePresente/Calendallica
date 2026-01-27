@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -24,16 +24,8 @@
         <a href="/"><img src="icons/logo.png" class="w-30" id="logo" alt="Logo"></a>
 
         <ul class="max-md:hidden">
-            <li class="text-zinc-400">Features</li>
+            <a href="#section2" class="text-zinc-400 cursor-pointer hover:text-zinc-50">Features</a>
         </ul>
-
-        <div class="grid grid-cols-2 gap-3 max-md:hidden">
-
-            <a href="/login" class="px-5 py-3">Login</a>
-
-            <a href="/signup" class="rounded-xl bg-indigo-600 font-bold px-5 py-3">Sign Up</a>
-
-        </div>
 
         <img src="icons/menu.svg" class="max-w-10 invert md:hidden" alt="Menu">
 
@@ -47,7 +39,9 @@
         </div>
 
         <!-- Grid -->
-        <div class="h-full w-full p-5 grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-25 max-w-300 place-self-center">
+        <div
+            class="h-full w-full p-5 grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-25 max-w-330 place-self-center">
+
             <!-- 1st Container -->
             <div class="flex flex-col justify-center items-center">
                 <img src="icons/logo.png" alt="Calendallica">
@@ -56,25 +50,42 @@
                     list. Simple, fast and focused on what matters.</p>
 
                 <!-- Buttons -->
-                <div class="w-full grid grid-rows-2 items-center mt-10 gap-3">
+                <div class="w-full grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 items-center mt-10 gap-3">
 
-                    <button class="rounded-xl text-zinc-50 bg-indigo-600 py-5 border border-zinc-800">
+                    <a href="/signup"
+                        class="flex justify-center items-center rounded-xl cursor-pointer
+                     text-zinc-50 bg-indigo-600 hover:bg-indigo-700 shadow-md md:shadow-xl shadow-indigo-500/25 py-5 border border-zinc-800">
                         Start for Free
-                    </button>
+                    </a>
 
-                    <button class="rounded-xl text-zinc-50 bg-zinc-900 py-5 border border-zinc-800">
+                    <a
+                        class="flex justify-center items-center rounded-xl cursor-pointer text-zinc-50 bg-zinc-900 hover:bg-zinc-700 py-5 border border-zinc-800">
                         Guest Acess
-                    </button>
+                    </a>
 
                 </div>
             </div>
 
             <!-- 2nd Container -->
-            <div class="flex flex-col justify-center mt-10">
+            <div class="bg-zinc-900 flex flex-col justify-center mt-10 rounded-4xl p-6">
 
-                <!-- Pre-view -->
-                <div class="bg-zinc-900 w-full h-full flex rounded-4xl">
-                
+                <!-- Calendar Month -->
+                <div class="flex items-center justify-between mb-8 border-b border-zinc-800 pb-6">
+
+                    <div class="cursor-pointer hover:invert">
+                        <img src="icons/previous.svg" alt="Previous">
+                    </div>
+
+                    <h3 class="text-zinc-500 text-sm" id="calendar-header"></h3>
+
+                    <div class="cursor-pointer hover:invert">
+                        <img src="icons/next.svg" alt="Next">
+                    </div>
+
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="w-full h-full grid grid-cols-7 gap-3" id="grid">
                 </div>
 
             </div>
@@ -84,7 +95,7 @@
     </section>
 
     <!-- Section 2 -->
-    <section class="py-25 w-full bg-zinc-900/30">
+    <section id="section2" class="py-25 w-full bg-zinc-900/30">
 
         <h2 class="text-center text-4xl font-bold">Everything you need</h2>
 
@@ -94,7 +105,7 @@
         <div class="mt-25 grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 gap-12 px-6 place-self-center">
 
             <!-- 1st Card -->
-            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 max-w-90">
+            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 hover:border-indigo-900 max-w-90">
 
                 <!-- 1st Icon -->
                 <div class="flex justify-center items-center w-15 bg-indigo-600/10 rounded-xl p-4">
@@ -110,7 +121,7 @@
             </div>
 
             <!-- 2nd Card -->
-            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 max-w-90">
+            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 hover:border-emerald-900 max-w-90">
 
                 <!-- 2nd Icon -->
                 <div class="flex justify-center items-center w-15 bg-emerald-500/10 rounded-xl p-4">
@@ -126,7 +137,7 @@
             </div>
 
             <!-- 3rd Card -->
-            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 max-w-90">
+            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 hover:border-purple-900 max-w-90">
 
                 <!-- 3rd Icon -->
                 <div class="flex justify-center items-center w-15 bg-purple-500/10 rounded-xl p-4">
@@ -163,6 +174,10 @@
         </div>
 
     </footer>
+
+    <script type="module" src="js/home.js"></script>
+    <script type="module" src="./js/home.view.js"></script>
+    <script type="module" src="./js/checkSession.js"></script>
 
 </body>
 

@@ -23,5 +23,19 @@ signupForm.addEventListener("submit", async function (e) {
         return
     }
 
+    try {
+        const response = await fetch('/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        })
+
+    } catch (error) {
+        console.log('error')
+    }
+
     window.location.href = '/'
 })

@@ -70,4 +70,10 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.get('/logout', async (req, res) => {
+    res.clearCookie('session-cookie')
+    res.clearCookie('session-info')
+    res.redirect('/')
+})
+
 export default router
