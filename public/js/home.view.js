@@ -6,6 +6,10 @@ export function renderCommonDay(day) {
     return `<div class="bg-zinc-950/50 aspect-square border border-zinc-800/50 font-semibold text-sm text-zinc-600 rounded-lg flex items-center justify-center">${day}</div>`
 }
 
+export function renderNoDay() {
+    return `<div class="bg-zinc-950/20 border border-zinc-800/50 aspect-square rounded-lg"></div>`
+}
+
 export function renderCalendarHeader(currentMonth, currentYear) {
     const text = `${currentMonth} ${currentYear}`.toUpperCase()
     return text

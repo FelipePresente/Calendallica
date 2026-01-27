@@ -27,8 +27,18 @@ router.post('/signup', async (req, res) => {
         const hash = await hashPassword(password)
         const newUser = { "username": username, "password": hash }
 
-        await User.create(newUser)
+        const createdUser = await User.create(newUser)
 
+        const token = jwt.sign(
+            {
+                id: createdUser._id,
+                username: createdUser.username,
+                role: createdUser.role
+            }, secret_key
+        )
+
+        res.cookie('session-info', JSON.stringify({ username: createdUser.username }), { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 14 })
+        res.cookie('session-cookie', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 14 })
         res.status(200).json({ message: "User created succesfully" })
     } catch (error) {
         res.status(500).send("Error creating user")
@@ -62,8 +72,8 @@ router.post('/login', async (req, res) => {
             }, secret_key
         )
 
-        res.cookie('session-info', JSON.stringify({ username: foundUser.username }), { httpOnly: false, maxAge: 60 * 60 * 24 * 14 })
-        res.cookie('session-cookie', token, { maxAge: 60 * 60 * 24 * 14 }, { httpOnly: true, maxAge: 60 * 60 * 24 * 14 })
+        res.cookie('session-info', JSON.stringify({ username: foundUser.username }), { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 14 })
+        res.cookie('session-cookie', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 14 })
         res.status(200).send("You are logged in")
     } catch (error) {
         res.send("Error logging in")
