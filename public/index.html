@@ -19,25 +19,37 @@
 <body class="bg-zinc-950 text-zinc-50 antialiased">
 
     <header
-        class="fixed w-full h-25 py-3 px-6 flex justify-between z-10 border-b border-zinc-800/50 bg-zinc-950/50 backdrop-blur-md">
+        class="fixed w-full h-25 py-3 px-6 lg:px-100 flex justify-between items-center z-10 border-b border-zinc-800/50 bg-zinc-950/50 backdrop-blur-md">
 
-        <img src="icons/logo.png" alt="Logo">
+        <a href="/"><img src="icons/logo.png" class="w-30" id="logo" alt="Logo"></a>
 
-        <img src="icons/menu.svg" class="max-w-10 invert" alt="Menu">
+        <ul class="max-md:hidden">
+            <li class="text-zinc-400">Features</li>
+        </ul>
+
+        <div class="grid grid-cols-2 gap-3 max-md:hidden">
+
+            <a href="/login" class="px-5 py-3">Login</a>
+
+            <a href="/signup" class="rounded-xl bg-indigo-600 font-bold px-5 py-3">Sign Up</a>
+
+        </div>
+
+        <img src="icons/menu.svg" class="max-w-10 invert md:hidden" alt="Menu">
 
     </header>
 
     <!-- Section 1 -->
-    <section class="py-25 w-full relative">
+    <section class="py-35 w-full relative">
 
         <div
             class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-indigo-600/10 blur-[120px] rounded-full -z-10">
         </div>
 
         <!-- Grid -->
-        <div class="h-full w-full p-5 grid grid-rows-2 gap-10">
+        <div class="h-full w-full p-5 grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-25 max-w-300 place-self-center">
             <!-- 1st Container -->
-            <div class="flex flex-col justify-center">
+            <div class="flex flex-col justify-center items-center">
                 <img src="icons/logo.png" alt="Calendallica">
 
                 <p class="text-zinc-400 text-xl text-center">The perfect blend between a visual calendar and your to-do
@@ -62,7 +74,7 @@
 
                 <!-- Pre-view -->
                 <div class="bg-zinc-900 w-full h-full flex rounded-4xl">
-
+                
                 </div>
 
             </div>
@@ -78,11 +90,11 @@
 
         <p class="text-center text-lg text-zinc-400 mt-5">Powerful tools designed to simplify your daily routine.</p>
 
-        <!-- 3rd Container -->
-        <div class="mt-25 grid grid-rows-3 gap-12 px-6">
+        <!-- Grid -->
+        <div class="mt-25 grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 gap-12 px-6 place-self-center">
 
             <!-- 1st Card -->
-            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800">
+            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 max-w-90">
 
                 <!-- 1st Icon -->
                 <div class="flex justify-center items-center w-15 bg-indigo-600/10 rounded-xl p-4">
@@ -98,7 +110,7 @@
             </div>
 
             <!-- 2nd Card -->
-            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800">
+            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 max-w-90">
 
                 <!-- 2nd Icon -->
                 <div class="flex justify-center items-center w-15 bg-emerald-500/10 rounded-xl p-4">
@@ -114,7 +126,7 @@
             </div>
 
             <!-- 3rd Card -->
-            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800">
+            <div class="bg-zinc-900 p-10 rounded-4xl border border-zinc-800 max-w-90">
 
                 <!-- 3rd Icon -->
                 <div class="flex justify-center items-center w-15 bg-purple-500/10 rounded-xl p-4">
