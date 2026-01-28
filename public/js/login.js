@@ -17,7 +17,16 @@ loginForm.addEventListener("submit", async function (e) {
 
     if (!response.ok) {
         const errorText = await response.text()
-        alert(errorText)
+
+        const body = document.querySelector("body")
+        const errorMessage = document.querySelector("#error-message")
+
+        if (errorMessage) errorMessage.remove()
+
+        body.insertAdjacentHTML("afterbegin", `<div id="error-message"
+        class="left-0 -top-16 text-center py-3 px-5 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl font-medium">
+        ${errorText}
+        </div>`)
         return
     }
 
