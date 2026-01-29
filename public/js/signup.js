@@ -31,5 +31,5 @@ signupForm.addEventListener("submit", async function (e) {
         </div>`)
         return
     }
-    window.location.href = '/'
+    window.location.href = '/dashboard'
 })

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Dashboard - Calendallica</title>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+
+
+        #task-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #task-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #task-list::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+
+        #task-list::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+    </style>
+</head>
+
+<body class="bg-zinc-950 text-zinc-50">
+
+    <header
+        class="fixed w-full h-25 py-3 px-6 lg:px-100 flex justify-between items-center z-10 border-b border-zinc-800/50 bg-zinc-950/50 backdrop-blur-md">
+
+        <a href="/"><img src="../icons/logo.png" class="w-30" id="logo" alt="Logo"></a>
+
+
+        <img src="../icons/menu.svg" class="max-w-10 invert md:hidden" alt="Menu">
+
+    </header>
+
+
+    <section class="pt-25 min-h-screen w-full relative">
+
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[700px] bg-indigo-600/5 blur-[120px] rounded-full -z-10">
+        </div>
+
+
+        <div class="max-w-screen-xl mx-auto p-6 lg:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+
+                <aside class="lg:col-span-4 space-y-6">
+
+
+                    <details
+                        class="group w-full bg-zinc-900 border border-zinc-800/50 rounded-xl overflow-hidden shadow-2xl transition-all duration-300">
+                        <summary
+                            class="list-none p-6 bg-zinc-800/30 cursor-pointer hover:bg-zinc-800/50 transition-colors border-b border-zinc-800/50 flex justify-between items-center text-zinc-100">
+                            <div>
+                                <h2 class="text-base font-bold uppercase tracking-widest">Tasks Available</h2>
+                                <p class="text-xs text-zinc-500 font-medium uppercase mt-1">No tasks scheduled</p>
+                            </div>
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-950/50 flex items-center justify-center border border-zinc-800/50 group-open:rotate-180 transition-transform">
+                                <span class="text-zinc-500 text-sm text-center">↓</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-5 space-y-4 overflow-y-auto max-h-[600px] bg-zinc-900/40" id="task-list">
+
+                        </div>
+                    </details>
+                </aside>
+
+
+                <main
+                    class="lg:col-span-8 bg-zinc-900 border border-zinc-800/50 rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden">
+
+
+                    <div class="flex items-center justify-between mb-8 border-b border-zinc-800 pb-6 relative z-10">
+                        <div id="previous" class="cursor-pointer hover:invert transition-all">
+                            <img src="../icons/previous.svg" alt="Previous">
+                        </div>
+
+                        <h3 class="text-zinc-500 text-sm font-normal" id="calendar-header"></h3>
+
+                        <div id="next" class="cursor-pointer hover:invert transition-all">
+                            <img src="../icons/next.svg" alt="Next">
+                        </div>
+                    </div>
+
+
+                    <div class="grid grid-cols-7 place-items-center mb-6 w-full text-zinc-500 text-sm font-normal">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+
+
+                    <div class="w-full grid grid-cols-7 gap-3 min-h-[400px]" id="grid">
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script type="module" src="../js/dashboard.js"></script>
+
+</body>
+
+</html>

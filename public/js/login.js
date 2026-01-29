@@ -30,5 +30,5 @@ loginForm.addEventListener("submit", async function (e) {
         return
     }
 
-    window.location.href = '/'
+    window.location.href = '/dashboard'
 })
