@@ -1,5 +1,5 @@
 import { currentMonth, currentDay, currentYear, isLeapYear, year } from './getCurrentDate.js'
-import { renderCurrentDay, renderCommonDay, renderNoDay, renderCalendarHeader, renderTaskItem, renderWelcomeMessage, renderAddTaskModal, renderEditTaskModal } from './dashboard.view.js'
+import { renderCurrentDay, renderCommonDay, renderNoDay, renderCalendarHeader, renderTaskItem, renderWelcomeMessage, renderAddTaskModal, renderEditTaskModal, renderDeleteTaskModal } from './dashboard.view.js'
 import checkSession from './checkSession.js'
 
 const section = document.querySelector("#section")
@@ -66,7 +66,7 @@ previousButton.onclick = () => {
 
 async function renderTasks() {
     try {
-        const response = await fetch(`/tasks/${user.id}`)
+        const response = await fetch(`/tasks`)
         const tasks = await response.json()
         tasks.sort((a, b) => new Date(a.date) - new Date(b.date))
 
@@ -115,12 +115,11 @@ section.addEventListener('submit', async (event) => {
         const title = form.querySelector("#task-title").value
         const description = form.querySelector("#task-description").value
         const date = form.querySelector("#task-date").value
-        const id = user.id
 
-        if (!title || !description || !date || !id) return
+        if (!title || !description || !date) return
 
         try {
-            const response = await fetch(`/tasks/${id}`, {
+            const response = await fetch(`/tasks/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -167,9 +166,8 @@ section.addEventListener('submit', async (event) => {
         const title = form.querySelector("#task-title").value
         const description = form.querySelector("#task-description").value
         const taskId = form.querySelector("#task-id").value
-        const id = user.id
 
-        if (!date || !title || !description || !id || !taskId) return
+        if (!date || !title || !description || !taskId) return
 
         try {
             const response = await fetch(`/tasks/${taskId}`, {
@@ -178,14 +176,51 @@ section.addEventListener('submit', async (event) => {
                 body: JSON.stringify({
                     date,
                     title,
-                    description,
-                    userId: id
+                    description
                 })
             })
 
             window.location.reload()
         } catch (error) {
             console.log("Error trying to edit task")
+        }
+    }
+})
+
+// Render delete task modal
+section.addEventListener('click', (event) => {
+    const cell = event.target.closest('.delete-cell')
+    
+    if (cell) {
+        const { taskId } = cell.dataset
+
+        section.insertAdjacentHTML('afterbegin', renderDeleteTaskModal(taskId))
+    }
+})
+
+// Close delete task modal
+section.addEventListener('click', (event) => {
+    if (event.target.closest("#closeDeleteTaskModal")) document.querySelector("#deleteTaskModal").remove()
+    if (event.target.id === "deleteTaskModal") event.target.remove()
+})
+
+// Submit delete task form
+section.addEventListener('submit', async (event) => {
+    if (event.target.id ==="deleteTaskForm") {
+        event.preventDefault()
+        
+        const form = event.target
+
+        const taskId = form.querySelector("#task-id").value
+
+        try {
+            const response = await fetch(`/tasks/${taskId}`, {
+                method: 'DELETE'
+            })
+
+            window.location.reload()
+        } catch (error) {
+            console.log("Error trying to delete task")
         }
     }
 })

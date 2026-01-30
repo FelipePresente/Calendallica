@@ -6,16 +6,13 @@ import auth from '../middlewares/auth.js'
 
 const router = express.Router()
 
-router.get('/:id', auth, async (req, res) => {
-    const { id } = req.params
+router.get('/', auth, async (req, res) => {
+    const userId = req.user.id
 
-    const userFromDB = req.user
-
-    if (userFromDB._id.toString() !== id) return res.status(401).send("Unauthorized")
-    if (!id) return res.status(400).send("User id is needed")
+    if (!userId) return res.status(400).send("User id is needed")
 
     try {
-        const myTasks = await Task.find({ "userId": id }, "-userId -__v")
+        const myTasks = await Task.find({ "userId": userId }, "-userId -__v")
 
         res.json(myTasks)
     } catch (error) {
@@ -24,20 +21,14 @@ router.get('/:id', auth, async (req, res) => {
     }
 })
 
-router.post('/:id', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { date, title, description } = req.body
-    const { id } = req.params
-    const userFromDB = req.user
+    const userId = req.user.id
 
-    if (userFromDB._id.toString() !== id) return res.status(401).send("Unauthorized")
-    if (!id || !date || !title || !description) return res.status(400).send("All fields must be filled")
+    if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
 
     try {
-        const foundUser = await User.findById(id)
-
-        if (!foundUser) return res.send("No user found")
-
-        const newTask = { "date": date, "title": title, "description": description, "userId": id }
+        const newTask = { "date": date, "title": title, "description": description, "userId": userId }
 
         await Task.create(newTask)
         res.status(201).send("Task created successfully")
@@ -47,11 +38,10 @@ router.post('/:id', auth, async (req, res) => {
 })
 
 router.patch('/:taskId', auth, async (req, res) => {
-    const { date, title, description, userId } = req.body
+    const { date, title, description } = req.body
     const { taskId } = req.params
-    const userFromDB = req.user
+    const userId = req.user.id
 
-    if (userFromDB._id.toString() !== userId) return res.status(401).send("Unauthorized")
     if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
 
     try {
@@ -69,6 +59,23 @@ router.patch('/:taskId', auth, async (req, res) => {
     } catch (error) {
         console.error("Patch error:", error)
         res.status(500).send("Error trying to edit task")
+    }
+})
+
+router.delete('/:taskId', auth, async (req, res) => {
+    const { taskId } = req.params
+    const userId = req.user.id
+
+    if (!taskId) return res.status(400).send("All fields must be filled")
+
+    try {
+        const target = { "_id": taskId, "userId": userId }
+
+        const taskToDelete = await Task.findOneAndDelete(target)
+
+        if (!taskToDelete) res.status(400).send("Task not found or unauthorized")
+    } catch (error) {
+        res.send("Error trying to delete task")
     }
 })
 

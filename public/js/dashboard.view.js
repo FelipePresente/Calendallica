@@ -32,7 +32,7 @@ export function renderTaskItem(task) {
                         <button class="edit-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer" title="Edit" data-date="${task.date}" data-title="${task.title}" data-description="${task.description}" data-task-id="${task._id}">
                             <img src="../icons/edit.svg" class="w-3.5 h-3.5 invert opacity-50" alt="Edit">
                         </button>
-                        <button class="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-red-900/50 group transition-all cursor-pointer" title="Delete">
+                        <button class="delete-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-red-900/50 group transition-all cursor-pointer" title="Delete" data-task-id="${task._id}">
                             <img src="../icons/delete.svg" class="w-3.5 h-3.5 invert opacity-50 group-hover:text-red-400" alt="Delete">
                         </button>
                     </div>
@@ -141,6 +141,32 @@ export function renderEditTaskModal(dateObj, title, description, taskId) {
                 
                 <button type="submit" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-5 rounded-2xl transition-all cursor-pointer text-base uppercase tracking-widest shadow-xl shadow-white/5">
                     Confirm Task
+                </button>
+            </form>
+        </div>
+    </div>`
+}
+
+export function renderDeleteTaskModal(taskId) {
+    return `
+    <div id="deleteTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-[320px] rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+            
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-lg font-black text-white tracking-tight">Delete Task</h2>
+                <button id="closeDeleteTaskModal" class="p-1 hover:bg-zinc-800 rounded-lg transition-all cursor-pointer group">
+                    <img src="../icons/close.svg" class="w-4 h-4 invert opacity-30 group-hover:opacity-100" alt="Close">
+                </button>
+            </div>
+
+            <p class="text-zinc-400 text-xs mb-6 leading-relaxed font-medium">
+                Are you sure you want to delete the task? This action is irreversible.
+            </p>
+            
+            <form id="deleteTaskForm">
+                <input type="hidden" id="task-id" value="${taskId}">
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-xl transition-all cursor-pointer text-xs uppercase tracking-widest shadow-lg shadow-red-600/10">
+                    Confirm Delete
                 </button>
             </form>
         </div>
