@@ -1,9 +1,9 @@
-export function renderCurrentDay(day) {
-    return `<div class="bg-indigo-600 aspect-square border border-indigo-400 shadow-lg shadow-indigo-600/50 font-semibold text-sm text-white rounded-lg flex items-center justify-center">${day}</div>`
+export function renderCurrentDay(day, calendarState) {
+    return `<div class="day-cell bg-indigo-600 hover:border-transparent cursor-pointer aspect-square border border-indigo-400 shadow-lg shadow-indigo-600/50 font-semibold text-sm text-white rounded-lg flex items-center justify-center" data-day="${day}" data-month="${calendarState.month}" data-year="${calendarState.year}">${day}</div>`
 }
 
-export function renderCommonDay(day) {
-    return `<div class="bg-zinc-950/50 aspect-square border border-zinc-800/50 font-semibold text-sm text-zinc-600 rounded-lg flex items-center justify-center">${day}</div>`
+export function renderCommonDay(day, calendarState) {
+    return `<div class="day-cell bg-zinc-950/50 hover:border-zinc-700 cursor-pointer aspect-square border border-zinc-800/50 font-semibold text-sm text-zinc-600 rounded-lg flex items-center justify-center" data-day="${day}" data-month="${calendarState.month}" data-year="${calendarState.year}">${day}</div>`
 }
 
 export function renderNoDay() {
@@ -16,15 +16,24 @@ export function renderCalendarHeader(currentMonth, currentYear) {
 }
 
 export function renderTaskItem(task) {
+    const taskDate = new Date(task.date)
+
+    const weekday = taskDate.toLocaleDateString('en-US', { weekday: 'long' })
+    const year = taskDate.getFullYear()
+    const month = taskDate.toLocaleString('en-US', { month: 'short' })
+    const day = taskDate.getDate()
+
+    const formattedDate = `${year} ${month} ${day} ${weekday}`
+
     return `<div class="p-5 bg-zinc-950/20 border border-zinc-800/40 rounded-xl hover:border-zinc-700 transition-all shadow-sm group/item relative">
                 <div class="flex justify-between items-start mb-2">
-                    <span class="text-[9px] font-black text-zinc-600 uppercase tracking-widest">${task.date}</span>
+                    <span class="text-[9px] font-black text-zinc-600 uppercase tracking-widest">${formattedDate}</span>
                     <div class="flex gap-2 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                        <button class="text-zinc-500 hover:text-white transition-colors cursor-pointer" title="Edit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <button class="edit-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer" title="Edit" data-date="${task.date}" data-title="${task.title}" data-description="${task.description}" data-task-id="${task._id}">
+                            <img src="../icons/edit.svg" class="w-3.5 h-3.5 invert opacity-50" alt="Edit">
                         </button>
-                        <button class="text-zinc-500 hover:text-red-400 transition-colors cursor-pointer" title="Delete">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        <button class="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-red-900/50 group transition-all cursor-pointer" title="Delete">
+                            <img src="../icons/delete.svg" class="w-3.5 h-3.5 invert opacity-50 group-hover:text-red-400" alt="Delete">
                         </button>
                     </div>
                 </div>
@@ -42,4 +51,98 @@ export function renderWelcomeMessage(username) {
                     Logout
                 </a>
             </div>`
+}
+
+export function renderAddTaskModal(dateObj) {
+    const formattedDate = dateObj.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    return `
+    <div id="addTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-2xl shadow-2xl p-10 relative overflow-hidden">
+        
+            <div class="flex justify-between items-start mb-10">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight">New Task</h2>
+                    <p class="text-indigo-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">${formattedDate}</p>
+                </div>
+
+                <button id="closeAddTaskModal" class="p-2 hover:bg-zinc-800 rounded-2xl transition-all cursor-pointer group">
+                    <img src="../icons/close.svg" class="w-5 h-5 invert opacity-30 group-hover:opacity-100" alt="Close">
+                </button>
+            </div>
+            
+            <form id="addTaskForm" class="space-y-8">
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="task-title" placeholder="Title" 
+                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all font-bold text-lg"
+                        required autofocus>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <textarea id="task-description" placeholder="Description" rows="3" 
+                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
+                        required></textarea>
+                </div>
+                
+                <input type="hidden" id="task-date" value="${dateObj.toISOString()}">
+                
+                <button type="submit" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-5 rounded-2xl transition-all cursor-pointer text-base uppercase tracking-widest shadow-xl shadow-white/5">
+                    Confirm Task
+                </button>
+            </form>
+        </div>
+    </div>`
+}
+
+export function renderEditTaskModal(dateObj, title, description, taskId) {
+    const formattedDate = dateObj.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    return `
+    <div id="editTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-2xl shadow-2xl p-10 relative overflow-hidden">
+        
+            <div class="flex justify-between items-start mb-10">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight">New Task</h2>
+                    <p class="text-indigo-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">${formattedDate}</p>
+                </div>
+
+                <button id="closeEditTaskModal" class="p-2 hover:bg-zinc-800 rounded-2xl transition-all cursor-pointer group">
+                    <img src="../icons/close.svg" class="w-5 h-5 invert opacity-30 group-hover:opacity-100" alt="Close">
+                </button>
+            </div>
+            
+            <form id="editTaskForm" class="space-y-8">
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="task-title" value="${title}" placeholder="Title" 
+                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all font-bold text-lg"
+                        required autofocus>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <textarea id="task-description" placeholder="Description" rows="3" 
+                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
+                        required>${description}</textarea>
+                </div>
+                
+                <input type="hidden" id="task-date" value="${dateObj.toISOString()}">
+
+                <input type="hidden" id="task-id" value="${taskId}">
+                
+                <button type="submit" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-5 rounded-2xl transition-all cursor-pointer text-base uppercase tracking-widest shadow-xl shadow-white/5">
+                    Confirm Task
+                </button>
+            </form>
+        </div>
+    </div>`
 }

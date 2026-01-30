@@ -37,7 +37,7 @@ router.post('/signup', async (req, res) => {
             }, secret_key
         )
 
-        res.cookie('session-info', JSON.stringify({ username: createdUser.username }), { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 14 })
+        res.cookie('session-info', JSON.stringify({ username: createdUser.username, id: createdUser._id }), { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 14 })
         res.cookie('session-cookie', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 14 })
         res.status(200).json({ message: "User created succesfully" })
     } catch (error) {
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
             }, secret_key
         )
 
-        res.cookie('session-info', JSON.stringify({ username: foundUser.username }), { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 14 })
+        res.cookie('session-info', JSON.stringify({ username: foundUser.username, id: foundUser._id }), { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 14 })
         res.cookie('session-cookie', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 14 })
         res.status(200).send("You are logged in")
     } catch (error) {

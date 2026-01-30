@@ -44,7 +44,7 @@
     </header>
 
 
-    <section class="pt-25 min-h-screen w-full relative">
+    <section id="section" class="pt-25 min-h-screen w-full relative">
 
         <div
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[700px] bg-indigo-600/5 blur-[120px] rounded-full -z-10">
@@ -58,7 +58,7 @@
                 <aside class="lg:col-span-4 space-y-6">
 
 
-                    <details
+                    <details open
                         class="group w-full bg-zinc-900 border border-zinc-800/50 rounded-xl overflow-hidden shadow-2xl transition-all duration-300">
                         <summary
                             class="list-none p-6 bg-zinc-800/30 cursor-pointer hover:bg-zinc-800/50 transition-colors border-b border-zinc-800/50 flex justify-between items-center text-zinc-100">
@@ -68,7 +68,9 @@
                             </div>
                             <div
                                 class="w-10 h-10 rounded-full bg-zinc-950/50 flex items-center justify-center border border-zinc-800/50 group-open:rotate-180 transition-transform">
-                                <span class="text-zinc-500 text-sm text-center">↓</span>
+                                <img src="../icons/chevron-down.svg"
+                                    class="w-4 h-4 invert opacity-50 transition-transform duration-300 group-open:rotate-180"
+                                    alt="Toggle">
                             </div>
                         </summary>
 
