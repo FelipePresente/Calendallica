@@ -73,12 +73,18 @@ async function renderTasks() {
         if (!tasks) return
 
         const taskList = document.querySelector("#task-list")
+        const tasksAmount = document.querySelector("#tasks-amount")
 
         let content = ""
 
         tasks.forEach(task => {
             content += renderTaskItem(task)
         })
+
+        if (tasks.length !== 0) {
+            if (tasks.length === 1) tasksAmount.innerText = `${tasks.length} TASK SCHEDULED`
+            else tasksAmount.innerText = `${tasks.length} TASKS SCHEDULED`
+        }
 
         taskList.innerHTML = content
     } catch (error) {
@@ -128,11 +134,11 @@ section.addEventListener('submit', async (event) => {
                     description
                 })
             })
-
-            window.location.reload()
         } catch (error) {
             console.log("Error trying to create task")
         }
+
+        window.location.reload()
     }
 })
 
@@ -179,18 +185,18 @@ section.addEventListener('submit', async (event) => {
                     description
                 })
             })
-
-            window.location.reload()
         } catch (error) {
             console.log("Error trying to edit task")
         }
+
+        window.location.reload()
     }
 })
 
 // Render delete task modal
 section.addEventListener('click', (event) => {
     const cell = event.target.closest('.delete-cell')
-    
+
     if (cell) {
         const { taskId } = cell.dataset
 
@@ -206,9 +212,9 @@ section.addEventListener('click', (event) => {
 
 // Submit delete task form
 section.addEventListener('submit', async (event) => {
-    if (event.target.id ==="deleteTaskForm") {
+    if (event.target.id === "deleteTaskForm") {
         event.preventDefault()
-        
+
         const form = event.target
 
         const taskId = form.querySelector("#task-id").value
@@ -217,10 +223,10 @@ section.addEventListener('submit', async (event) => {
             const response = await fetch(`/tasks/${taskId}`, {
                 method: 'DELETE'
             })
-
-            window.location.reload()
         } catch (error) {
             console.log("Error trying to delete task")
         }
+
+        window.location.reload()
     }
 })

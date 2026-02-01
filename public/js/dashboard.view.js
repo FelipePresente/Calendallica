@@ -28,8 +28,8 @@ export function renderTaskItem(task) {
     return `<div class="p-5 bg-zinc-950/20 border border-zinc-800/40 rounded-xl hover:border-zinc-700 transition-all shadow-sm group/item relative">
                 <div class="flex justify-between items-start mb-2">
                     <span class="text-[9px] font-black text-zinc-600 uppercase tracking-widest">${formattedDate}</span>
-                    <div class="flex gap-2 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                        <button class="edit-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer" title="Edit" data-date="${task.date}" data-title="${task.title}" data-description="${task.description}" data-task-id="${task._id}">
+                    <div class="flex gap-2 md:opacity-0 group-hover/item:opacity-100 transition-opacity">
+                        <button class="edit-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer" title="Edit" data-date="${task.date}" data-title='${task.title}' data-description='${task.description}' data-task-id="${task._id}">
                             <img src="../icons/edit.svg" class="w-3.5 h-3.5 invert opacity-50" alt="Edit">
                         </button>
                         <button class="delete-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-red-900/50 group transition-all cursor-pointer" title="Delete" data-task-id="${task._id}">
@@ -45,9 +45,10 @@ export function renderTaskItem(task) {
 export function renderWelcomeMessage(username) {
     const formattedUsername = username.charAt(0).toUpperCase() + username.slice(1)
 
-    return `<div class="flex items-center gap-6 max-md:hidden">
-                <p class="text-zinc-400 text-sm">Welcome, <span class="text-zinc-50 font-semibold">${formattedUsername}</span></p>
-                <a href="/users/logout" class="flex items-center justify-center rounded-xl bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 font-bold px-5 py-2.5 text-sm transition-all">
+    return `<div class="flex items-center gap-4 md:gap-6">
+                <p class="text-zinc-400 text-sm hidden md:block">Welcome, <span class="text-zinc-50 font-semibold">${formattedUsername}</span></p>
+                <p class="text-zinc-50 font-semibold text-sm md:hidden">${formattedUsername}</p>
+                <a href="/users/logout" class="flex items-center justify-center rounded-xl bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 font-bold px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm transition-all text-zinc-400 hover:text-red-400">
                     Logout
                 </a>
             </div>`
@@ -80,13 +81,13 @@ export function renderAddTaskModal(dateObj) {
                 <div class="flex flex-col gap-2">
                     <input type="text" id="task-title" placeholder="Title" 
                         class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all font-bold text-lg"
-                        required autofocus>
+                        required autofocus maxlength="50">
                 </div>
                 
                 <div class="flex flex-col gap-2">
                     <textarea id="task-description" placeholder="Description" rows="3" 
                         class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
-                        required></textarea>
+                        required maxlength="300"></textarea>
                 </div>
                 
                 <input type="hidden" id="task-date" value="${dateObj.toISOString()}">
@@ -126,13 +127,13 @@ export function renderEditTaskModal(dateObj, title, description, taskId) {
                 <div class="flex flex-col gap-2">
                     <input type="text" id="task-title" value="${title}" placeholder="Title" 
                         class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all font-bold text-lg"
-                        required autofocus>
+                        required autofocus maxlength="50">
                 </div>
                 
                 <div class="flex flex-col gap-2">
                     <textarea id="task-description" placeholder="Description" rows="3" 
                         class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
-                        required>${description}</textarea>
+                        required maxlength="300">${description}</textarea>
                 </div>
                 
                 <input type="hidden" id="task-date" value="${dateObj.toISOString()}">

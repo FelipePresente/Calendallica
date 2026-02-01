@@ -3,6 +3,7 @@ import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import auth from './middlewares/auth.js'
+import sanitizer from './middlewares/sanitizer.js'
 import trimmer from './middlewares/trimmer.js'
 import lowerCase from './middlewares/lowerCase.js'
 import usersRouter from './routes/users.js'
@@ -21,6 +22,7 @@ app.use('/dashboard', auth)
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(sanitizer)
 app.use(trimmer)
 app.use(lowerCase)
 app.use('/users', usersRouter)

@@ -1,6 +1,4 @@
 import express from 'express'
-import jwt from 'jsonwebtoken'
-import User from '../models/User.js'
 import Task from '../models/Task.js'
 import auth from '../middlewares/auth.js'
 
@@ -26,6 +24,7 @@ router.post('/', auth, async (req, res) => {
     const userId = req.user.id
 
     if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
+    if (title.length > 50 || description.length > 300) return res.status(400).send('The character limit has been exceeded')
 
     try {
         const newTask = { "date": date, "title": title, "description": description, "userId": userId }
@@ -43,6 +42,7 @@ router.patch('/:taskId', auth, async (req, res) => {
     const userId = req.user.id
 
     if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
+    if (title.length > 50 || description.length > 300) return res.status(400).send('The character limit has been exceeded')
 
     try {
         const newTask = { "date": date, "title": title, "description": description }
@@ -73,9 +73,11 @@ router.delete('/:taskId', auth, async (req, res) => {
 
         const taskToDelete = await Task.findOneAndDelete(target)
 
-        if (!taskToDelete) res.status(400).send("Task not found or unauthorized")
+        if (!taskToDelete) return res.status(400).send("Task not found or unauthorized")
+
+        res.status(200).send("Task deleted successfully")
     } catch (error) {
-        res.send("Error trying to delete task")
+        res.status(500).send("Error trying to delete task")
     }
 })
 
