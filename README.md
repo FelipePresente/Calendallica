@@ -1,4 +1,6 @@
-# <img src="public/icons/logo.png" width="300" alt="Calendallica">
+<p align="center">
+  <img src="public/icons/logo.png" width="300" alt="Calendallica">
+</p>
 
 A high-performance, full-stack productivity tool that merges a visual calendar interface with task management. Built with **Node.js** and **MongoDB**, **Calendallica** focuses on a premium user experience, minimalist aesthetics, and advanced security.
 
