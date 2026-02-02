@@ -125,7 +125,7 @@ export function renderEditTaskModal(dateObj, title, description, taskId) {
             
             <form id="editTaskForm" class="space-y-8">
                 <div class="flex flex-col gap-2">
-                    <input type="text" id="task-title" value="${title}" placeholder="Title" 
+                    <input type="text" id="task-title" value='${title}' placeholder="Title" 
                         class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all font-bold text-lg"
                         required autofocus maxlength="50">
                 </div>
