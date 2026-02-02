@@ -92,12 +92,14 @@ async function renderTasks() {
     }
 } renderTasks()
 
-// Render add task modal
-grid.addEventListener('click', (event) => {
-    const cell = event.target.closest(".day-cell")
+// Render tasks modals
+section.addEventListener('click', (event) => {
+    const addCell = event.target.closest(".day-cell")
+    const editCell = event.target.closest('.edit-cell')
+    const deleteCell = event.target.closest('.delete-cell')
 
-    if (cell) {
-        const { day, month, year } = cell.dataset
+    if (addCell) {
+        const { day, month, year } = addCell.dataset
 
         const selectedDate = new Date(year, month, day)
         const maxDate = currentDate.setHours(0, 0, 0, 0)
@@ -106,15 +108,33 @@ grid.addEventListener('click', (event) => {
             section.insertAdjacentHTML('afterbegin', renderAddTaskModal(selectedDate))
         }
     }
+    if (editCell) {
+        const { date, title, description, taskId } = editCell.dataset
+
+        const selectedDate = new Date(date)
+
+        section.insertAdjacentHTML('afterbegin', renderEditTaskModal(selectedDate, title, description, taskId))
+    }
+    if (deleteCell) {
+        const { taskId } = deleteCell.dataset
+
+        section.insertAdjacentHTML('afterbegin', renderDeleteTaskModal(taskId))
+    }
 })
 
-// Close add task modal
+// Close tasks modals
 section.addEventListener('click', (event) => {
     if (event.target.closest("#closeAddTaskModal")) document.querySelector("#addTaskModal").remove()
     if (event.target.id === "addTaskModal") event.target.remove()
+
+    if (event.target.closest("#closeEditTaskModal")) document.querySelector("#editTaskModal").remove()
+    if (event.target.id === "editTaskModal") event.target.remove()
+
+    if (event.target.closest("#closeDeleteTaskModal")) document.querySelector("#deleteTaskModal").remove()
+    if (event.target.id === "deleteTaskModal") event.target.remove()
 })
 
-// Submit add task form
+// Submit tasks forms
 section.addEventListener('submit', async (event) => {
     if (event.target.id === "addTaskForm") {
         event.preventDefault()
@@ -143,29 +163,6 @@ section.addEventListener('submit', async (event) => {
 
         window.location.reload()
     }
-})
-
-// Render edit task modal
-section.addEventListener('click', (event) => {
-    const cell = event.target.closest('.edit-cell')
-
-    if (cell) {
-        const { date, title, description, taskId } = cell.dataset
-
-        const selectedDate = new Date(date)
-
-        section.insertAdjacentHTML('afterbegin', renderEditTaskModal(selectedDate, title, description, taskId))
-    }
-})
-
-// Close edit task modal
-section.addEventListener('click', (event) => {
-    if (event.target.closest("#closeEditTaskModal")) document.querySelector("#editTaskModal").remove()
-    if (event.target.id === "editTaskModal") event.target.remove()
-})
-
-// Submit edit task form
-section.addEventListener('submit', async (event) => {
     if (event.target.id === "editTaskForm") {
         event.preventDefault()
 
@@ -194,27 +191,6 @@ section.addEventListener('submit', async (event) => {
 
         window.location.reload()
     }
-})
-
-// Render delete task modal
-section.addEventListener('click', (event) => {
-    const cell = event.target.closest('.delete-cell')
-
-    if (cell) {
-        const { taskId } = cell.dataset
-
-        section.insertAdjacentHTML('afterbegin', renderDeleteTaskModal(taskId))
-    }
-})
-
-// Close delete task modal
-section.addEventListener('click', (event) => {
-    if (event.target.closest("#closeDeleteTaskModal")) document.querySelector("#deleteTaskModal").remove()
-    if (event.target.id === "deleteTaskModal") event.target.remove()
-})
-
-// Submit delete task form
-section.addEventListener('submit', async (event) => {
     if (event.target.id === "deleteTaskForm") {
         event.preventDefault()
 
