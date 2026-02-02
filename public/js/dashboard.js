@@ -1,4 +1,4 @@
-import { currentMonth, currentDay, currentYear, isLeapYear, year } from './getCurrentDate.js'
+import { currentDate, currentMonth, currentDay, currentYear, isLeapYear, year } from './getCurrentDate.js'
 import { renderCurrentDay, renderCommonDay, renderNoDay, renderCalendarHeader, renderTaskItem, renderWelcomeMessage, renderAddTaskModal, renderEditTaskModal, renderDeleteTaskModal } from './dashboard.view.js'
 import checkSession from './checkSession.js'
 
@@ -100,8 +100,11 @@ grid.addEventListener('click', (event) => {
         const { day, month, year } = cell.dataset
 
         const selectedDate = new Date(year, month, day)
+        const maxDate = currentDate.setHours(0, 0, 0, 0)
 
-        section.insertAdjacentHTML('afterbegin', renderAddTaskModal(selectedDate))
+        if (selectedDate >= maxDate) {
+            section.insertAdjacentHTML('afterbegin', renderAddTaskModal(selectedDate))
+        }
     }
 })
 

@@ -7,6 +7,8 @@ const taskScheme = new mongoose.Schema({
     userId: { type: "ObjectId", required: true }
 })
 
+taskScheme.index({ 'date': 1 }, { expireAfterSeconds: 86400 })
+
 const Task = mongoose.model('Task', taskScheme)
 
 export default Task
