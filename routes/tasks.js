@@ -22,9 +22,10 @@ router.get('/', auth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
     const { date, title, description } = req.body
     const userId = req.user.id
-    const serverDate = new Date()
     const userDate = new Date(date)
-    userDate.setDate(userDate.getDate() + 1)
+    const serverDate = new Date()
+    
+    serverDate.setUTCHours(0,0,0,0)
 
     if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
     if (title.length > 50 || description.length > 300) return res.status(400).send('The character limit has been exceeded')
