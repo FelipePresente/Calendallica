@@ -1,173 +1,139 @@
-# API Documentation
+# System & API Documentation
 
-This documentation details the endpoints available in the Calendallica application.
-
-## Authentication & Authorization
-
-- **Authentication Method:** JWT (JSON Web Tokens) stored in HttpOnly Cookies (`session-cookie`).
-- **Authorization:** Protected routes require a valid JWT token. Middleware (`auth.js`) automatically validates tokens for private routes.
-- **Client-Side:** Public user information is stored in a non-HttpOnly cookie (`session-info`) for frontend.
+This document provides a comprehensive overview of the **Calendallica** system architecture, including its backend components, data models, middleware pipeline, and API endpoints.
 
 ---
 
-## Users
+## System Architecture
 
-### 1. User Registration
-Creates a new user account with secure password hashing.
+The application is a **Node.js** web server built with **Express**, following a Modular Monolithic architecture. It connects to a **MongoDB** database using **Mongoose** as the ODM (Object Data Modeling) library.
+
+### Core Components
+
+#### 1. Server Entry Point (`server.js`)
+The `server.js` file is the backbone of the application. It initializes the Express app and configures:
+- **Database Connection:** Connects to MongoDB Atlas via `mongoose.connect()`.
+- **Global Middleware:** Applies parsing, sanitization, and normalization layers to every request.
+- **Route Mounting:** Defines the base paths for `/users` and `/tasks`.
+- **Static Assets:** Serves frontend files from the `public/` directory.
+- **Dashboard Access:** Protects the `/dashboard` route with the `auth` middleware.
+- **Root Redirection:** The root path `/` checks for authentication and redirects logged-in users to `/dashboard`.
+
+### 2. Database Models (`models/`)
+All data schemas are strict and managed via Mongoose.
+
+- **User Model (`User.js`)**
+    - `username`: String (Unique, Required)
+    - `password`: String (Required, Hashed)
+    - `role`: String (Default: 'user') - Included for potential future access control.
+
+- **Task Model (`Task.js`)**
+    - `date`: Date (Required)
+    - `title`: String (Required)
+    - `description`: String (Required)
+    - `userId`: ObjectId (Required, Reference to User)
+    - **TTL Index:** Tasks are automatically deleted 24 hours (`86400` seconds) after their `date` value.
+
+---
+
+## Middleware Pipeline
+
+Middlewares intercept requests to process data, handle security, or manage flow before reaching the route handlers.
+
+### Global Middlewares (Applied to all routes)
+
+| Middleware | File | Description |
+| :--- | :--- | :--- |
+| **Parsing** | N/A (Express Native) | `express.json()`, `express.urlencoded()`, and `cookie-parser`. |
+| **Sanitizer** | `middlewares/sanitizer.js` | Uses `sanitize-html` to clean string fields in `req.body`, allowing only specific tags (e.g., `<b>`, `<i>`) and safe styles. |
+| **Trimmer** | `middlewares/trimmer.js` | Removes leading/trailing whitespace from string fields in `req.body`. |
+| **LowerCase** | `middlewares/lowerCase.js` | Converts `username` and `email` fields to lowercase to ensure consistency. |
+
+### Security & Utility Middlewares
+
+| Middleware/Utility | File | Description |
+| :--- | :--- | :--- |
+| **Auth (Token Verifier)** | `middlewares/auth.js` | Verifies JWT tokens from `session-cookie`. Checks if the user exists in DB. If valid, attaches user to `req.user`; otherwise, redirects to `/signup` or handles logout. |
+| **Hash Password** | `middlewares/hashPassword.js` | Uses `bcrypt` to securely hash passwords (salt rounds: 12) before saving to the DB. |
+| **Compare Password** | `middlewares/comparePassword.js` | Uses `bcrypt` to compare a plaintext password with the stored hash during login. |
+
+---
+
+## API Endpoints
+
+### Authentication & Authorization
+
+- **Authentication Method:** JWT (JSON Web Tokens) stored in HttpOnly Cookies (`session-cookie`).
+- **Authorization:** 
+    - **Protected Routes:** Require a valid JWT (e.g., `/tasks`, `/dashboard`).
+- **Client-Side:** Public user information is stored in a non-HttpOnly cookie (`session-info`) for UI logic.
+
+### Users (`/users`)
+
+#### 1. Register User
+Creates a new user account.
 
 - **URL:** `/users/signup`
 - **Method:** `POST`
-- **Content-Type:** `application/json`
+- **Sanitization:** Auto-trims inputs; `username` converts to lowercase.
+- **Body:**
+    - `username`: 4-12 chars.
+    - `password`: 8-35 chars, no spaces.
+    - `passwordConfirmation`: Must match `password`.
+- **Response:** 
+    - 200 OK: Sets `session-cookie` (HttpOnly, 14 days) and `session-info`. Returns JSON message.
 
-**Request Body Parameters:**
-
-| Parameter | Type | Required | constraints |
-| :--- | :--- | :--- | :--- |
-| `username` | String | Yes | 4 to 12 characters, lowercase converted |
-| `password` | String | Yes | 8 to 35 characters, no spaces |
-| `passwordConfirmation` | String | Yes | Must match `password` |
-
-**Responses:**
-
-- **Success (200):** `{ "message": "User created succesfully" }` (Sets Auth Cookies)
-- **Client Error (400):** 
-    - "All fields must be filled"
-    - "The passwords must be equal"
-    - "Username minimum number of characters is 4"
-    - "Username maximum number of characters is 12"
-    - "Password fields minimum number of characters is 8"
-    - "Password fields maximum number of characters is 35"
-    - "Password must not include spaces"
-    - "Username already exists"
-- **Server Error (500):** "Error creating user"
-
----
-
-### 2. User Login
-Authenticates a user and establishes a session via cookies.
+#### 2. User Login
+Authenticates a user.
 
 - **URL:** `/users/login`
 - **Method:** `POST`
-- **Content-Type:** `application/json`
+- **Body:** `username`, `password`
+- **Response:** 
+    - 200 OK: Sets `session-cookie` (HttpOnly, 14 days) and `session-info`. Returns "You are logged in".
+    - 401 Unauthorized: Invalid credentials.
 
-**Request Body Parameters:**
-
-| Parameter | Type | Required | constraints |
-| :--- | :--- | :--- | :--- |
-| `username` | String | Yes | Max 12 characters, lowercase converted |
-| `password` | String | Yes | Max 35 characters, no spaces |
-
-**Responses:**
-
-- **Success (200):** "You are logged in" (Sets `session-cookie` and `session-info` cookies)
-- **Client Error (400):** Validation errors (missing fields, length limits).
-- **Unauthorized (401):** "Invalid credentials" (User not found or password mismatch).
-- **Server Error (500):** "Error logging in" (Generic error message for security).
-
----
-
-### 3. User Logout
-Invalidates the user session by clearing authentication cookies.
+#### 3. User Logout
+Invalidates the session.
 
 - **URL:** `/users/logout`
 - **Method:** `GET`
+- **Response:** Clears `session-cookie` and `session-info`, then redirects to `/`.
 
-**Responses:**
+### Tasks (`/tasks`)
 
-- **Success (302):** Clears `session-cookie` and `session-info` cookies and redirects to `/` (Home).
+All task routes are **Protected** (Require Authentication) and scoped to the logged-in user.
 
----
-
-## Tasks
-
-### 1. List User Tasks
-Retrieves all tasks belonging to the authenticated user.
+#### 1. List My Tasks
+Retrieves all tasks belonging to the current user.
 
 - **URL:** `/tasks`
 - **Method:** `GET`
-- **Access:** Protected (Requires valid Auth Token)
+- **Response:** JSON array of task objects (excludes `userId` and `__v`).
 
-**Responses:**
-
-- **Success (200):** Returns an array of task objects (JSON).
-- **Client Error (400):** "User id is needed" (If token payload is missing ID).
-- **Server Error (500):** "Error trying to get tasks"
-
----
-
-### 2. Create Task
-Adds a new task to the user's calendar.
+#### 2. Create Task
+Adds a new task for the user.
 
 - **URL:** `/tasks`
 - **Method:** `POST`
-- **Access:** Protected (Requires valid Auth Token)
+- **Validations:** 
+    - Title max 50 chars, Description max 300 chars.
+    - Date cannot be in the past (measured against server time).
+- **Body:** `date`, `title`, `description`.
+- **Response:** 201 Created.
 
-**Request Body Parameters:**
-
-| Parameter | Type | Required | constraints |
-| :--- | :--- | :--- | :--- |
-| `date` | Date (ISO) | Yes | Valid date format, cannot be in the past |
-| `title` | String | Yes | 1 to 50 characters, HTML Sanitized |
-| `description` | String | Yes | 1 to 300 characters, HTML Sanitized |
-
-**Responses:**
-
-- **Success (201):** "Task created successfully"
-- **Client Error (400):** 
-    - "All fields must be filled"
-    - "The character limit has been exceeded"
-    - "Can't create tasks for past days" (Validated against User local time + 24h grace period)
-- **Server Error (500):** "Error trying to create task"
-
----
-
-### 3. Update Task
-Updates an existing task's details.
+#### 3. Update Task
+Updates an existing task.
 
 - **URL:** `/tasks/:taskId`
 - **Method:** `PATCH`
-- **Access:** Protected (Requires valid Auth Token & Ownership)
+- **Validations:** Same character limits as creation.
+- **Body:** `date`, `title`, `description`.
+- **Response:** 200 OK if successful, 404 if task not found or unauthorized.
 
-**URL Parameters:**
-
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `taskId` | String | The unique MongoDB Object ID of the task |
-
-**Request Body Parameters:**
-
-| Parameter | Type | Required | constraints |
-| :--- | :--- | :--- | :--- |
-| `date` | Date (ISO) | Yes | Valid date format |
-| `title` | String | Yes | 1 to 50 characters, HTML Sanitized |
-| `description` | String | Yes | 1 to 300 characters, HTML Sanitized |
-
-**Responses:**
-
-- **Success (200):** "Task updated successfully"
-- **Client Error (400):** 
-    - "All fields must be filled"
-    - "The character limit has been exceeded"
-- **Not Found / Unauthorized (404):** "Task not found or unauthorized" (If task ID doesn't exist or doesn't belong to the user)
-- **Server Error (500):** "Error trying to edit task"
-
----
-
-### 4. Delete Task
-Removes a task from the user's calendar.
+#### 4. Delete Task
+Removes a task.
 
 - **URL:** `/tasks/:taskId`
 - **Method:** `DELETE`
-- **Access:** Protected (Requires valid Auth Token & Ownership)
-
-**URL Parameters:**
-
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `taskId` | String | The unique MongoDB Object ID of the task |
-
-**Responses:**
-
-- **Success (200):** "Task deleted successfully"
-- **Client Error (400):** "All fields must be filled" (Missing taskId) or "Task not found or unauthorized"
-- **Server Error (500):** "Error trying to delete task"
+- **Response:** 200 OK if successful, 400 if task not found or unauthorized.
