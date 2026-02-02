@@ -5,19 +5,19 @@ import hashPassword from '../helpers/hashPassword.js'
 import comparePassword from '../helpers/comparePassword.js'
 import createToken from '../helpers/createToken.js'
 import createSessionCookies from '../helpers/createSessionCookies.js'
+import userVerification from '../helpers/userVerifications.js'
 
 const router = express.Router()
 
 router.post('/signup', async (req, res) => {
     const { username, password, passwordConfirmation } = req.body
 
-    if (!username || !password || !passwordConfirmation) return res.status(400).send("All fields must be filled")
+    if (!passwordConfirmation) return res.status(400).send("All fields must be filled")
     if (password !== passwordConfirmation) return res.status(400).send("The passwords must be equal")
-    if (username.length < 4) return res.status(400).send("Username minimum number of characters is 4")
-    if (username.length > 12) return res.status(400).send("Username maximum number of characters is 12")
-    if (password.length < 8 || passwordConfirmation.length < 8) return res.status(400).send("Password fields minimum number of characters is 8")
-    if (password.length > 35 || passwordConfirmation.length > 35) return res.status(400).send("Password fields maximum number of characters is 35")
-    if (password.includes(" ")) return res.status(400).send("Password must not include spaces")
+
+    userVerification(res, username, password)
+
+    if (userVerification(res, username, password)) return
 
     try {
         const foundUser = await User.findOne({ "username": username })
@@ -40,11 +40,7 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { username, password } = req.body
 
-    if (!username || !password) return res.status(400).send("All fields must be filled")
-    if (username.length < 4) return res.status(400).send("Username minimum number of characters is 4")
-    if (username.length > 12) return res.status(400).send("Username maximum number of characters is 12")
-    if (password.length < 8) return res.status(400).send("Password minimum number of characters is 8")
-    if (password.length > 35) return res.status(400).send("Password maximum number of characters is 35")
+    userVerification(res, username, password)
 
     try {
         const foundUser = await User.findOne({ "username": username })

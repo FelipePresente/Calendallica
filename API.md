@@ -1,6 +1,6 @@
 # System & API Documentation
 
-This document provides a comprehensive overview of the **Calendallica** system architecture, including its backend components, data models, middleware pipeline, and API endpoints.
+This document provides a comprehensive overview of the **Calendallica** system architecture, including its backend components, data models, middleware pipeline, helpers, and API endpoints.
 
 ---
 
@@ -49,13 +49,25 @@ Middlewares intercept requests to process data, handle security, or manage flow 
 | **Trimmer** | `middlewares/trimmer.js` | Removes leading/trailing whitespace from string fields in `req.body`. |
 | **LowerCase** | `middlewares/lowerCase.js` | Converts `username` and `email` fields to lowercase to ensure consistency. |
 
-### Security & Utility Middlewares
+### Security Middlewares
 
-| Middleware/Utility | File | Description |
+| Middleware | File | Description |
 | :--- | :--- | :--- |
 | **Auth (Token Verifier)** | `middlewares/auth.js` | Verifies JWT tokens from `session-cookie`. Checks if the user exists in DB. If valid, attaches user to `req.user`; otherwise, redirects to `/signup` or handles logout. |
-| **Hash Password** | `middlewares/hashPassword.js` | Uses `bcrypt` to securely hash passwords (salt rounds: 12) before saving to the DB. |
-| **Compare Password** | `middlewares/comparePassword.js` | Uses `bcrypt` to compare a plaintext password with the stored hash during login. |
+
+---
+
+## Helpers / Utilities
+
+Helper functions that encapsulate specific logic to keep the code DRY and clean. These are located in the `helpers/` directory.
+
+| Helper | File | Description |
+| :--- | :--- | :--- |
+| **User Verifications** | `helpers/userVerifications.js` | Centralizes validation logic for user registration and login (field requirements, length checks, password rules). Returns `true` if an error response was sent, `false` otherwise. |
+| **Create Token** | `helpers/createToken.js` | Generates a Signed JWT containing the user's ID, username, and role. |
+| **Create Session Cookies** | `helpers/createSessionCookies.js` | Sets the `session-cookie` (HttpOnly, JWT) and `session-info` (Public, JSON) cookies on the response object. |
+| **Hash Password** | `helpers/hashPassword.js` | Uses `bcrypt` to securely hash passwords (salt rounds: 12) before saving to the DB. |
+| **Compare Password** | `helpers/comparePassword.js` | Uses `bcrypt` to compare a plaintext password with the stored hash during login. |
 
 ---
 
@@ -76,7 +88,7 @@ Creates a new user account.
 - **URL:** `/users/signup`
 - **Method:** `POST`
 - **Sanitization:** Auto-trims inputs; `username` converts to lowercase.
-- **Body:**
+- **Validation:** Controlled by `userVerifications` helper.
     - `username`: 4-12 chars.
     - `password`: 8-35 chars, no spaces.
     - `passwordConfirmation`: Must match `password`.
@@ -88,6 +100,7 @@ Authenticates a user.
 
 - **URL:** `/users/login`
 - **Method:** `POST`
+- **Validation:** Controlled by `userVerifications` helper.
 - **Body:** `username`, `password`
 - **Response:** 
     - 200 OK: Sets `session-cookie` (HttpOnly, 14 days) and `session-info`. Returns "You are logged in".
