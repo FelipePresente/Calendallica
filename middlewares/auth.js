@@ -15,7 +15,7 @@ export default async function verifyToken(req, res, next) {
         const user = jwt.verify(token, secret_key)
         const userFromDB = await User.findById(user.id)
 
-        if (!userFromDB) return res.status(401).redirect('users/logout')
+        if (!userFromDB) return res.redirect('/users/logout')
 
         req.user = userFromDB
         next()
