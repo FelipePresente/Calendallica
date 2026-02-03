@@ -1,9 +1,17 @@
-export function renderCurrentDay(day, calendarState) {
-    return `<div class="day-cell bg-indigo-600 hover:border-transparent cursor-pointer aspect-square border border-indigo-400 shadow-lg shadow-indigo-600/50 font-semibold text-sm text-white rounded-lg flex items-center justify-center" data-day="${day}" data-month="${calendarState.month}" data-year="${calendarState.year}">${day}</div>`
+export function renderCurrentDay(day, calendarState, hasTask) {
+    const pin = hasTask ? renderPin() : ''
+
+    return `<div class="day-cell relative bg-indigo-600 hover:border-transparent cursor-pointer aspect-square border border-indigo-400 shadow-lg shadow-indigo-600/50 font-semibold text-sm text-white rounded-lg flex items-center justify-center" data-day="${day}" data-month="${calendarState.month}" data-year="${calendarState.year}">${day} ${pin}</div>`
 }
 
-export function renderCommonDay(day, calendarState) {
-    return `<div class="day-cell bg-zinc-950/50 hover:border-zinc-700 cursor-pointer aspect-square border border-zinc-800/50 font-semibold text-sm text-zinc-600 rounded-lg flex items-center justify-center" data-day="${day}" data-month="${calendarState.month}" data-year="${calendarState.year}">${day}</div>`
+export function renderCommonDay(day, calendarState, hasTask) {
+    const pin = hasTask ? renderPin() : ''
+
+    return `<div class="day-cell relative bg-zinc-950/50 hover:border-zinc-700 cursor-pointer aspect-square border border-zinc-800/50 font-semibold text-sm text-zinc-600 rounded-lg flex items-center justify-center" data-day="${day}" data-month="${calendarState.month}" data-year="${calendarState.year}">${day} ${pin}</div>`
+}
+
+export function renderPin() {
+    return `<div class="alert-cell rounded-full w-1 h-1 bg-emerald-600 ring-1 ring-emerald-400 absolute top-1 right-1 md:top-2 md:right-2"></div>`
 }
 
 export function renderNoDay() {

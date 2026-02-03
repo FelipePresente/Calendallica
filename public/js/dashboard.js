@@ -1,6 +1,7 @@
 import { currentDate, currentMonth, currentDay, currentYear, isLeapYear, year } from './getCurrentDate.js'
-import { renderCurrentDay, renderCommonDay, renderNoDay, renderCalendarHeader, renderTaskItem, renderWelcomeMessage, renderAddTaskModal, renderEditTaskModal, renderDeleteTaskModal } from './dashboard.view.js'
+import { renderCurrentDay, renderCommonDay, renderPin, renderNoDay, renderCalendarHeader, renderTaskItem, renderWelcomeMessage, renderAddTaskModal, renderEditTaskModal, renderDeleteTaskModal } from './dashboard.view.js'
 import checkSession from './checkSession.js'
+import getTasks from './getTasks.js'
 
 const section = document.querySelector("#section")
 const grid = document.querySelector("#grid")
@@ -19,9 +20,10 @@ function isDayOne() {
     return dayOne
 }
 
-function renderDays() {
+async function renderDays() {
     isDayOne()
 
+    const tasks = await getTasks()
     let leapYear = isLeapYear(calendarYear)
 
     if (leapYear) year[1].days = 29
@@ -30,13 +32,19 @@ function renderDays() {
     let day = 0
     let content = ""
     let calendarState = { "month": month, "year": calendarYear }
+    const taskDates = new Set(tasks.map(t => t.date.split('T')[0]))
 
     for (let i = 0; i < dayOne; i++) content += renderNoDay()
     for (let i = 0; i < year[month].days; i++) {
         day++
 
-        if (day === currentDay && month === currentMonth && calendarYear === currentYear) content += renderCurrentDay(day, calendarState)
-        else content += renderCommonDay(day, calendarState)
+        const loopDate = new Date(calendarYear, month, day).toLocaleDateString("en-CA")
+
+        const hasTask = taskDates.has(loopDate)
+
+        if (day === currentDay && month === currentMonth && calendarYear === currentYear) content += renderCurrentDay(day, calendarState, hasTask)
+        else content += renderCommonDay(day, calendarState, hasTask)
+
     }
 
     grid.innerHTML = content
@@ -66,8 +74,7 @@ previousButton.onclick = () => {
 
 async function renderTasks() {
     try {
-        const response = await fetch(`/tasks`)
-        const tasks = await response.json()
+        const tasks = await getTasks()
         tasks.sort((a, b) => new Date(a.date) - new Date(b.date))
 
         if (!tasks) return
