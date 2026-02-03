@@ -18,6 +18,8 @@ export default async function verifyToken(req, res, next) {
         if (!userFromDB) return res.redirect('/users/logout')
 
         req.user = userFromDB
+
+        if (userFromDB.role === "admin") req.admin = userFromDB
         next()
     } catch (error) {
         res.clearCookie('session-info')

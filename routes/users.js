@@ -1,6 +1,7 @@
 import express from 'express'
 import 'dotenv/config'
 import User from '../models/User.js'
+import Analytics from '../models/Analytics.js'
 import hashPassword from '../helpers/hashPassword.js'
 import comparePassword from '../helpers/comparePassword.js'
 import createToken from '../helpers/createToken.js'
@@ -28,6 +29,9 @@ router.post('/signup', async (req, res) => {
         const newUser = { "username": username, "password": hash }
 
         const createdUser = await User.create(newUser)
+
+        await Analytics.updateOne({ metric: 'total_users' }, { $inc: { value: 1 } }, { upsert: true })
+
         const token = createToken(createdUser)
 
         createSessionCookies(res, createdUser, token)

@@ -14,8 +14,9 @@ The application is a **Node.js** web server built with **Express**, following a 
 The `server.js` file is the backbone of the application. It initializes the Express app and configures:
 - **Database Connection:** Connects to MongoDB Atlas via `mongoose.connect()`.
 - **Global Middleware:** Applies parsing, sanitization, and normalization layers to every request.
-- **Route Mounting:** Defines the base paths for `/users` and `/tasks`.
+- **Route Mounting:** Defines the base paths for `/users`, `/tasks`, and `/admin`.
 - **Static Assets:** Serves frontend files from the `public/` directory.
+- **Admin Security:** Protects the `/admin` route (both static files and API) with the `auth` middleware and role verification.
 - **Dashboard Access:** Protects the `/dashboard` route with the `auth` middleware.
 - **Root Redirection:** The root path `/` checks for authentication and redirects logged-in users to `/dashboard`.
 
@@ -25,7 +26,7 @@ All data schemas are strict and managed via Mongoose.
 - **User Model (`User.js`)**
     - `username`: String (Unique, Required)
     - `password`: String (Required, Hashed)
-    - `role`: String (Default: 'user') - Included for potential future access control.
+    - `role`: String (Default: 'user') - Controls access to Admin area.
 
 - **Task Model (`Task.js`)**
     - `date`: Date (Required)
@@ -33,6 +34,10 @@ All data schemas are strict and managed via Mongoose.
     - `description`: String (Required)
     - `userId`: ObjectId (Required, Reference to User)
     - **TTL Index:** Tasks are automatically deleted 24 hours (`86400` seconds) after their `date` value.
+
+- **Analytics Model (`Analytics.js`)**
+    - `metric`: String (Required) - Identifier for the statistic (e.g., "total_users").
+    - `value`: Number (Default: 0) - Persistent counter.
 
 ---
 
@@ -53,7 +58,7 @@ Middlewares intercept requests to process data, handle security, or manage flow 
 
 | Middleware | File | Description |
 | :--- | :--- | :--- |
-| **Auth (Token Verifier)** | `middlewares/auth.js` | Verifies JWT tokens from `session-cookie`. Checks if the user exists in DB. If valid, attaches user to `req.user`; otherwise, redirects to `/signup` or handles logout. |
+| **Auth (Token Verifier)** | `middlewares/auth.js` | Verifies JWT tokens from `session-cookie`. Checks if the user exists in DB. If valid, attaches user to `req.user`. Also verifies if `user.role === 'admin'` for Admin routes. |
 
 ---
 
@@ -78,6 +83,7 @@ Helper functions that encapsulate specific logic to keep the code DRY and clean.
 - **Authentication Method:** JWT (JSON Web Tokens) stored in HttpOnly Cookies (`session-cookie`).
 - **Authorization:** 
     - **Protected Routes:** Require a valid JWT (e.g., `/tasks`, `/dashboard`).
+    - **Admin Routes:** Require a valid JWT AND `role: 'admin'`.
 - **Client-Side:** Public user information is stored in a non-HttpOnly cookie (`session-info`) for UI logic.
 
 ### Users (`/users`)
@@ -92,6 +98,7 @@ Creates a new user account.
     - `username`: 4-12 chars.
     - `password`: 8-35 chars, no spaces.
     - `passwordConfirmation`: Must match `password`.
+- **Side Effects:** Increments `total_users` in Analytics.
 - **Response:** 
     - 200 OK: Sets `session-cookie` (HttpOnly, 14 days) and `session-info`. Returns JSON message.
 
@@ -131,8 +138,9 @@ Adds a new task for the user.
 - **Method:** `POST`
 - **Validations:** 
     - Title max 50 chars, Description max 300 chars.
-    - Date cannot be in the past (measured against server time).
+    - Date cannot be in the past (measured against normalized server time).
 - **Body:** `date`, `title`, `description`.
+- **Side Effects:** Increments `total_tasks` in Analytics.
 - **Response:** 201 Created.
 
 #### 3. Update Task
@@ -150,3 +158,16 @@ Removes a task.
 - **URL:** `/tasks/:taskId`
 - **Method:** `DELETE`
 - **Response:** 200 OK if successful, 400 if task not found or unauthorized.
+
+### Admin (`/admin`)
+
+Both the static dashboard and the API endpoints are protected and require the user to have `role: 'admin'`.
+
+#### 1. Get Metrics
+Retrieves total historical counts.
+
+- **URL:** `/admin/metrics`
+- **Method:** `GET`
+- **Response:**
+    - `users_data`: Total number of users ever registered (from Analytics).
+    - `tasks_data`: Total number of tasks ever created (from Analytics).
