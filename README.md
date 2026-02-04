@@ -2,7 +2,7 @@
   <img src="public/icons/logo.png" width="300" alt="Calendallica">
 </p>
 
-A high-performance, full-stack productivity tool that merges a visual calendar interface with task management. Built with **Node.js** and **MongoDB**, **Calendallica** focuses on a premium user experience, minimalist aesthetics, and advanced security.
+A high-performance, full-stack productivity tool that merges a visual calendar interface with dual task and goal management. Built with **Node.js** and **MongoDB**, **Calendallica** focuses on a premium user experience, minimalist aesthetics, and advanced security.
 
 ### 🌐 [Live Preview: calendallica.onrender.com](https://calendallica.onrender.com/)
 
@@ -13,8 +13,11 @@ A high-performance, full-stack productivity tool that merges a visual calendar i
 *   **Dynamic Calendar Interface:** 
     *   Interactive grid system for fast date navigation.
     *   Real-time task visualization directly on the calendar cells.
-*   **Secure Task Management:**
-    *   Create, Read, Update, and Delete (CRUD) tasks with input sanitization.
+*   **Dual-Layer Organization:**
+    *   **Tasks:** Specific to dates, automatically expiring to keep your view clean.
+    *   **Goals:** Long-term personal achievements displayed in an organized sidebar.
+*   **Secure Management:**
+    *   Complete CRUD systems for both tasks and goals with input sanitization.
     *   **HTML Support:** Controlled styling (colors, tags like `<b>`, `<i>`, `<br>`) via **Sanitize-HTML** to allow user creativity without XSS risks.
 *   **Professional Authentication:**
     *   Session management via **JWT** (JSON Web Tokens) stored in **HttpOnly Cookies**.

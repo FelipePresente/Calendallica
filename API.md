@@ -14,7 +14,7 @@ The application is a **Node.js** web server built with **Express**, following a 
 The `server.js` file is the backbone of the application. It initializes the Express app and configures:
 - **Database Connection:** Connects to MongoDB Atlas via `mongoose.connect()`.
 - **Global Middleware:** Applies parsing, sanitization, and normalization layers to every request.
-- **Route Mounting:** Defines the base paths for `/users`, `/tasks`, and `/admin`.
+- **Route Mounting:** Defines the base paths for `/users`, `/tasks`, `/goals`, and `/admin`.
 - **Static Assets:** Serves frontend files from the `public/` directory.
 - **Admin Security:** Protects the `/admin` route (both static files and API) with the `auth` middleware and role verification.
 - **Dashboard Access:** Protects the `/dashboard` route with the `auth` middleware.
@@ -35,8 +35,13 @@ All data schemas are strict and managed via Mongoose.
     - `userId`: ObjectId (Required, Reference to User)
     - **TTL Index:** Tasks are automatically deleted 24 hours (`86400` seconds) after their `date` value.
 
+- **Goal Model (`Goal.js`)**
+    - `title`: String (Required)
+    - `description`: String (Required)
+    - `userId`: ObjectId (Required, Reference to User)
+
 - **Analytics Model (`Analytics.js`)**
-    - `metric`: String (Required) - Identifier for the statistic (e.g., "total_users").
+    - `metric`: String (Required) - Identifier for the statistic (e.g., "total_users", "total_goals").
     - `value`: Number (Default: 0) - Persistent counter.
 
 ---
@@ -158,6 +163,44 @@ Removes a task.
 - **URL:** `/tasks/:taskId`
 - **Method:** `DELETE`
 - **Response:** 200 OK if successful, 400 if task not found or unauthorized.
+
+### Goals (`/goals`)
+
+All goal routes are **Protected** (Require Authentication) and scoped to the logged-in user.
+
+#### 1. List My Goals
+Retrieves all goals belonging to the current user.
+
+- **URL:** `/goals`
+- **Method:** `GET`
+- **Response:** JSON array of goal objects.
+
+#### 2. Create Goal
+Adds a new goal for the user.
+
+- **URL:** `/goals`
+- **Method:** `POST`
+- **Validations:** 
+    - Title max 50 chars, Description max 300 chars.
+- **Body:** `title`, `description`.
+- **Side Effects:** Increments `total_goals` in Analytics.
+- **Response:** 201 Created.
+
+#### 3. Update Goal
+Updates an existing goal.
+
+- **URL:** `/goals/:id`
+- **Method:** `PATCH`
+- **Validations:** Same character limits as creation.
+- **Body:** `title`, `description`.
+- **Response:** 200 OK if successful, 404 if goal not found.
+
+#### 4. Delete Goal
+Removes a goal.
+
+- **URL:** `/goals/:id`
+- **Method:** `DELETE`
+- **Response:** 200 OK if successful, 404 if goal not found.
 
 ### Admin (`/admin`)
 

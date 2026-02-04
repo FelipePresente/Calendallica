@@ -9,6 +9,7 @@ import lowerCase from './middlewares/lowerCase.js'
 import adminRouter from './routes/admin.js'
 import usersRouter from './routes/users.js'
 import tasksRouter from './routes/tasks.js'
+import goalsRouter from './routes/goals.js'
 
 const app = express()
 
@@ -25,7 +26,6 @@ app.use('/admin', auth, (req, res, next) => {
   if (!req.admin) return res.redirect('/')
   next()
 })
-
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(sanitizer)
@@ -35,6 +35,7 @@ app.use('/dashboard', auth)
 app.use('/admin', adminRouter)
 app.use('/users', usersRouter)
 app.use('/tasks', tasksRouter)
+app.use('/goals', goalsRouter)
 app.use(express.static('public'))
 
 const db_url = process.env.DB_URL

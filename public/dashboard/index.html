@@ -49,9 +49,8 @@
         </div>
 
 
-        <div class="max-w-screen-xl mx-auto p-6 lg:p-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
+        <div class="max-w-screen-2xl mx-auto p-6 lg:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-16 gap-8 items-start">
 
                 <aside class="lg:col-span-4 space-y-6">
 
@@ -79,6 +78,36 @@
                     </details>
                 </aside>
 
+                <aside class="lg:col-span-4 space-y-6">
+
+
+                    <details open
+                        class="group w-full bg-zinc-900 border border-zinc-800/50 rounded-xl overflow-hidden shadow-2xl transition-all duration-300">
+                        <summary
+                            class="list-none p-6 bg-zinc-800/30 cursor-pointer hover:bg-zinc-800/50 transition-colors border-b border-zinc-800/50 flex justify-between items-center text-zinc-100">
+                            <div>
+                                <h2 class="text-base font-bold uppercase tracking-widest">Goals Avaiable</h2>
+                                <p id="goals-amount" class="text-xs text-zinc-500 font-medium uppercase mt-1">No goals
+                                    defined</p>
+                            </div>
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-950/50 flex items-center justify-center border border-zinc-800/50 group-open:rotate-180 transition-transform">
+                                <img src="../icons/chevron-down.svg"
+                                    class="w-4 h-4 invert opacity-50 transition-transform duration-300 group-open:rotate-180"
+                                    alt="Toggle">
+                            </div>
+                        </summary>
+
+                        <div class="p-5 space-y-4 overflow-y-auto max-h-[600px] bg-zinc-900/40" id="goal-list"></div>
+
+                        <div class="p-5 border-t border-zinc-800/50 bg-zinc-800/10">
+                            <button id="addGoalBtn"
+                                class="w-full py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2">
+                                <span class="text-lg">+</span> Add Goal
+                            </button>
+                        </div>
+                    </details>
+                </aside>
 
                 <main
                     class="lg:col-span-8 bg-zinc-900 border border-zinc-800/50 rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden">
