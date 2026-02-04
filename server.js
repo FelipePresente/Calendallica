@@ -26,7 +26,6 @@ app.use('/admin', auth, (req, res, next) => {
   next()
 })
 
-app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(sanitizer)
@@ -36,6 +35,7 @@ app.use('/dashboard', auth)
 app.use('/admin', adminRouter)
 app.use('/users', usersRouter)
 app.use('/tasks', tasksRouter)
+app.use(express.static('public'))
 
 const db_url = process.env.DB_URL
 const port = process.env.PORT || 8000
