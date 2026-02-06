@@ -144,7 +144,7 @@ export function renderEditTaskModal(dateObj, title, description, taskId) {
         
             <div class="flex justify-between items-start mb-10">
                 <div>
-                    <h2 class="text-3xl font-black text-white tracking-tight">New Task</h2>
+                    <h2 class="text-3xl font-black text-white tracking-tight">Edit Task</h2>
                     <p class="text-indigo-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">${formattedDate}</p>
                 </div>
 
