@@ -16,8 +16,6 @@ router.post('/signup', async (req, res) => {
     if (!passwordConfirmation) return res.status(400).send("All fields must be filled")
     if (password !== passwordConfirmation) return res.status(400).send("The passwords must be equal")
 
-    userVerification(res, username, password)
-
     if (userVerification(res, username, password)) return
 
     try {
