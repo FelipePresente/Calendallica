@@ -13,6 +13,8 @@ const logo = header.querySelector("a")
 
 if (!user) window.location.href = '/users/logout'
 
+logo.insertAdjacentHTML('afterend', renderWelcomeMessage(user.username))
+
 let month = currentMonth
 let calendarYear = currentYear
 let dayOne = new Date(calendarYear, month, 1).getDay()
