@@ -11,7 +11,7 @@ const user = checkSession()
 const header = document.querySelector("header")
 const logo = header.querySelector("a")
 
-logo.insertAdjacentHTML('afterend', renderWelcomeMessage(user.username))
+if (!user) window.location.href = '/users/logout'
 
 let month = currentMonth
 let calendarYear = currentYear

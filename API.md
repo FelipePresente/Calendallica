@@ -77,7 +77,7 @@ Helper functions that encapsulate specific logic to keep the code DRY and clean.
 | :--- | :--- | :--- |
 | **User Verifications** | `helpers/userVerifications.js` | Centralizes validation logic for user registration and login (field requirements, length checks, password rules). Returns `true` if an error response was sent, `false` otherwise. |
 | **Create Token** | `helpers/createToken.js` | Generates a Signed JWT containing the user's ID, username, and role. |
-| **Create Session Cookies** | `helpers/createSessionCookies.js` | Sets the `session-cookie` (HttpOnly, JWT) and `session-info` (Public, JSON) cookies on the response object. |
+| **Create Session Cookies** | `helpers/createSessionCookies.js` | Sets the `session-cookie` (HttpOnly, JWT) and `session-info` (Public, JSON with `username` only) cookies on the response object. |
 | **Hash Password** | `helpers/hashPassword.js` | Uses `bcrypt` to securely hash passwords (salt rounds: 12) before saving to the DB. |
 | **Compare Password** | `helpers/comparePassword.js` | Uses `bcrypt` to compare a plaintext password with the stored hash during login. |
 | **Rate Limit Error** | `public/js/ratelimitError.js` | Frontend helper that catches 429 status codes from `fetch` and displays a user-friendly alert. |
@@ -92,7 +92,7 @@ Helper functions that encapsulate specific logic to keep the code DRY and clean.
 - **Authorization:** 
     - **Protected Routes:** Require a valid JWT (e.g., `/tasks`, `/dashboard`).
     - **Admin Routes:** Require a valid JWT AND `role: 'admin'`.
-- **Client-Side:** Public user information is stored in a non-HttpOnly cookie (`session-info`) for UI logic.
+- **Client-Side:** Public user information (only `username`) is stored in a non-HttpOnly cookie (`session-info`) for UI logic.
 
 ### Users (`/users`)
 
