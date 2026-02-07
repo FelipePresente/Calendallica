@@ -1,4 +1,5 @@
 import express from 'express'
+import { generalLimiter, submitLimiter } from './helpers/rate-limit.js'
 import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
@@ -33,10 +34,18 @@ app.use(trimmer)
 app.use(lowerCase)
 app.use('/dashboard', auth)
 app.use('/admin', adminRouter)
+app.use(express.static('public'))
+app.use(generalLimiter)
+app.use((req, res, next) => {
+  const methods = ['POST', 'PATCH', 'DELETE']
+
+  if (methods.includes(req.method)) return submitLimiter(req, res, next)
+
+  next()
+})
 app.use('/users', usersRouter)
 app.use('/tasks', tasksRouter)
 app.use('/goals', goalsRouter)
-app.use(express.static('public'))
 
 const db_url = process.env.DB_URL
 const port = process.env.PORT || 8000

@@ -2,7 +2,8 @@ import { currentDate, currentMonth, currentDay, currentYear, isLeapYear, year } 
 import { renderCurrentDay, renderCommonDay, renderNoDay, renderCalendarHeader, renderTaskItem, renderGoalItem, renderWelcomeMessage, renderAddTaskModal, renderEditTaskModal, renderDeleteTaskModal, renderAddGoalModal, renderEditGoalModal, renderDeleteGoalModal } from './dashboard.view.js'
 import checkSession from './checkSession.js'
 import getTasks from './getTasks.js'
-import { getGoals } from './getGoals.js'
+import getGoals from './getGoals.js'
+import ratelimitError from './ratelimitError.js'
 
 const section = document.querySelector("#section")
 const grid = document.querySelector("#grid")
@@ -214,7 +215,7 @@ section.addEventListener('submit', async (event) => {
         if (!title || !description || !date) return
 
         try {
-            await fetch(`/tasks`, {
+            const response = await fetch(`/tasks`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -223,6 +224,8 @@ section.addEventListener('submit', async (event) => {
                     description
                 })
             })
+
+            if (await ratelimitError(response)) return
         } catch (error) {
             console.log("Error trying to create task")
         }
@@ -242,7 +245,7 @@ section.addEventListener('submit', async (event) => {
         if (!date || !title || !description || !taskId) return
 
         try {
-            await fetch(`/tasks/${taskId}`, {
+            const response = await fetch(`/tasks/${taskId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -251,6 +254,8 @@ section.addEventListener('submit', async (event) => {
                     description
                 })
             })
+
+            if (await ratelimitError(response)) return
         } catch (error) {
             console.log("Error trying to edit task")
         }
@@ -265,9 +270,11 @@ section.addEventListener('submit', async (event) => {
         const taskId = form.querySelector("#task-id").value
 
         try {
-            await fetch(`/tasks/${taskId}`, {
+            const response = await fetch(`/tasks/${taskId}`, {
                 method: 'DELETE'
             })
+
+            if (await ratelimitError(response)) return
         } catch (error) {
             console.log("Error trying to delete task")
         }
@@ -285,7 +292,7 @@ section.addEventListener('submit', async (event) => {
         if (!title || !description) return
 
         try {
-            await fetch(`/goals`, {
+            const response = await fetch(`/goals`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -293,6 +300,8 @@ section.addEventListener('submit', async (event) => {
                     description
                 })
             })
+
+            if (await ratelimitError(response)) return
         } catch (error) {
             console.log("Error trying to create goal")
         }
@@ -311,7 +320,7 @@ section.addEventListener('submit', async (event) => {
         if (!title || !description || !goalId) return
 
         try {
-            await fetch(`/goals/${goalId}`, {
+            const response = await fetch(`/goals/${goalId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -319,6 +328,8 @@ section.addEventListener('submit', async (event) => {
                     description
                 })
             })
+
+            if (await ratelimitError(response)) return
         } catch (error) {
             console.log("Error trying to edit goal")
         }
@@ -333,9 +344,11 @@ section.addEventListener('submit', async (event) => {
         const goalId = form.querySelector("#goal-id").value
 
         try {
-            await fetch(`/goals/${goalId}`, {
+            const response = await fetch(`/goals/${goalId}`, {
                 method: 'DELETE'
             })
+
+            if (await ratelimitError(response)) return
         } catch (error) {
             console.log("Error trying to delete goal")
         }

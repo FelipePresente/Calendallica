@@ -1,7 +1,12 @@
+import ratelimitError from "./ratelimitError.js"
+
 const signupForm = document.querySelector("#signupForm")
 
 signupForm.addEventListener("submit", async function (e) {
     e.preventDefault()
+
+    const submitButton = document.querySelector("#submit-button")
+    submitButton.disabled = true
 
     const username = document.querySelector("#signup-username").value
     const password = document.querySelector("#signup-password").value
@@ -17,7 +22,10 @@ signupForm.addEventListener("submit", async function (e) {
         })
     })
 
+    if (await ratelimitError(response)) return submitButton.disabled = false
+
     if (!response.ok) {
+        submitButton.disabled = false
         const errorText = await response.text()
 
         const body = document.querySelector("body")

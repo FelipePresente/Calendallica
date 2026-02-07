@@ -13,6 +13,7 @@ The application is a **Node.js** web server built with **Express**, following a 
 #### 1. Server Entry Point (`server.js`)
 The `server.js` file is the backbone of the application. It initializes the Express app and configures:
 - **Database Connection:** Connects to MongoDB Atlas via `mongoose.connect()`.
+- **Rate Limiting:** Implements a multi-layered security system (General Limiter & Burst Limiter) using `express-rate-limit` to prevent abuse.
 - **Global Middleware:** Applies parsing, sanitization, and normalization layers to every request.
 - **Route Mounting:** Defines the base paths for `/users`, `/tasks`, `/goals`, and `/admin`.
 - **Static Assets:** Serves frontend files from the `public/` directory.
@@ -56,8 +57,9 @@ Middlewares intercept requests to process data, handle security, or manage flow 
 | :--- | :--- | :--- |
 | **Parsing** | N/A (Express Native) | `express.json()`, `express.urlencoded()`, and `cookie-parser`. |
 | **Sanitizer** | `middlewares/sanitizer.js` | Uses `sanitize-html` to clean string fields in `req.body`, allowing only specific tags (e.g., `<b>`, `<i>`) and safe styles. |
-| **Trimmer** | `middlewares/trimmer.js` | Removes leading/trailing whitespace from string fields in `req.body`. |
+| **Trimmer** | `middlewares/trimmer.js` | Removes leading/trailing whitespace from string fields in `req.body` (skips passwords). |
 | **LowerCase** | `middlewares/lowerCase.js` | Converts `username` and `email` fields to lowercase to ensure consistency. |
+| **Rate Limit** | `helpers/rate-limit.js` | **General Limiter:** 100 req/min (Global). **Burst Limiter:** 2 req/2s for sensitive methods (`POST`, `PATCH`, `DELETE`). |
 
 ### Security Middlewares
 
@@ -78,6 +80,7 @@ Helper functions that encapsulate specific logic to keep the code DRY and clean.
 | **Create Session Cookies** | `helpers/createSessionCookies.js` | Sets the `session-cookie` (HttpOnly, JWT) and `session-info` (Public, JSON) cookies on the response object. |
 | **Hash Password** | `helpers/hashPassword.js` | Uses `bcrypt` to securely hash passwords (salt rounds: 12) before saving to the DB. |
 | **Compare Password** | `helpers/comparePassword.js` | Uses `bcrypt` to compare a plaintext password with the stored hash during login. |
+| **Rate Limit Error** | `public/js/ratelimitError.js` | Frontend helper that catches 429 status codes from `fetch` and displays a user-friendly alert. |
 
 ---
 

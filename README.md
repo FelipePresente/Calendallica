@@ -18,6 +18,7 @@ A high-performance, full-stack productivity tool that merges a visual calendar i
     *   **Goals:** Long-term personal achievements displayed in an organized sidebar.
 *   **Secure Management:**
     *   Complete CRUD systems for both tasks and goals with input sanitization.
+    *   **Rate Limiting:** Protection against DoS and brute-force attacks via **Express-Rate-Limit**.
     *   **HTML Support:** Controlled styling (colors, tags like `<b>`, `<i>`, `<br>`) via **Sanitize-HTML** to allow user creativity without XSS risks.
 *   **Professional Authentication:**
     *   Session management via **JWT** (JSON Web Tokens) stored in **HttpOnly Cookies**.
@@ -32,7 +33,7 @@ A high-performance, full-stack productivity tool that merges a visual calendar i
 **Backend**
 *   **Runtime:** Node.js & Express.js
 *   **Database:** MongoDB Atlas & Mongoose ODM
-*   **Security:** Bcrypt (Hashing), JSON Web Tokens (JWT) & Sanitize-HTML
+*   **Security:** Bcrypt (Hashing), JSON Web Tokens (JWT), Sanitize-HTML & Express-Rate-Limit
 *   **Utilities:** Dotenv & Cookie-Parser
 
 **Frontend**
