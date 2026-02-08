@@ -8,7 +8,7 @@ export default async function verifyToken(req, res, next) {
 
     if (!token) {
         if (req.originalUrl === '/') return next();
-        return res.redirect('/signup')
+        return res.redirect('/users/logout')
     }
 
     try {
