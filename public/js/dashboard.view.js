@@ -68,7 +68,7 @@ export function renderGoalItem(goal) {
                 </div>
                 
                 <h4 class="text-sm font-bold text-zinc-100 group-hover/item:text-emerald-50">${goal.title}</h4>
-                <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed line-clamp-2 group-hover/item:text-zinc-400">${goal.description}</p>
+                <p class="text-xs text-zinc-500 mt-1.5 group-hover/item:text-zinc-400">${goal.description}</p>
             </div>`
 }
 
