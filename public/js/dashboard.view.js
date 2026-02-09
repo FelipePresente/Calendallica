@@ -116,7 +116,7 @@ export function renderAddTaskModal(dateObj) {
                 
                 <div class="flex flex-col gap-2">
                     <textarea id="task-description" placeholder="Description" rows="3" 
-                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
+                        class="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
                         required maxlength="300"></textarea>
                 </div>
                 
@@ -162,7 +162,7 @@ export function renderEditTaskModal(dateObj, title, description, taskId) {
                 
                 <div class="flex flex-col gap-2">
                     <textarea id="task-description" placeholder="Description" rows="3" 
-                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
+                        class="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
                         required maxlength="300">${description}</textarea>
                 </div>
                 
@@ -227,7 +227,7 @@ export function renderAddGoalModal() {
                 
                 <div class="flex flex-col gap-2">
                     <textarea id="goal-description" placeholder="Description" rows="3" 
-                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-emerald-600 transition-all resize-none font-medium"
+                        class="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-emerald-600 transition-all resize-none font-medium"
                         required maxlength="300"></textarea>
                 </div>
                 
@@ -262,7 +262,7 @@ export function renderEditGoalModal(title, description, goalId) {
                 
                 <div class="flex flex-col gap-2">
                     <textarea id="goal-description" placeholder="Description" rows="3" 
-                        class="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-emerald-600 transition-all resize-none font-medium"
+                        class="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-emerald-600 transition-all resize-none font-medium"
                         required maxlength="300">${description}</textarea>
                 </div>
 
