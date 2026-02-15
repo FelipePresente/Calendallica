@@ -2,12 +2,12 @@ import jwt from 'jsonwebtoken'
 
 const secret_key = process.env.SECRET_KEY
 
-export default function createToken(foundUser) {
+export default function createToken(createdUser) {
     const token = jwt.sign(
         {
-            id: foundUser._id,
-            username: foundUser.username,
-            role: foundUser.role
+            id: createdUser._id,
+            username: createdUser.username,
+            role: createdUser.role
         }, secret_key
     )
 

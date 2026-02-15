@@ -5,7 +5,7 @@ import Analytics from '../models/Analytics.js'
 const router = express.Router()
 
 router.get('/metrics', auth, async (req, res) => {
-    if (!req.admin) return res.status(403).send("Unauthorized")
+    if (!req.admin) return res.status(403).json({ message: "Unauthorized" })
 
     const users_data = await Analytics.findOne({ metric: "total_users" })
     const tasks_data = await Analytics.findOne({ metric: "total_tasks" })
