@@ -5,7 +5,7 @@ import theme from '../../../assets/theme.svg'
 
 export default function Section2() {
     return (
-        <section id="section2" className="py-25 w-full bg-zinc-900/30">
+        <section className="py-25 w-full bg-zinc-900/30">
             <h2 className="text-center text-4xl font-bold">Everything you need</h2>
 
             <p className="text-center text-lg text-zinc-400 mt-5">Powerful tools designed to simplify your daily routine.</p>

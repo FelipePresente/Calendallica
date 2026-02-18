@@ -22,3 +22,14 @@ export async function login(credentials: LoginCredentials): Promise<LoginRespons
         throw error
     }
 }
+
+export async function logout(): Promise<void> {
+
+    try {
+        await fetch(`${api_url}/users/logout`, {
+            credentials: 'include'
+        })
+    } catch(error) {
+        throw new Error
+    }
+}

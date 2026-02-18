@@ -38,7 +38,7 @@ export default function LoginMain() {
             setIsLoading(false)
         }
 
-        navigate('/')
+        navigate('/dashboard')
     }
 
     return (
@@ -55,20 +55,20 @@ export default function LoginMain() {
             <div
                 className="max-w-120 container flex flex-col p-8 justify-center items-center bg-zinc-900/40 border border-zinc-800/50 rounded-2xl">
 
-                <form onSubmit={handleSubmit} className="grid w-full md:container grid-rows-2 gap-5 pb-10 border-b border-zinc-800/50" id="loginForm">
+                <form onSubmit={handleSubmit} className="grid w-full md:container grid-rows-2 gap-5 pb-10 border-b border-zinc-800/50">
 
                     <div className="flex flex-col">
-                        <label className="font-semibold text-sm py-2 text-zinc-500" htmlFor="username">TYPE USERNAME</label>
+                        <label className="font-semibold text-sm py-2 text-zinc-500">TYPE USERNAME</label>
 
                         <input name="username" value={formData.username} onChange={handleChange} className="bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-5 md:py-5 :px-7"
-                            type="text" id="login-username" placeholder="Username" minLength={4} maxLength={12} required />
+                            type="text" placeholder="Username" minLength={4} maxLength={12} required />
                     </div>
 
                     <div className="flex flex-col">
-                        <label className="font-semibold text-sm py-2 text-zinc-500" htmlFor="password">TYPE PASSWORD</label>
+                        <label className="font-semibold text-sm py-2 text-zinc-500">TYPE PASSWORD</label>
 
                         <input name="password" value={formData.password} onChange={handleChange} className="bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-5 md:py-5 :px-7"
-                            type="password" id="login-password" placeholder="Password" minLength={8} maxLength={35} required />
+                            type="password" placeholder="Password" minLength={8} maxLength={35} required />
                     </div>
 
                     <SubmitButton disabled={isLoading} value={isLoading ? "Connecting..." : "Connect to account"} />

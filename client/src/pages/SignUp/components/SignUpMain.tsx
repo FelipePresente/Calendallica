@@ -39,7 +39,7 @@ export default function SignUpMain() {
             setIsLoading(false)
         }
 
-        navigate('/')
+        navigate('/dashboard')
     }
 
     return (
@@ -59,27 +59,27 @@ export default function SignUpMain() {
                 <form onSubmit={handleSubmit} className="grid w-full md:container grid-rows-3 gap-5 pb-10 border-b border-zinc-800/50">
 
                     <div className="flex flex-col">
-                        <label className="font-semibold text-sm py-2 text-zinc-500" htmlFor="username">CHOOSE USERNAME</label>
+                        <label className="font-semibold text-sm py-2 text-zinc-500">CHOOSE USERNAME</label>
 
                         <input onChange={handleChange} name="username" value={formData.username} className="bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-5 md:py-5 :px-7"
-                            type="text" id="signup-username" placeholder="Username" minLength={4} maxLength={12} required />
+                            type="text" placeholder="Username" minLength={4} maxLength={12} required />
                     </div>
 
                     <div className="flex flex-col">
-                        <label className="font-semibold text-sm py-2 text-zinc-500" htmlFor="password">TYPE PASSWORD</label>
+                        <label className="font-semibold text-sm py-2 text-zinc-500">TYPE PASSWORD</label>
 
                         <input onChange={handleChange} name="password" value={formData.password} className="bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-5 md:py-5 :px-7"
-                            type="password" id="signup-password" placeholder="Min. 8 characters" minLength={8} maxLength={35}
+                            type="password" placeholder="Min. 8 characters" minLength={8} maxLength={35}
                             required />
                     </div>
 
                     <div className="flex flex-col">
-                        <label className="font-semibold text-sm py-2 text-zinc-500" htmlFor="password-confirmation">CONFIRM
+                        <label className="font-semibold text-sm py-2 text-zinc-500">CONFIRM
                             PASSWORD</label>
 
                         <input onChange={handleChange} name="passwordConfirmation" value={formData.passwordConfirmation}
                             className="bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-5 md:py-5 :px-7" type="password"
-                            id="password-confirmation" placeholder="Repeat Password" minLength={8} maxLength={35} />
+                            placeholder="Repeat Password" minLength={8} maxLength={35} />
                     </div>
 
                     <SubmitButton disabled={isLoading} value={isLoading ? "Creating Account..." : "Create Free Account"} />

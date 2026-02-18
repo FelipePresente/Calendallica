@@ -7,11 +7,11 @@ export default function Header() {
             className="fixed w-full h-25 py-3 px-6 lg:px-100 flex justify-between items-center z-50 border-b border-zinc-800/50 bg-zinc-950/50 backdrop-blur-md">
 
             <a href="/">
-                <Logo className="w-30" id="logo" />
+                <Logo className="w-30" />
             </a>
 
             <div className="flex items-center gap-8">
-                <a href="#section2"
+                <a href="/"
                     className="text-zinc-400 text-sm font-medium cursor-pointer hover:text-zinc-50 transition-colors max-md:hidden">
                     Features
                 </a>

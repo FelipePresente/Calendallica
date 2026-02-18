@@ -1,22 +1,33 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { checkAuthStatus } from "../../services/CheckAuthService"
+import DashboardHeader from "./components/DashboardHeader.tsx"
+import DashboardMain from "./components/DashboardMain.tsx"
+import checkAuthStatus from "../../services/CheckAuthService.ts"
+import type { UserStatus } from "../../../../shared/types/auth/UserStatus.ts"
 
 export default function Dashboard() {
     const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(true)
+
+    const [userData, setUserData] = useState<UserStatus | null>(null)
+
     useEffect(() => {
-        checkAuthStatus()
-            .then(() => {
-                setIsLoading(false)
-            })
-            .catch(() => {
+        const fetchUser = async () => {
+            try {
+                const data = await checkAuthStatus()
+                setUserData(data)
+            } catch(error) {
                 navigate('/')
-            })
+            }
+        }
+        fetchUser()
     }, [navigate])
 
-    if (isLoading) return <p>Loading dashboard...</p>
+    if (!userData) return null
+
     return (
-        <div>Hello, User!</div>
+        <>
+            <DashboardHeader username={userData.username} />
+            <DashboardMain />
+        </>
     )
 }

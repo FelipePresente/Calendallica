@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import GuestRoute from './components/GuestRoute.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
 import Home from './pages/Home/Home.tsx'
 import Login from './pages/Login/Login.tsx'
 import SignUp from './pages/SignUp/SignUp.tsx'
@@ -9,11 +11,25 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<GuestRoute>
+          <Home />
+        </GuestRoute>} />
+
+        <Route path="/login" element={<GuestRoute>
+          <Login />
+        </GuestRoute>} />
+
+        <Route path="/signup" element={<GuestRoute>
+          <SignUp />
+        </GuestRoute>} />
+
+        <Route path="/admin" element={<ProtectedRoute adminOnly={true}>
+          <Admin />
+        </ProtectedRoute>} />
+
+        <Route path="/dashboard" element={<ProtectedRoute adminOnly={false}>
+          <Dashboard />
+        </ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )
