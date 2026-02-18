@@ -73,8 +73,9 @@ router.get('/logout', async (req, res) => {
 
 router.get('/me', auth, (req, res) => {
     res.json({
-        logged: true,
-        user: { username: req.user.username, role: req.user.role }
+        isLogged: true,
+        username: req.user.username,
+        role: req.user.role
     })
 })
 
