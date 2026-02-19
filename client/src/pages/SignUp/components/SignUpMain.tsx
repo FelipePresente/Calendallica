@@ -34,7 +34,7 @@ export default function SignUpMain() {
         try {
             await signup(formData)
         } catch (error: any) {
-            return setErrorMessage(error.message || "Error trying to create account")
+            return setErrorMessage(error.message || "An error occurred while creating your account.")
         } finally {
             setIsLoading(false)
         }

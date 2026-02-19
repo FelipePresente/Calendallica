@@ -10,7 +10,7 @@ export default async function getMetrics(): Promise<Metrics> {
         const metrics = await response.json()
 
         if (!response.ok) {
-            throw new Error("Acess denied")
+            throw new Error("Access denied")
         }
 
         return metrics

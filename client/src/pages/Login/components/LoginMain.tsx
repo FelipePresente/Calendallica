@@ -33,7 +33,7 @@ export default function LoginMain() {
         try {
             await login(formData)
         } catch (error: any) {
-            return setErrorMessage(error.message || "Error trying to get response")
+            return setErrorMessage(error.message || "Failed to connect to the server.")
         } finally {
             setIsLoading(false)
         }

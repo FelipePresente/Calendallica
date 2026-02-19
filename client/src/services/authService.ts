@@ -29,7 +29,7 @@ export async function logout(): Promise<void> {
         await fetch(`${api_url}/users/logout`, {
             credentials: 'include'
         })
-    } catch(error) {
+    } catch (error) {
         throw new Error
     }
 }
