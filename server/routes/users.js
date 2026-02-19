@@ -14,8 +14,8 @@ const router = express.Router()
 router.post('/signup', async (req, res) => {
     const { username, password, passwordConfirmation } = req.body
 
-    if (!passwordConfirmation) return res.status(400).json({ message: "All fields must be filled" })
-    if (password !== passwordConfirmation) return res.status(400).json({ message: "The passwords must be equal" })
+    if (!passwordConfirmation) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (password !== passwordConfirmation) return res.status(400).json({ message: "Passwords do not match." })
 
     if (userVerification(res, username, password)) return
 
@@ -34,7 +34,7 @@ router.post('/signup', async (req, res) => {
         const token = createToken(createdUser)
 
         createSessionCookies(res, createdUser, token)
-        res.status(200).json({ message: "User created succesfully" })
+        res.status(200).json({ message: "User created successfully." })
     } catch (error) {
         res.status(500).json({ message: "Error creating user" })
     }
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
 
         createSessionCookies(res, foundUser, token)
 
-        res.status(200).json({ message: "You are logged in" })
+        res.status(200).json({ message: "Login successful." })
     } catch (error) {
         res.status(500).json({ message: "Error logging in" })
     }

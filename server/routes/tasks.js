@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/', auth, async (req, res) => {
     const userId = req.user.id
 
-    if (!userId) return res.status(400).send("User id is needed")
+    if (!userId) return res.status(400).send("User ID is required.")
 
     try {
         const myTasks = await Task.find({ "userId": userId }, "-userId -__v")
@@ -16,7 +16,7 @@ router.get('/', auth, async (req, res) => {
         res.json(myTasks)
     } catch (error) {
         console.error(error)
-        res.status(500).send("Error trying to get tasks")
+        res.status(500).send("Failed to retrieve tasks.")
     }
 })
 
@@ -28,9 +28,9 @@ router.post('/', auth, async (req, res) => {
 
     serverDate.setUTCHours(0, 0, 0, 0)
 
-    if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
-    if (title.length > 50 || description.length > 300) return res.status(400).send('The character limit has been exceeded')
-    if (userDate < serverDate) return res.status(400).send("Can't create tasks for past days")
+    if (!userId || !date || !title || !description) return res.status(400).send("Please fill in all required fields.")
+    if (title.length > 50 || description.length > 300) return res.status(400).send('Character limit exceeded.')
+    if (userDate < serverDate) return res.status(400).send("Cannot create tasks for past dates.")
 
     try {
         const newTask = { "date": date, "title": title, "description": description, "userId": userId }
@@ -44,7 +44,7 @@ router.post('/', auth, async (req, res) => {
         )
         res.status(201).send("Task created successfully")
     } catch (error) {
-        res.status(500).send("Error trying to create task")
+        res.status(500).send("An error occurred while creating the task.")
     }
 })
 
@@ -53,8 +53,8 @@ router.patch('/:taskId', auth, async (req, res) => {
     const { taskId } = req.params
     const userId = req.user.id
 
-    if (!userId || !date || !title || !description) return res.status(400).send("All fields must be filled")
-    if (title.length > 50 || description.length > 300) return res.status(400).send('The character limit has been exceeded')
+    if (!userId || !date || !title || !description) return res.status(400).send("Please fill in all required fields.")
+    if (title.length > 50 || description.length > 300) return res.status(400).send('Character limit exceeded.')
 
     try {
         const newTask = { "date": date, "title": title, "description": description }
@@ -65,12 +65,12 @@ router.patch('/:taskId', auth, async (req, res) => {
             { new: true }
         )
 
-        if (!updatedTask) return res.status(404).send("Task not found or unauthorized")
+        if (!updatedTask) return res.status(404).send("Task not found or user unauthorized.")
 
         res.status(200).send("Task updated successfully")
     } catch (error) {
         console.error("Patch error:", error)
-        res.status(500).send("Error trying to edit task")
+        res.status(500).send("An error occurred while updating the task.")
     }
 })
 
@@ -78,18 +78,18 @@ router.delete('/:taskId', auth, async (req, res) => {
     const { taskId } = req.params
     const userId = req.user.id
 
-    if (!taskId) return res.status(400).send("All fields must be filled")
+    if (!taskId) return res.status(400).send("Task ID is required.")
 
     try {
         const target = { "_id": taskId, "userId": userId }
 
         const taskToDelete = await Task.findOneAndDelete(target)
 
-        if (!taskToDelete) return res.status(400).send("Task not found or unauthorized")
+        if (!taskToDelete) return res.status(400).send("Task not found or user unauthorized.")
 
         res.status(200).send("Task deleted successfully")
     } catch (error) {
-        res.status(500).send("Error trying to delete task")
+        res.status(500).send("An error occurred while deleting the task.")
     }
 })
 
