@@ -10,7 +10,7 @@ router.get('/', auth, async (req, res) => {
         const goals = await Goal.find({ userId: req.user.id })
         res.json(goals)
     } catch (error) {
-        res.status(500).send("Failed to retrieve goals.")
+        res.status(500).json({ message: "Failed to retrieve goals." })
     }
 })
 
@@ -18,8 +18,8 @@ router.post('/', auth, async (req, res) => {
     const { title, description } = req.body
     const userId = req.user.id
 
-    if (!userId || !title || !description) return res.status(400).send("Please fill in all required fields.")
-    if (title.length > 50 || description.length > 300) return res.status(400).send('Character limit exceeded.')
+    if (!userId || !title || !description) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (title.length > 50 || description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
 
     try {
         const newGoal = { userId: userId, title: title, description: description }
@@ -31,9 +31,9 @@ router.post('/', auth, async (req, res) => {
             { upsert: true }
         )
 
-        res.status(201).send("Goal added successfully.")
+        res.status(201).json({ message: "Goal added successfully." })
     } catch (error) {
-        res.status(500).send("An error occurred while adding the goal.")
+        res.status(500).json({ message: "An error occurred while adding the goal." })
     }
 })
 
@@ -42,8 +42,8 @@ router.patch('/:id', auth, async (req, res) => {
     const goalId = req.params.id
     const userId = req.user.id
 
-    if (!title || !description) return res.status(400).send("Please fill in all required fields.")
-    if (title.length > 50 || description.length > 300) return res.status(400).send('Character limit exceeded.')
+    if (!title || !description) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (title.length > 50 || description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
 
     try {
         const updatedGoal = await Goal.findOneAndUpdate(
@@ -52,11 +52,11 @@ router.patch('/:id', auth, async (req, res) => {
             { new: true }
         )
 
-        if (!updatedGoal) return res.status(404).send("Goal not found.")
+        if (!updatedGoal) return res.status(404).json({ message: "Goal not found." })
 
-        res.status(200).send("Goal updated successfully.")
+        res.status(200).json({ message: "Goal updated successfully." })
     } catch (error) {
-        res.status(500).send("An error occurred while updating the goal.")
+        res.status(500).json({ message: "An error occurred while updating the goal." })
     }
 })
 
@@ -67,11 +67,11 @@ router.delete('/:id', auth, async (req, res) => {
     try {
         const deletedGoal = await Goal.findOneAndDelete({ _id: goalId, userId: userId })
 
-        if (!deletedGoal) return res.status(404).send("Goal not found.")
+        if (!deletedGoal) return res.status(404).json({ message: "Goal not found." })
 
-        res.status(200).send("Goal deleted successfully.")
+        res.status(200).json({ message: "Goal deleted successfully." })
     } catch (error) {
-        res.status(500).send("An error occurred while deleting the goal.")
+        res.status(500).json({ message: "An error occurred while deleting the goal." })
     }
 })
 
