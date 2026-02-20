@@ -33,10 +33,10 @@ export interface Props {
 }
 
 export default function Calendar({ dateProp }: Props) {
-    const [days, setDays] = useState<React.ReactNode[]>([])
     const [headerText, setHeaderText] = useState("")
     const [date, setDate] = useState(new Date(dateProp))
     const [addingTaskDate, setAddingTaskDate] = useState<string | null>(null)
+    const [tasks, setTasks] = useState<TasksResponse[]>([])
 
     function handlePrevious() {
         const newDate = new Date(date.getFullYear(), date.getMonth() - 1)
@@ -62,48 +62,62 @@ export default function Calendar({ dateProp }: Props) {
         setDate(new Date(dateProp))
     }, [dateProp])
 
+    // Fetch tasks separately so it doesn't block month switching
     useEffect(() => {
-        const fetchAndRenderDays = async () => {
-            const tasks = await getTasks() as unknown as TasksResponse[]
-            const taskDates = new Set(tasks.map(t => new Date(t.date).toLocaleDateString("en-CA")))
-
-            const leapYear = isLeapYear(date.getFullYear())
-            const dayOne = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-
-            if (leapYear) year[1].days = 29
-            else year[1].days = 28
-
-            setHeaderText(`${year[date.getMonth()].name} ${date.getFullYear()}`.toUpperCase())
-
-            const newDays: React.ReactNode[] = []
-
-            for (let i = 0; i < dayOne; i++) {
-                newDays.push(<CalendarDayEmpty key={`empty-${i}`} />)
+        const fetchTasks = async () => {
+            try {
+                const data = await getTasks() as unknown as TasksResponse[]
+                setTasks(data)
+            } catch (error) {
+                console.error("Error fetching tasks:", error)
             }
+        }
+        fetchTasks()
+    }, [addingTaskDate]) // Re-fetch when adding or closing AddTask modal
 
-            let day = 0
-            const currentDate = new Date()
+    // Compute calendar grid instantaneously
+    const renderCalendar = () => {
+        const taskDates = new Set(tasks.map(t => new Date(t.date).toLocaleDateString("en-CA")))
 
-            for (let i = 0; i < year[date.getMonth()].days; i++) {
-                day++
+        const leapYear = isLeapYear(date.getFullYear())
+        const dayOne = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
 
-                const loopDateObj = new Date(date.getFullYear(), date.getMonth(), day)
-                const loopDateString = loopDateObj.toLocaleDateString("en-CA")
-                const hasTask = taskDates.has(loopDateString)
+        if (leapYear) year[1].days = 29
+        else year[1].days = 28
 
-                if (currentDate.getDate() === day && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear()) {
-                    newDays.push(<CalendarDayCurrent hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
-                }
-                else {
-                    newDays.push(<CalendarDayCommon hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
-                }
-            }
+        const newDays: React.ReactNode[] = []
 
-            setDays(newDays)
+        // Fill empty days
+        for (let i = 0; i < dayOne; i++) {
+            newDays.push(<CalendarDayEmpty key={`empty-${i}`} />)
         }
 
-        fetchAndRenderDays()
-    }, [date, addingTaskDate])
+        let day = 0
+        const currentDate = new Date()
+
+        for (let i = 0; i < year[date.getMonth()].days; i++) {
+            day++
+
+            const loopDateObj = new Date(date.getFullYear(), date.getMonth(), day)
+            const loopDateString = loopDateObj.toLocaleDateString("en-CA")
+            const hasTask = taskDates.has(loopDateString)
+
+            if (currentDate.getDate() === day && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear()) {
+                newDays.push(<CalendarDayCurrent hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
+            }
+            else {
+                newDays.push(<CalendarDayCommon hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
+            }
+        }
+        return newDays
+    }
+
+    // Update Header Text separately
+    useEffect(() => {
+        setHeaderText(`${year[date.getMonth()].name} ${date.getFullYear()}`.toUpperCase())
+    }, [date])
+
+    const days = renderCalendar()
 
     return (
         <div className="lg:col-span-8 bg-zinc-900 border border-zinc-800/50 rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden">
