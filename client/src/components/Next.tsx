@@ -8,6 +8,6 @@ export interface NextProps {
 
 export default function Next({ className, onClick, id }: NextProps) {
     return (
-        <img src={next} className={className} onClick={onClick} alt="Next" />
+        <img id={id} src={next} className={className} onClick={onClick} alt="Next" />
     )
 }

@@ -56,10 +56,10 @@ export default function CalendarPreview() {
             day++
 
             if (day === currentDay) {
-                newDays.push(<CalendarDayCurrent key={`day-${day}`} day={day} />);
+                newDays.push(<CalendarDayCurrent key={`day-${day}`} day={day} onClick={() => { }} />);
             }
             else if (day !== currentDay) {
-                newDays.push(<CalendarDayCommon key={`day-${day}`} day={day} />);
+                newDays.push(<CalendarDayCommon key={`day-${day}`} day={day} onClick={() => { }} />);
             }
         }
 
