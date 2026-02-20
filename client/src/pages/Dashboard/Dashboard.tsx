@@ -26,6 +26,7 @@ export default function Dashboard() {
 
     return (
         <>
+            <title>Dashboard - Calendallica</title>
             <DashboardHeader username={userData.username} />
             <DashboardMain />
         </>

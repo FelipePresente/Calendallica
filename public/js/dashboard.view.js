@@ -136,7 +136,7 @@ export function renderEditTaskModal(dateObj, title, description, taskId) {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
-    });
+    })
 
     return `
     <div id="editTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm">
