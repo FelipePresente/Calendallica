@@ -7,6 +7,6 @@ export interface editButtonProps {
 
 export default function editButton({ className, onClick }: editButtonProps) {
     return (
-        <img src={editbutton} className={className} onClick={onClick} alt="Edit" />
+        <img src={editbutton} className={`${className} select-none`} onClick={onClick} alt="Edit" />
     )
 }

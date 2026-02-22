@@ -1,27 +1,12 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import DashboardHeader from "./components/DashboardHeader.tsx"
 import DashboardMain from "./components/DashboardMain.tsx"
-import checkAuthStatus from "../../services/CheckAuthService.ts"
-import type { UserStatus } from "../../../../shared/types/auth/UserStatus.ts"
+import type { UserStatus } from "../../../../shared/types/auth/Auth.ts"
 
-export default function Dashboard() {
-    const navigate = useNavigate()
+export interface UserDataProps {
+    userData?: UserStatus
+}
 
-    const [userData, setUserData] = useState<UserStatus | null>(null)
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const data = await checkAuthStatus()
-                setUserData(data)
-            } catch(error) {
-                navigate('/')
-            }
-        }
-        fetchUser()
-    }, [navigate])
-
+export default function Dashboard({ userData }: UserDataProps) {
     if (!userData) return null
 
     return (

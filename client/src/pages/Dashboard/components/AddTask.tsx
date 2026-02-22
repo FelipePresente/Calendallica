@@ -53,7 +53,7 @@ export default function AddTask({ date, onClose }: AddTaskProps) {
                         <p className="text-indigo-500 text-[10px] font-black uppercase tracking-[0.2em] mt-2">{formattedDate}</p>
                     </div>
                     <button id="closeAddTaskModal" onClick={(e) => { e.stopPropagation(); onClose(); }} className="p-2 hover:bg-zinc-800 rounded-2xl transition-all cursor-pointer group">
-                        <img src={closeIcon} className="w-5 h-5 invert opacity-30 group-hover:opacity-100" alt="Close" />
+                        <img src={closeIcon} className="w-5 h-5 invert opacity-30 group-hover:opacity-100 select-none" alt="Close" />
                     </button>
                 </div>
 

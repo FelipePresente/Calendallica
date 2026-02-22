@@ -18,7 +18,7 @@ export default function Section1() {
                         className="w-64 md:w-80 mb-6 group-hover:scale-105 transition-transform duration-500" />
 
                     <h1
-                        className="text-4xl md:text-5xl font-black bg-gradient-to-br from-white to-zinc-500 bg-clip-text text-transparent leading-tight mb-6">
+                        className="text-4xl md:text-5xl font-black bg-linear-to-br from-white to-zinc-500 bg-clip-text text-transparent leading-tight mb-6">
                         Master your time<br />with precision.
                     </h1>
 
@@ -33,12 +33,12 @@ export default function Section1() {
                             <span className="relative z-10 flex items-center gap-2 text-lg uppercase tracking-widest">
                                 Get Started
                                 <img src={arrowRight}
-                                    className="w-4 invert transition-transform duration-300 group-hover:translate-x-1.5"
+                                    className="w-4 invert transition-transform duration-300 group-hover:translate-x-1.5 select-none"
                                     alt="Arrow Right" />
                             </span>
 
                             <div
-                                className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full transition-transform duration-1000 group-hover:translate-x-full">
+                                className="absolute inset-0 z-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full transition-transform duration-1000 group-hover:translate-x-full">
                             </div>
                         </Link>
 

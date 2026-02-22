@@ -8,6 +8,7 @@ import auth from './middlewares/auth.js'
 import sanitizer from './middlewares/sanitizer.js'
 import trimmer from './middlewares/trimmer.js'
 import lowerCase from './middlewares/lowerCase.js'
+import statutsRouter from './routes/status.js'
 import adminRouter from './routes/admin.js'
 import usersRouter from './routes/users.js'
 import tasksRouter from './routes/tasks.js'
@@ -16,7 +17,7 @@ import goalsRouter from './routes/goals.js'
 const app = express()
 
 app.use(cors({
-  origin: 'https://calendallica.onrender.com',
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   credentials: true
 }))
@@ -40,6 +41,7 @@ app.use((req, res, next) => {
 
   next()
 })
+app.use('/status', statutsRouter)
 app.use('/users', usersRouter)
 app.use('/tasks', tasksRouter)
 app.use('/goals', goalsRouter)

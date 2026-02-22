@@ -4,7 +4,7 @@ const api_url = import.meta.env.VITE_API_URL
 
 export default async function checkAuthStatus(): Promise<UserStatus> {
     try {
-        const response = await fetch(`${api_url}/users/me`, {
+        const response = await fetch(`${api_url}/status/me`, {
             credentials: 'include'
         })
 

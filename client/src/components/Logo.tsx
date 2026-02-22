@@ -6,6 +6,6 @@ export interface LogoProps {
 
 export default function Logo({ className }: LogoProps) {
     return (
-        <img src={logo} className={className} alt="Calendallica" />
+        <img src={logo} className={`${className} select-none`} alt="Calendallica" />
     )
 }

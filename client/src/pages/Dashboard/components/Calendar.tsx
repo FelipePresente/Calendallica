@@ -62,7 +62,6 @@ export default function Calendar({ dateProp }: Props) {
         setDate(new Date(dateProp))
     }, [dateProp])
 
-    // Fetch tasks separately so it doesn't block month switching
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -73,9 +72,8 @@ export default function Calendar({ dateProp }: Props) {
             }
         }
         fetchTasks()
-    }, [addingTaskDate]) // Re-fetch when adding or closing AddTask modal
+    }, [addingTaskDate])
 
-    // Compute calendar grid instantaneously
     const renderCalendar = () => {
         const taskDates = new Set(tasks.map(t => new Date(t.date).toLocaleDateString("en-CA")))
 
@@ -87,7 +85,6 @@ export default function Calendar({ dateProp }: Props) {
 
         const newDays: React.ReactNode[] = []
 
-        // Fill empty days
         for (let i = 0; i < dayOne; i++) {
             newDays.push(<CalendarDayEmpty key={`empty-${i}`} />)
         }
@@ -112,7 +109,6 @@ export default function Calendar({ dateProp }: Props) {
         return newDays
     }
 
-    // Update Header Text separately
     useEffect(() => {
         setHeaderText(`${year[date.getMonth()].name} ${date.getFullYear()}`.toUpperCase())
     }, [date])

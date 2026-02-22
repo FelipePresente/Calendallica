@@ -29,7 +29,7 @@ export default function DeleteTask({ taskId, onClose }: DeleteTaskProps) {
                 <div className="flex justify-between items-start mb-4">
                     <h2 className="text-lg font-black text-white tracking-tight">Delete Task</h2>
                     <button id="closeDeleteTaskModal" onClick={(e) => { e.stopPropagation(); onClose(); }} className="p-1 hover:bg-zinc-800 rounded-lg transition-all cursor-pointer group">
-                        <img src={closeIcon} className="w-4 h-4 invert opacity-30 group-hover:opacity-100" alt="Close" />
+                        <img src={closeIcon} className="w-4 h-4 invert opacity-30 group-hover:opacity-100 select-none" alt="Close" />
                     </button>
                 </div>
 

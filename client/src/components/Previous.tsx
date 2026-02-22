@@ -8,6 +8,6 @@ export interface PreviousProps {
 
 export default function Previous({ className, onClick, id }: PreviousProps) {
     return (
-        <img id={id} src={previous} onClick={onClick} className={className} alt="Previous" />
+        <img id={id} src={previous} onClick={onClick} className={`${className} select-none`} alt="Previous" />
     )
 }

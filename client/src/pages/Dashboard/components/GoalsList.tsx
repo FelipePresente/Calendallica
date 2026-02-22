@@ -52,7 +52,7 @@ export default function GoalsList() {
                     <div
                         className="w-10 h-10 rounded-full bg-zinc-950/50 flex items-center justify-center border border-zinc-800/50 group-open:rotate-180 transition-transform">
                         <img src={toggle}
-                            className="w-4 h-4 invert opacity-50 transition-transform duration-300 group-open:rotate-180"
+                            className="w-4 h-4 invert opacity-50 transition-transform duration-300 group-open:rotate-180 select-none"
                             alt="Toggle" />
                     </div>
                 </summary>

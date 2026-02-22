@@ -54,7 +54,7 @@ export default function Task({ task, onDateClick }: TaskProps) {
                         <EditButton className="w-3.5 h-3.5 invert opacity-50" />
                     </button>
                     <button onClick={(e) => { e.stopPropagation(); handleTaskDelete(); }} className="delete-cell flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-red-900/50 group transition-all cursor-pointer" title="Delete">
-                        <img src={deleteButton} className="w-3.5 h-3.5 invert opacity-50 group-hover:text-red-400" alt="Delete" />
+                        <img src={deleteButton} className="w-3.5 h-3.5 invert opacity-50 group-hover:text-red-400 select-none" alt="Delete" />
                     </button>
                 </div>
             </div>

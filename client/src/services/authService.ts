@@ -13,7 +13,7 @@ export async function login(credentials: LoginCredentials): Promise<LoginRespons
 
         const contentType = response.headers.get("content-type")
         if (!contentType || !contentType.includes("application/json")) {
-            throw new Error("O servidor não retornou JSON. Verifique a URL da API ou o status do servidor.")
+            throw new Error("Error getting json response")
         }
 
         const data = await response.json()

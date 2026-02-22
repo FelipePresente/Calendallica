@@ -1,0 +1,7 @@
+src/App.tsx(31,12): error TS2741: Property 'userData' is missing in type '{}' but required in type 'UserDataProps'.
+src/components/ProtectedRoute.tsx(34,37): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Object literal may only specify known properties, and 'userData' does not exist in type 'Partial<unknown> & Attributes'.
+src/pages/Dashboard/Dashboard.tsx(1,1): error TS6192: All imports in import declaration are unused.
+src/pages/Dashboard/Dashboard.tsx(5,1): error TS6133: 'checkAuthStatus' is declared but its value is never read.
+src/pages/Dashboard/Dashboard.tsx(13,11): error TS6133: 'navigate' is declared but its value is never read.
