@@ -16,8 +16,10 @@ import goalsRouter from './routes/goals.js'
 
 const app = express()
 
+const client_url = process.env.CLIENT_URL
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: client_url,
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   credentials: true
 }))
