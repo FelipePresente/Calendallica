@@ -1,33 +1,12 @@
-import React, { useEffect, useState } from "react"
-import { getGoals } from "../../../services/goalsService.ts"
-import type GoalsResponse from "../../../../../shared/types/goals/Goals.ts"
+import { useState } from "react"
+import useGoals from "../../../hooks/useGoals.ts"
 import toggle from '../../../assets/chevron-down.svg'
-import Goal from "./Goal.tsx"
 import AddGoal from "./AddGoal.tsx"
+import Goal from "./Goal.tsx"
 
 export default function GoalsList() {
-    const [goals, setGoals] = useState<React.ReactNode[]>([])
+    const goals = useGoals()
     const [isAdding, setIsAdding] = useState(false)
-
-    useEffect(() => {
-        const fetchGoals = async () => {
-            try {
-                const userGoals = await getGoals() as GoalsResponse[]
-
-                const newGoals: React.ReactNode[] = []
-
-                userGoals.forEach(goal => {
-                    newGoals.push(<Goal key={goal._id} goal={goal} />)
-                })
-
-                setGoals(newGoals)
-            } catch (error) {
-                console.error("Failed to fetch goals:", error)
-            }
-        }
-
-        fetchGoals()
-    }, [])
 
     const handleAddGoal = () => setIsAdding(true)
     const handleCloseAddGoal = () => setIsAdding(false)
@@ -59,7 +38,7 @@ export default function GoalsList() {
 
                 {/* Goals row */}
                 <div className="list-type p-5 space-y-4 overflow-y-auto max-h-[600px] bg-zinc-900/40">
-                    {goals}
+                    {goals.map(goal => (<Goal key={goal._id} goal={goal} />))}
                 </div>
 
                 <div className="p-5 border-t border-zinc-800/50 bg-zinc-800/10">

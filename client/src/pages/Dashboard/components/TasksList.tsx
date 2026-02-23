@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react"
-import { getTasks } from "../../../services/tasksService.ts"
-import type GetTasksResponse from "../../../../../shared/types/tasks/Tasks.ts"
+import useTasks from '../../../hooks/useTasks.ts'
 import toggle from '../../../assets/chevron-down.svg'
 import Task from "./Task.tsx"
 
@@ -9,31 +7,7 @@ interface TasksListProps {
 }
 
 export default function TasksList({ onTaskClick }: TasksListProps) {
-    const [tasks, setTasks] = useState<React.ReactNode[]>([])
-
-    useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const userTasks = await getTasks() as unknown as GetTasksResponse[]
-
-                const sortedTasks = userTasks.sort((a, b) => {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
-                })
-
-                const newTasks: React.ReactNode[] = []
-
-                sortedTasks.forEach(task => {
-                    newTasks.push(<Task key={task._id} task={task} onDateClick={onTaskClick} />)
-                })
-
-                setTasks(newTasks)
-            } catch (error) {
-                throw new Error
-            }
-        }
-
-        fetchTasks()
-    }, [])
+    const tasks = useTasks()
 
     return (
         <div className="lg:col-span-4 space-y-6">
@@ -60,7 +34,7 @@ export default function TasksList({ onTaskClick }: TasksListProps) {
 
                 {/* Tasks row */}
                 <div className="list-type p-5 space-y-4 overflow-y-auto max-h-[600px] bg-zinc-900/40">
-                    {tasks}
+                    {tasks.map(task => (<Task key={task._id} task={task} onDateClick={onTaskClick} />))}
                 </div>
             </details>
         </div>

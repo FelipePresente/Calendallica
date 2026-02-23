@@ -71,7 +71,7 @@ export default function EditTask({ task, onClose }: TaskProps) {
                     <div className="flex flex-col gap-2">
                         <textarea name="description" placeholder="Description" onChange={handleChange} rows={3}
                             className="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
-                            required maxLength={300} value={formData.description}></textarea>
+                            maxLength={300} value={formData.description}></textarea>
                     </div>
 
                     <button type="submit" className="w-full bg-white hover:bg-zinc-200 text-black font-black py-5 rounded-2xl transition-all cursor-pointer text-base uppercase tracking-widest shadow-xl shadow-white/5">

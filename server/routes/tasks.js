@@ -28,8 +28,8 @@ router.post('/', auth, async (req, res) => {
 
     serverDate.setUTCHours(0, 0, 0, 0)
 
-    if (!userId || !date || !title || !description) return res.status(400).json({ message: "Please fill in all required fields." })
-    if (title.length > 50 || description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
+    if (!userId || !date || !title) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (title.length > 50 || description && description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
     if (userDate < serverDate) return res.status(400).json({ message: "Cannot create tasks for past dates." })
 
     try {
@@ -53,8 +53,8 @@ router.patch('/:taskId', auth, async (req, res) => {
     const { taskId } = req.params
     const userId = req.user.id
 
-    if (!userId || !date || !title || !description) return res.status(400).json({ message: "Please fill in all required fields." })
-    if (title.length > 50 || description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
+    if (!userId || !date || !title) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (title.length > 50 || description && description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
 
     try {
         const newTask = { "date": date, "title": title, "description": description }

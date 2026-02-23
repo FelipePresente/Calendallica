@@ -78,7 +78,7 @@ export default function AddTask({ date, onClose }: AddTaskProps) {
                             placeholder="Description"
                             rows={3}
                             className="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
-                            required maxLength={300}
+                            maxLength={300}
                         ></textarea>
                     </div>
 

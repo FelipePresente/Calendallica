@@ -18,8 +18,8 @@ router.post('/', auth, async (req, res) => {
     const { title, description } = req.body
     const userId = req.user.id
 
-    if (!userId || !title || !description) return res.status(400).json({ message: "Please fill in all required fields." })
-    if (title.length > 50 || description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
+    if (!userId || !title) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (title.length > 50 || description && description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
 
     try {
         const newGoal = { userId: userId, title: title, description: description }
@@ -42,8 +42,8 @@ router.patch('/:id', auth, async (req, res) => {
     const goalId = req.params.id
     const userId = req.user.id
 
-    if (!title || !description) return res.status(400).json({ message: "Please fill in all required fields." })
-    if (title.length > 50 || description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
+    if (!title) return res.status(400).json({ message: "Please fill in all required fields." })
+    if (title.length > 50 || description && description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
 
     try {
         const updatedGoal = await Goal.findOneAndUpdate(

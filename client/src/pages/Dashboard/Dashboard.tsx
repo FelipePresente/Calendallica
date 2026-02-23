@@ -16,7 +16,7 @@ export default function Dashboard({ userData }: UserDataProps) {
     return (
         <>
             <title>Dashboard - Calendallica</title>
-            <DashboardHeader username={userData.username} />
+            <DashboardHeader username={userData.username} role={userData.role} />
             <DashboardMain />
         </>
     )

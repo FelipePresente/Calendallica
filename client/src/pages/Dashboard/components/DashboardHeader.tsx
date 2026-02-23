@@ -4,7 +4,7 @@ import type { UserStatus } from "../../../../../shared/types/auth/Auth.ts"
 import { logout } from "../../../services/authService.ts"
 import { useNavigate } from "react-router-dom"
 
-export default function DashboardHeader({ username }: UserStatus) {
+export default function DashboardHeader({ username, role }: UserStatus) {
     if (!username) throw new Error
 
     const navigate = useNavigate()
@@ -20,6 +20,15 @@ export default function DashboardHeader({ username }: UserStatus) {
             className="fixed w-full h-25 py-3 px-6 lg:px-100 flex justify-between items-center z-10 border-b border-zinc-800/50 bg-zinc-950/50 backdrop-blur-md">
 
             <Link to="/"><Logo className="w-30" /></Link>
+
+            {role === "admin" && (
+                <Link
+                    to="/admin"
+                    className="text-[10px] font-black uppercase tracking-[0.2em] hover:text-zinc-500 transition-all"
+                >
+                    Admin Analytics
+                </Link>
+            )}
 
             <div className="flex items-center gap-4 md:gap-6">
                 <p className="text-zinc-400 text-sm hidden md:block">Welcome, <span className="text-zinc-50 font-semibold">{formattedUsername}</span></p>
