@@ -3,7 +3,7 @@
 A premium full-stack productivity tool that merges a visual calendar interface with dual task and goal management. Built with a modern tech stack focused on performance, minimalist aesthetics, and advanced security.
 
 <p align="center">
-  <img src="client/public/icons/logo.png" width="200" alt="Calendallica">
+  <img src="client/src/assets/logo.png" width="200" alt="Calendallica">
 </p>
 
 ---
