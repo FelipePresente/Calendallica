@@ -1,60 +1,85 @@
+# 🗓️ Calendallica
+
+A premium full-stack productivity tool that merges a visual calendar interface with dual task and goal management. Built with a modern tech stack focused on performance, minimalist aesthetics, and advanced security.
+
 <p align="center">
-  <img src="public/icons/logo.png" width="300" alt="Calendallica">
+  <img src="client/public/icons/logo.png" width="200" alt="Calendallica">
 </p>
-
-A high-performance, full-stack productivity tool that merges a visual calendar interface with dual task and goal management. Built with **Node.js** and **MongoDB**, **Calendallica** focuses on a premium user experience, minimalist aesthetics, and advanced security.
-
-### 🌐 [Live Preview: calendallica.onrender.com](https://calendallica.onrender.com/)
 
 ---
 
-## ⚙️ Features
+## 🏗️ Project Structure
 
-*   **Dynamic Calendar Interface:** 
-    *   Interactive grid system for fast date navigation.
-    *   Real-time task visualization directly on the calendar cells.
+This project is organized as a monorepo:
+
+*   **`client/`**: Frontend application built with **React**, **TypeScript**, and **Vite**.
+*   **`server/`**: Backend API built with **Node.js**, **Express**, and **MongoDB**.
+*   **`shared/`**: Shared TypeScript types used by both frontend and backend for full type safety.
+
+---
+
+## ⚙️ Core Features
+
+*   **Dynamic Calendar System:** Interactive grid for date navigation and visual task tracking.
 *   **Dual-Layer Organization:**
-    *   **Tasks:** Specific to dates, automatically expiring to keep your view clean.
-    *   **Goals:** Long-term personal achievements displayed in an organized sidebar.
-*   **Secure Management:**
-    *   Complete CRUD systems for both tasks and goals with input sanitization.
-    *   **Rate Limiting:** Protection against DoS and brute-force attacks via **Express-Rate-Limit**.
-    *   **HTML Support:** Controlled styling (colors, tags like `<b>`, `<i>`, `<br>`) via **Sanitize-HTML** to allow user creativity without XSS risks.
-*   **Professional Authentication:**
-    *   Session management via **JWT** (JSON Web Tokens) stored in **HttpOnly Cookies**.
-    *   Secure **Password Hashing** with **Bcrypt**.
-*   **Robust Middleware System:**
-    *   **Data Normalization:** Automatic `trimming` and `lowercase` conversion for usernames.
-    *   **Auth Protection:** Route guarding to ensure private data remains private.
-*   **Modern Aesthetics:** Dark-themed UI crafted with **Tailwind CSS 4** and premium animations.
+    *   **Tasks:** Date-specific entries with automatic expiration to keep your view clean.
+    *   **Goals:** Long-term personal achievements managed in a dedicated sidebar.
+*   **Secure Authentication:** JWT-based session management with HttpOnly cookies and Bcrypt password hashing.
+*   **Advanced Middleware:** Content sanitization (XSS protection), data normalization, and rate limiting.
+*   **Premium UI/UX:** Dark-mode design with smooth animations, built using Tailwind CSS.
 
-## 🛠️ Tech Stack
+---
 
-**Backend**
-*   **Runtime:** Node.js & Express.js
-*   **Database:** MongoDB Atlas & Mongoose ODM
-*   **Security:** Bcrypt (Hashing), JSON Web Tokens (JWT), Sanitize-HTML & Express-Rate-Limit
-*   **Utilities:** Dotenv & Cookie-Parser
+## 🛠️ Global Tech Stack
 
-**Frontend**
-*   **Structure & Logic:** HTML5 & JavaScript (ES6+ Module Pattern)
-*   **Styling:** Tailwind CSS 4
-*   **Typography:** Outfit (Google Fonts)
+### Frontend
+- React 18+
+- TypeScript
+- Vite
+- Tailwind CSS
 
-## 🚀 How to Run
+### Backend
+- Node.js & Express
+- MongoDB & Mongoose
+- JSON Web Tokens (JWT)
+- Sanitize-HTML & Express-Rate-Limit
 
-1.  **Clone and Install Dependencies**
-    ```bash
-    npm install
-    ```
+---
 
-2.  **Start the Server**
-    ```bash
-    npm run server
-    ```
+## 🚀 Getting Started
 
-3.  **Access the Application**
-    *   Open `http://localhost:8000` in your browser.
+### 1. Installation
+
+Install dependencies in the root, client, and server folders:
+
+```bash
+# Global (if applicable)
+npm install
+
+# Client
+cd client && npm install
+
+# Server
+cd ../server && npm install
+```
+
+### 2. Configuration
+
+Create `.env` files in both `client/` and `server/` based on the provided environment requirements.
+
+### 3. Running Locally
+
+You can run both parts in parallel:
+
+```bash
+# In one terminal
+cd client && npm run dev
+
+# In another terminal
+cd server && npm run dev (or npm start)
+```
+
+---
 
 ## 👤 Credentials for Testing
 
@@ -63,4 +88,10 @@ To explore the dashboard and calendar features:
 *   **User Access:**
     *   Username: `user`
     *   Password: `userpassword`
-    # ALL TASKS CREATED IN THE USER ACCESS ACCOUNT ARE PUBLIC
+
+---
+
+## 📄 Documentation
+
+*   [Client Documentation](./client/README.md)
+*   [Server API Documentation](./server/README.md)

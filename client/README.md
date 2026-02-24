@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# ⚛️ Calendallica Client (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend of Calendallica is a high-performance Single Page Application (SPA) built with React and TypeScript, focused on a premium dark-themed minimalist experience.
 
-Currently, two official plugins are available:
+## 🛠️ Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework:** React 18
+- **Tooling:** Vite + TypeScript
+- **Styling:** Tailwind CSS
+- **Icons:** Custom SVG assets
+- **Routing:** React Router DOM
 
-## React Compiler
+## 🏗️ Architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The project follows a modular structure separated into:
 
-## Expanding the ESLint configuration
+### 🧩 Components
+Reusable UI elements like `Logo`, `SubmitButton`, `Orb` (glassmorphism backgrounds), and custom calendar cell components.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 📄 Pages
+- **Home**: Landing page.
+- **Login/SignUp**: Authentication forms.
+- **Dashboard**: Main interactive area (Calendar + Tasks + Goals).
+- **Admin**: Internal metrics dashboard.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🪝 Custom Hooks
+The logic is extracted into reusable hooks to keep components clean:
+- `useCalendar`: Manages date manipulation, navigation, and grid generation.
+- `useTasks`: Fetches and manages the user's task list.
+- `useGoals`: Handles personal achievement data.
+- `useUserData`: Manages authentication state and protected route logic.
+- `useMetrics`: Provides real-time stats for the admin panel.
+- `useMinTimeElapsed`: Controls skeleton loading states for a smoother UX.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🌐 Services
+Centralized API communication layer using `fetch` with credential support.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🎨 Styling
+
+We use **Tailwind CSS** with a custom color palette based on `zinc` and `indigo` tones. 
+- **Dark Mode**: Native and primary design.
+- **Glassmorphism**: Subtle blur effects on modals and headers.
+- **Responsive**: Fully optimized for mobile, tablet, and desktop views.
+
+## 🚀 Running the App
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The app will be available at `http://localhost:5173`.

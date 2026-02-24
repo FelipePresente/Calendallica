@@ -1,105 +1,38 @@
-import React, { useEffect, useState } from "react"
-import { getTasks } from "../../../services/tasksService.ts"
-import type TasksResponse from "../../../../../shared/types/tasks/Tasks.ts"
+import React, { useState } from "react"
 import CalendarDayCurrent from "../../../components/CalendarDayCurrent.tsx"
 import CalendarDayCommon from "../../../components/CalendarDayCommon.tsx"
 import CalendarDayEmpty from "../../../components/CalendarDayEmpty.tsx"
 import Previous from "../../../components/Previous.tsx"
 import Next from "../../../components/Next.tsx"
 import AddTask from "./AddTask.tsx"
+import useCalendar from "../../../hooks/useCalendar.ts"
+import useTasks from "../../../hooks/useTasks.ts"
 
-const year = [
-    { name: "January", days: 31 },
-    { name: "February", days: 28 },
-    { name: "March", days: 31 },
-    { name: "April", days: 30 },
-    { name: "May", days: 31 },
-    { name: "June", days: 30 },
-    { name: "July", days: 31 },
-    { name: "August", days: 31 },
-    { name: "September", days: 30 },
-    { name: "October", days: 31 },
-    { name: "November", days: 30 },
-    { name: "December", days: 31 }
-]
+export default function Calendar({ dateProp }: { dateProp: Date }) {
+    const { currentDate, calendarData, handlePrevious, handleNext, handleDayClick, addingTaskDate, closeAddTask } = useCalendar(dateProp)
 
-function isLeapYear(year: number) {
-    const leapYear = new Date(year, 1, 29);
-    return leapYear.getMonth() === 1;
-}
-
-export interface Props {
-    dateProp: Date
-}
-
-export default function Calendar({ dateProp }: Props) {
-    const [headerText, setHeaderText] = useState("")
-    const [date, setDate] = useState(new Date(dateProp))
-    const [addingTaskDate, setAddingTaskDate] = useState<string | null>(null)
-    const [tasks, setTasks] = useState<TasksResponse[]>([])
-
-    function handlePrevious() {
-        const newDate = new Date(date.getFullYear(), date.getMonth() - 1)
-        setDate(newDate)
-    }
-
-    function handleNext() {
-        const newDate = new Date(date.getFullYear(), date.getMonth() + 1)
-        setDate(newDate)
-    }
-
-    function handleDayClick(day: number) {
-        const clickedDate = new Date(date.getFullYear(), date.getMonth(), day)
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
-
-        if (clickedDate >= today) {
-            setAddingTaskDate(clickedDate.toISOString())
-        }
-    }
-
-    useEffect(() => {
-        setDate(new Date(dateProp))
-    }, [dateProp])
-
-    useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const data = await getTasks() as unknown as TasksResponse[]
-                setTasks(data)
-            } catch (error) {
-                console.error("Error fetching tasks:", error)
-            }
-        }
-        fetchTasks()
-    }, [addingTaskDate])
+    const tasks = useTasks()
 
     const renderCalendar = () => {
         const taskDates = new Set(tasks.map(t => new Date(t.date).toLocaleDateString("en-CA")))
 
-        const leapYear = isLeapYear(date.getFullYear())
-        const dayOne = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-
-        if (leapYear) year[1].days = 29
-        else year[1].days = 28
-
         const newDays: React.ReactNode[] = []
 
-        for (let i = 0; i < dayOne; i++) {
+        for (let i = 0; i < calendarData.dayOne; i++) {
             newDays.push(<CalendarDayEmpty key={`empty-${i}`} />)
         }
 
         let day = 0
-        const currentDate = new Date()
+        const todaysDate = new Date()
 
-        for (let i = 0; i < year[date.getMonth()].days; i++) {
+        for (let i = 0; i < calendarData.daysInMonth; i++) {
             day++
 
-            const loopDateObj = new Date(date.getFullYear(), date.getMonth(), day)
+            const loopDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
             const loopDateString = loopDateObj.toLocaleDateString("en-CA")
             const hasTask = taskDates.has(loopDateString)
 
-            if (currentDate.getDate() === day && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear()) {
+            if (currentDate.getDate() === day && currentDate.getMonth() === todaysDate.getMonth() && currentDate.getFullYear() === todaysDate.getFullYear()) {
                 newDays.push(<CalendarDayCurrent hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
             }
             else {
@@ -109,18 +42,12 @@ export default function Calendar({ dateProp }: Props) {
         return newDays
     }
 
-    useEffect(() => {
-        setHeaderText(`${year[date.getMonth()].name} ${date.getFullYear()}`.toUpperCase())
-    }, [date])
-
     const days = renderCalendar()
 
     return (
         <div className="lg:col-span-8 bg-zinc-900 border border-zinc-800/50 rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden">
 
-            {addingTaskDate && (
-                <AddTask date={addingTaskDate} onClose={() => setAddingTaskDate(null)} />
-            )}
+            {addingTaskDate && (<AddTask date={addingTaskDate} onClose={closeAddTask} />)}
 
             {/* Calendar Header */}
             <div className="flex items-center justify-between mb-8 border-b border-zinc-800 pb-6">
@@ -128,7 +55,7 @@ export default function Calendar({ dateProp }: Props) {
                     <Previous className="opacity-50 invert group-hover:opacity-100 transition-opacity" />
                 </div>
 
-                <h3 className="text-zinc-500 text-sm font-bold tracking-widest">{headerText}</h3>
+                <h3 className="text-zinc-500 text-sm font-bold tracking-widest">{calendarData.headerText}</h3>
 
                 <div onClick={handleNext} className="cursor-pointer hover:bg-zinc-800 p-2 rounded-lg transition-all group">
                     <Next className="opacity-50 invert group-hover:opacity-100 transition-opacity" />

@@ -76,11 +76,4 @@ router.get('/logout', async (req, res) => {
     res.status(200).json({ message: "Logged out successfully" })
 })
 
-router.get('/me', auth, (req, res) => {
-    res.json({
-        username: req.user.username,
-        role: req.user.role
-    })
-})
-
 export default router
