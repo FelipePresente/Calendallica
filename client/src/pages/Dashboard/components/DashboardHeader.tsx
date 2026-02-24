@@ -26,13 +26,12 @@ export default function DashboardHeader({ username, role }: UserStatus) {
                     to="/admin"
                     className="text-[10px] font-black uppercase tracking-[0.2em] hover:text-zinc-500 transition-all"
                 >
-                    Admin Analytics
+                    Analytics
                 </Link>
             )}
 
             <div className="flex items-center gap-4 md:gap-6">
                 <p className="text-zinc-400 text-sm hidden md:block">Welcome, <span className="text-zinc-50 font-semibold">{formattedUsername}</span></p>
-                <p className="text-zinc-50 font-semibold text-sm md:hidden">{formattedUsername}</p>
                 <div onClick={handleLogout} className="flex items-center justify-center rounded-xl bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 font-bold px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm cursor-pointer transition-all text-zinc-400 hover:text-red-400">
                     Logout
                 </div>
