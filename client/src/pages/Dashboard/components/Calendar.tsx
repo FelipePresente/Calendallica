@@ -31,7 +31,7 @@ export default function Calendar({ dateProp }: { dateProp: Date }) {
             const loopDateString = loopDateObj.toLocaleDateString("en-CA")
             const hasTask = taskDates.has(loopDateString)
 
-            if (currentDate.getDate() === day && currentDate.getMonth() === todaysDate.getMonth() && currentDate.getFullYear() === todaysDate.getFullYear()) {
+            if (day === todaysDate.getDate() && currentDate.getMonth() === todaysDate.getMonth() && currentDate.getFullYear() === todaysDate.getFullYear()) {
                 newDays.push(<CalendarDayCurrent hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
             }
             else {
