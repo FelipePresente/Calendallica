@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import CalendarDayCurrent from "../../../components/CalendarDayCurrent.tsx"
 import CalendarDayCommon from "../../../components/CalendarDayCommon.tsx"
 import CalendarDayEmpty from "../../../components/CalendarDayEmpty.tsx"
+import CalendarDayPast from "../../../components/CalendarDayPast.tsx"
 import Previous from "../../../components/Previous.tsx"
 import Next from "../../../components/Next.tsx"
 
@@ -28,6 +29,7 @@ function isLeapYear(year: number) {
 export default function CalendarPreview() {
 
     const currentDate = new Date()
+    currentDate.setHours(0, 0, 0, 0)
     const currentMonth = currentDate.getMonth()
     const currentDay = currentDate.getDate()
     const currentYear = currentDate.getFullYear()
@@ -55,11 +57,13 @@ export default function CalendarPreview() {
         for (let i = 0; i < year[currentMonth].days; i++) {
             day++
 
-            if (day === currentDay) {
-                newDays.push(<CalendarDayCurrent key={`day-${day}`} day={day} onClick={() => { }} />);
+            if (currentDate > new Date(currentDate.getFullYear(), currentDate.getMonth(), day)) {
+                newDays.push(<CalendarDayPast key={`day-${day}`} day={day} />)
+            } else if (day === currentDay) {
+                newDays.push(<CalendarDayCurrent key={`day-${day}`} day={day} onClick={() => { }} />)
             }
             else if (day !== currentDay) {
-                newDays.push(<CalendarDayCommon key={`day-${day}`} day={day} onClick={() => { }} />);
+                newDays.push(<CalendarDayCommon key={`day-${day}`} day={day} onClick={() => { }} />)
             }
         }
 

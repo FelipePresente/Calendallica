@@ -1,6 +1,7 @@
 import CalendarDayCurrent from "../../../components/CalendarDayCurrent.tsx"
 import CalendarDayCommon from "../../../components/CalendarDayCommon.tsx"
 import CalendarDayEmpty from "../../../components/CalendarDayEmpty.tsx"
+import CalendarDayPast from "../../../components/CalendarDayPast.tsx"
 import Previous from "../../../components/Previous.tsx"
 import Next from "../../../components/Next.tsx"
 import AddTask from "./AddTask.tsx"
@@ -21,25 +22,27 @@ export default function Calendar({ dateProp }: { dateProp: Date }) {
             newDays.push(<CalendarDayEmpty key={`empty-${i}`} />)
         }
 
-        let day = 0
         const todaysDate = new Date()
+        todaysDate.setHours(0, 0, 0, 0)
 
-        for (let i = 0; i < calendarData.daysInMonth; i++) {
-            day++
-
+        for (let day = 1; day <= calendarData.daysInMonth; day++) {
             const loopDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
+            loopDateObj.setHours(0, 0, 0, 0)
+
             const loopDateString = loopDateObj.toLocaleDateString("en-CA")
             const hasTask = taskDates.has(loopDateString)
 
-            if (day === todaysDate.getDate() && currentDate.getMonth() === todaysDate.getMonth() && currentDate.getFullYear() === todaysDate.getFullYear()) {
+            if (loopDateObj < todaysDate) {
+                newDays.push(<CalendarDayPast key={`day-${day}`} day={day} />)
+            } else if (loopDateObj.getTime() === todaysDate.getTime()) {
                 newDays.push(<CalendarDayCurrent hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
-            }
-            else {
+            } else {
                 newDays.push(<CalendarDayCommon hasTask={hasTask} key={`day-${day}`} day={day} onClick={handleDayClick} />)
             }
         }
         return newDays
     }
+
 
     const days = renderCalendar()
 

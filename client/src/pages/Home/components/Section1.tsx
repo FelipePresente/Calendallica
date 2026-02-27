@@ -11,7 +11,7 @@ export default function Section1() {
 
             {/* Grid */}
             <div
-                className="h-full w-full p-5 grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-25 max-w-330 place-self-center">
+                className="p-5 grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-25 max-w-330 place-self-center">
 
                 <div className="flex flex-col justify-center items-center text-center">
                     <Logo

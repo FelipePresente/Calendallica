@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp/SignUp.tsx'
 import Admin from './pages/admin/Admin.tsx'
 import Dashboard from './pages/Dashboard/Dashboard.tsx'
 import ServerWakeUp from './components/ServerWakeUp.tsx'
+import NotFound from './pages/NotFound/NotFound.tsx'
 
 function App() {
   const api_url = import.meta.env.VITE_API_URL
@@ -37,6 +38,8 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute adminOnly={false}>
           <Dashboard />
         </ProtectedRoute>} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
