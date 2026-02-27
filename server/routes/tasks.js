@@ -28,9 +28,15 @@ router.post('/', auth, async (req, res) => {
 
     serverDate.setUTCHours(0, 0, 0, 0)
 
+    // Create a 24h margin to allow users in behind-UTC timezones (like Brazil)
+    // to create tasks for their current day even if it's already tomorrow in UTC.
+    const dateLimit = new Date(serverDate)
+    dateLimit.setDate(dateLimit.getDate() - 1)
+
     if (!userId || !date || !title) return res.status(400).json({ message: "Please fill in all required fields." })
     if (title.length > 50 || description && description.length > 300) return res.status(400).json({ message: "Character limit exceeded." })
-    if (userDate < serverDate) return res.status(400).json({ message: "Cannot create tasks for past dates." })
+    if (userDate < dateLimit) return res.status(400).json({ message: "Cannot create tasks for past dates." })
+
 
     try {
         const newTask = { date: date, title: title, description: description, userId: userId }
