@@ -1,5 +1,8 @@
 package calendallica_server.goal;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import calendallica_server.goal.dto.GoalCreationDTO;
@@ -16,11 +19,15 @@ public class GoalService {
         this.userRepository = userRepository;
     }
 
+    public List<Goal> findAll(UUID userId) {
+        return this.goalRepository.findByUserId(userId);
+    }
+
     public Goal create(GoalCreationDTO data) {
         User user = this.userRepository.findById(data.userId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Goal newGoal = new Goal(data.title(), data.description(), user);
+        Goal newGoal = new Goal(data.title(), data.description(), data.userId());
 
         return this.goalRepository.save(newGoal);
     }

@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import calendallica_server.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "goals")
+@Table(name = "goal")
 public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,7 +31,7 @@ public class Goal {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    UUID userId;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
@@ -45,10 +44,10 @@ public class Goal {
     public Goal() {
     }
 
-    public Goal(String title, String description, User user) {
+    public Goal(String title, String description, UUID userId) {
         this.title = title;
         this.description = description;
-        this.user = user;
+        this.userId = userId;
     }
 
     public void setId(UUID id) {
@@ -75,12 +74,12 @@ public class Goal {
         return this.description;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
-    public User getUser() {
-        return this.user;
+    public UUID getUserId() {
+        return this.userId;
     }
 
     public void setCreatedAt(Instant createdAt) {
