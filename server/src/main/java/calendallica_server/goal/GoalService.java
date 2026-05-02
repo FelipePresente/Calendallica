@@ -20,12 +20,12 @@ public class GoalService {
         this.userRepository = userRepository;
     }
 
-    public List<Goal> findAll(UUID userId) {
+    public List<Goal> findAllByUser(UUID userId) {
         return this.goalRepository.findByUserId(userId);
     }
 
-    public Goal create(GoalCreationDTO data) {
-        User user = this.userRepository.findById(data.userId())
+    public Goal create(GoalCreationDTO data, UUID userId) {
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Goal newGoal = new Goal(data.title(), data.description(), user);
@@ -33,11 +33,10 @@ public class GoalService {
         return this.goalRepository.save(newGoal);
     }
 
-    public void delete(UUID id) {
-        if (!this.goalRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Goal not found");
-        }
+    public void delete(UUID id, UUID userId) {
+        Goal goal = this.goalRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Goal not found"));
 
-        this.userRepository.deleteById(id);
+        this.goalRepository.delete(goal);
     }
 }

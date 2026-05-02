@@ -20,12 +20,12 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public List<Task> findAll(UUID userId) {
+    public List<Task> findAllByUser(UUID userId) {
         return this.taskRepository.findByUserId(userId);
     }
 
-    public Task create(TaskCreationDTO data) {
-        User user = this.userRepository.findById(data.userId())
+    public Task create(TaskCreationDTO data, UUID userId) {
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         Task newTask = new Task(data.title(), data.description(), data.dueDate(), user);
@@ -33,11 +33,10 @@ public class TaskService {
         return this.taskRepository.save(newTask);
     }
 
-    public void delete(UUID id) {
-        if (!this.taskRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Task not found");
-        }
+    public void delete(UUID id, UUID userId) {
+        Task task = this.taskRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
-        this.taskRepository.deleteById(id);
+        this.taskRepository.delete(task);
     }
 }

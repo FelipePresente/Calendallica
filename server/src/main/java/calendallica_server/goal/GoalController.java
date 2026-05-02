@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import calendallica_server.goal.dto.GoalCreationDTO;
 import calendallica_server.goal.dto.GoalResponseDTO;
+import calendallica_server.user.User;
 import jakarta.validation.Valid;
 
 @RestController
@@ -26,9 +28,9 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    @GetMapping("/{userId}")
-    public List<GoalResponseDTO> findAll(@PathVariable UUID userId) {
-        List<Goal> goals = this.goalService.findAll(userId);
+    @GetMapping
+    public List<GoalResponseDTO> findAllByUser(@AuthenticationPrincipal User user) {
+        List<Goal> goals = this.goalService.findAllByUser(user.getId());
 
         return goals.stream()
                 .map(GoalResponseDTO::fromEntity)
@@ -37,14 +39,14 @@ public class GoalController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GoalResponseDTO create(@Valid @RequestBody GoalCreationDTO data) {
-        Goal newGoal = this.goalService.create(data);
+    public GoalResponseDTO create(@Valid @RequestBody GoalCreationDTO data, @AuthenticationPrincipal User user) {
+        Goal newGoal = this.goalService.create(data, user.getId());
         return GoalResponseDTO.fromEntity(newGoal);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable UUID id) {
-        this.goalService.delete(id);
+    public void delete(@PathVariable UUID id, @AuthenticationPrincipal User user) {
+        this.goalService.delete(id, user.getId());
     }
 }

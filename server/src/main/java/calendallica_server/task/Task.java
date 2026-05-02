@@ -23,6 +23,7 @@ import jakarta.persistence.Table;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "VARCHAR(36)")
     private UUID id;
 
     @Column(nullable = false, length = 30)

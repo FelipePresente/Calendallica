@@ -2,13 +2,16 @@ package calendallica_server.user;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import calendallica_server.user.dto.UserSignUpDTO;
+import calendallica_server.user.dto.UserUpdateDTO;
 import jakarta.validation.Valid;
 
 @RestController
@@ -28,5 +31,10 @@ public class UserController {
     @PostMapping
     public User create(@Valid @RequestBody UserSignUpDTO data) {
         return this.userService.create(data);
+    }
+
+    @PutMapping
+    public User update(@RequestBody UserUpdateDTO data, @AuthenticationPrincipal User user) {
+        return this.userService.update(data, user.getId());
     }
 }

@@ -22,6 +22,7 @@ import jakarta.persistence.Table;
 public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "VARCHAR(36)")
     UUID id;
 
     @Column(nullable = false, length = 30)
