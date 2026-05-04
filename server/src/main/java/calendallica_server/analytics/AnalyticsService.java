@@ -20,10 +20,12 @@ public class AnalyticsService {
     }
 
     public AnalyticsResponseDTO getAnalytics() {
-        Analytics analytics = new Analytics(
-            this.userRepository.count(),
-            this.taskRepository.count(),
-            this.goalRepository.count()
-        );
+        Analytics analytics = new Analytics();
+
+        analytics.setUserCount(this.userRepository.count());
+        analytics.setTaskCount(this.taskRepository.count());
+        analytics.setGoalCount(this.goalRepository.count());
+
+        return AnalyticsResponseDTO.fromEntity(analytics);
     }
 }
