@@ -14,4 +14,14 @@ public class CookieService {
                 .sameSite("Strict")
                 .build();
     }
+
+    public ResponseCookie deleteCookie() {
+        return ResponseCookie.from("access_token", null)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+    }
 }

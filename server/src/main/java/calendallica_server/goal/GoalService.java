@@ -49,7 +49,7 @@ public class GoalService {
             goal.setTitle(data.newTitle());
         }
 
-        if (data.newDescription() != null && !data.newDescription().isBlank()) {
+        if (data.newDescription() != null) {
             goal.setDescription(data.newDescription());
         }
 

@@ -49,7 +49,7 @@ public class TaskService {
             task.setTitle(data.newTitle());
         }
 
-        if (data.newDescription() != null & !data.newDescription().isBlank()) {
+        if (data.newDescription() != null) {
             task.setDescription(data.newDescription());
         }
 
