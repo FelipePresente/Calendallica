@@ -6,10 +6,12 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import calendallica_server.exception.ConflictException;
 import calendallica_server.exception.InvalidCredentialsException;
 import calendallica_server.exception.ResourceNotFoundException;
 import calendallica_server.role.Role;
 import calendallica_server.role.RoleRepository;
+import calendallica_server.user.dto.UserResponseDTO;
 import calendallica_server.user.dto.UserSignUpDTO;
 import calendallica_server.user.dto.UserUpdateDTO;
 
@@ -25,13 +27,17 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public List<User> findAll() {
-        return this.userRepository.findAll();
+    public List<UserResponseDTO> findAll() {
+        List<User> users = this.userRepository.findAll();
+
+        return users.stream()
+                .map(UserResponseDTO::fromEntity)
+                .toList();
     }
 
-    public User create(UserSignUpDTO data) {
+    public UserResponseDTO create(UserSignUpDTO data) {
         if (this.userRepository.existsByUsername(data.username())) {
-            throw new RuntimeException("Username already exists");
+            throw new ConflictException("Username already exists");
         }
 
         String encryptedPassword = this.passwordEncoder.encode(data.password());
@@ -43,10 +49,11 @@ public class UserService {
 
         newUser.setRole(role);
 
-        return this.userRepository.save(newUser);
+        this.userRepository.save(newUser);
+        return UserResponseDTO.fromEntity(newUser);
     }
 
-    public User update(UserUpdateDTO data, UUID id) {
+    public UserResponseDTO update(UserUpdateDTO data, UUID id) {
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -66,18 +73,20 @@ public class UserService {
             }
 
             if (this.userRepository.existsByUsername(data.newUsername())) {
-                throw new RuntimeException("Username already exists");
+                throw new ConflictException("Username already exists");
             }
 
             user.setUsername(data.newUsername());
         }
 
         if (data.newPassword() != null && !data.newPassword().isBlank()) {
-            String encryptedNewPassowrd = this.passwordEncoder.encode(data.newPassword());
+            String encryptedNewPassword = this.passwordEncoder.encode(data.newPassword());
 
-            user.setPassword(encryptedNewPassowrd);
+            user.setPassword(encryptedNewPassword);
         }
 
-        return this.userRepository.save(user);
+        this.userRepository.save(user);
+
+        return UserResponseDTO.fromEntity(user);
     }
 }

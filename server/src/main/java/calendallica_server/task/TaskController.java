@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import calendallica_server.task.dto.TaskCreationDTO;
 import calendallica_server.task.dto.TaskResponseDTO;
+import calendallica_server.task.dto.TaskUpdateDTO;
 import calendallica_server.user.User;
 import jakarta.validation.Valid;
 
@@ -29,20 +31,21 @@ public class TaskController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<TaskResponseDTO> findAllByUser(@Valid @AuthenticationPrincipal User user) {
-        List<Task> tasks = this.taskService.findAllByUser(user.getId());
-
-        return tasks.stream()
-                .map(TaskResponseDTO::fromEntity)
-                .toList();
+        return this.taskService.findAllByUser(user.getId());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponseDTO create(@Valid @RequestBody TaskCreationDTO data, @AuthenticationPrincipal User user) {
-        Task task = this.taskService.create(data, user.getId());
+        return this.taskService.create(data, user.getId());
+    }
 
-        return TaskResponseDTO.fromEntity(task);
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskResponseDTO update(@Valid @RequestBody TaskUpdateDTO data, @PathVariable UUID id, @AuthenticationPrincipal User user) {
+        return this.taskService.update(data, id, user.getId());
     }
 
     @DeleteMapping("/{id}")

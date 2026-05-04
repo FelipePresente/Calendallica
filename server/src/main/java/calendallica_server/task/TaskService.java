@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import calendallica_server.exception.ResourceNotFoundException;
 import calendallica_server.task.dto.TaskCreationDTO;
+import calendallica_server.task.dto.TaskResponseDTO;
+import calendallica_server.task.dto.TaskUpdateDTO;
 import calendallica_server.user.User;
 import calendallica_server.user.UserRepository;
 
@@ -20,17 +22,40 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public List<Task> findAllByUser(UUID userId) {
-        return this.taskRepository.findByUserId(userId);
+    public List<TaskResponseDTO> findAllByUser(UUID userId) {
+        List<Task> tasks = this.taskRepository.findByUserId(userId);
+
+        return tasks.stream()
+                .map(TaskResponseDTO::fromEntity)
+                .toList();
     }
 
-    public Task create(TaskCreationDTO data, UUID userId) {
+    public TaskResponseDTO create(TaskCreationDTO data, UUID userId) {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         Task newTask = new Task(data.title(), data.description(), data.dueDate(), user);
 
-        return this.taskRepository.save(newTask);
+        this.taskRepository.save(newTask);
+
+        return TaskResponseDTO.fromEntity(newTask);
+    }
+
+    public TaskResponseDTO update(TaskUpdateDTO data, UUID id, UUID userId) {
+        Task task = this.taskRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        if (data.newTitle() != null && !data.newTitle().isBlank()) {
+            task.setTitle(data.newTitle());
+        }
+
+        if (data.newDescription() != null & !data.newDescription().isBlank()) {
+            task.setDescription(data.newDescription());
+        }
+
+        this.taskRepository.save(task);
+
+        return TaskResponseDTO.fromEntity(task);
     }
 
     public void delete(UUID id, UUID userId) {

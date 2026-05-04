@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import calendallica_server.goal.dto.GoalCreationDTO;
 import calendallica_server.goal.dto.GoalResponseDTO;
+import calendallica_server.goal.dto.GoalUpdateDTO;
 import calendallica_server.user.User;
 import jakarta.validation.Valid;
 
@@ -29,19 +31,21 @@ public class GoalController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<GoalResponseDTO> findAllByUser(@AuthenticationPrincipal User user) {
-        List<Goal> goals = this.goalService.findAllByUser(user.getId());
-
-        return goals.stream()
-                .map(GoalResponseDTO::fromEntity)
-                .toList();
+        return this.goalService.findAllByUser(user.getId());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GoalResponseDTO create(@Valid @RequestBody GoalCreationDTO data, @AuthenticationPrincipal User user) {
-        Goal newGoal = this.goalService.create(data, user.getId());
-        return GoalResponseDTO.fromEntity(newGoal);
+        return this.goalService.create(data, user.getId());
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public GoalResponseDTO update(@Valid @RequestBody GoalUpdateDTO data, @PathVariable UUID id, @AuthenticationPrincipal User user) {
+        return this.goalService.update(data, id, user.getId());
     }
 
     @DeleteMapping("/{id}")

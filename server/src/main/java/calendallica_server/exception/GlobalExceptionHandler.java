@@ -34,6 +34,12 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponseDTO handleConflictException(ConflictException ex) {
+        return new ErrorResponseDTO(ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDTO handleGenericError(Exception ex) {
