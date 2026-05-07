@@ -7,9 +7,13 @@ import Logo from "../../../components/Logo.tsx"
 import SubmitButton from "../../../components/SubmitButton.tsx"
 import ErrorMessage from "../../../components/ErrorMessage.tsx"
 
+interface SignUpForm extends SignUpCredentials {
+    passwordConfirmation: string
+}
+
 export default function SignUpMain() {
     const navigate = useNavigate()
-    const [formData, setFormdata] = useState<SignUpCredentials>({
+    const [formData, setFormdata] = useState<SignUpForm>({
         username: "",
         password: "",
         passwordConfirmation: ""
@@ -26,13 +30,19 @@ export default function SignUpMain() {
         }))
     }
 
-    async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+
+        if (formData.password !== formData.passwordConfirmation) {
+            return setErrorMessage("Passwords do not match.")
+        }
+
         setIsLoading(true)
         setErrorMessage(null)
 
         try {
-            await signup(formData)
+            const { username, password } = formData
+            await signup({ username, password })
         } catch (error: any) {
             return setErrorMessage(error.message || "An error occurred while creating your account.")
         } finally {

@@ -1,14 +1,14 @@
-import useMetrics from "../../../hooks/useMetrics.ts"
+import useAnalytics from "../../../hooks/useAnalytics.ts"
 import useMinTimeElapsed from "../../../hooks/useMinTimeElapsed.ts"
 import AdminSkeleton from "./AdminSkeleton.tsx"
 import { Link } from "react-router-dom"
 import logo from "../../../assets/logo.png"
 
 export default function AdminMain() {
-    const metrics = useMetrics()
+    const analytics = useAnalytics()
     const minTimeElapsed = useMinTimeElapsed()
 
-    if (!metrics || !minTimeElapsed) return <AdminSkeleton />
+    if (!analytics || !minTimeElapsed) return <AdminSkeleton />
 
     return (
         <main className="min-h-screen bg-zinc-950 p-6 lg:p-10 flex flex-col items-center justify-center gap-10">
@@ -18,19 +18,19 @@ export default function AdminMain() {
 
             <div className="w-full max-w-md space-y-4 text-center">
                 <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm hover:border-zinc-700 transition-all group">
-                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px] mb-2">Total Users</h2>
-                    <p className="text-4xl font-black text-white group-hover:text-indigo-500 transition-colors">{metrics.users_data}</p>
+                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px] mb-2">Users</h2>
+                    <p className="text-4xl font-black text-white group-hover:text-indigo-500 transition-colors">{analytics.totalUsers}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm hover:border-zinc-700 transition-all group text-center">
                         <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px] mb-2">Tasks</h2>
-                        <p className="text-3xl font-black text-white group-hover:text-emerald-500 transition-colors">{metrics.tasks_data}</p>
+                        <p className="text-3xl font-black text-white group-hover:text-emerald-500 transition-colors">{analytics.totalTasks}</p>
                     </div>
 
                     <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm hover:border-zinc-700 transition-all group text-center">
                         <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px] mb-2">Goals</h2>
-                        <p className="text-3xl font-black text-white group-hover:text-rose-500 transition-colors">{metrics.goals_data}</p>
+                        <p className="text-3xl font-black text-white group-hover:text-rose-500 transition-colors">{analytics.totalGoals}</p>
                     </div>
                 </div>
             </div>

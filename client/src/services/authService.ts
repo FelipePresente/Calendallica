@@ -1,29 +1,29 @@
-import type { LoginCredentials, LoginResponse } from '../../../shared/types/auth/Auth.ts'
+import type { LoginCredentials } from '../../../shared/types/auth/Auth.ts'
 
 const api_url = import.meta.env.VITE_API_URL
 
-export async function login(credentials: LoginCredentials): Promise<LoginResponse> {
+export async function login(credentials: LoginCredentials): Promise<void> {
     try {
-        const response = await fetch(`${api_url}/users/login`, {
+        const response = await fetch(`${api_url}/auth`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials),
             credentials: 'include'
         })
 
-        const contentType = response.headers.get("content-type")
-        if (!contentType || !contentType.includes("application/json")) {
-            throw new Error("Error getting json response")
-        }
+        if (response.ok) return
 
-        const data = await response.json()
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Error trying to login')
-        }
-
-        return data
-    } catch (error) {
+        let message = 'Error trying to login'
+        try {
+            const text = await response.text()
+            if (text) {
+                const data = JSON.parse(text)
+                message = data.message || (typeof data === 'object' ? Object.values(data).join(', ') : message)
+            }
+        } catch (e) {}
+        
+        throw new Error(message)
+    } catch (error: any) {
         throw error
     }
 }
@@ -31,10 +31,11 @@ export async function login(credentials: LoginCredentials): Promise<LoginRespons
 export async function logout(): Promise<void> {
 
     try {
-        await fetch(`${api_url}/users/logout`, {
+        await fetch(`${api_url}/auth/logout`, {
+            method: 'POST',
             credentials: 'include'
         })
     } catch (error) {
-        throw new Error
+        throw error
     }
 }

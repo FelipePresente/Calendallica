@@ -1,6 +1,6 @@
 export default interface TasksResponse {
-    _id: string,
-    date: string,
+    id: string,
+    dueDate: string,
     title: string,
     description: string
 }

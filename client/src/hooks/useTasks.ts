@@ -9,13 +9,10 @@ export default function useTasks() {
         getTasks()
             .then(data => {
                 const userTasks = data as unknown as TasksResponse[]
-
-                const sortedTasks = userTasks.sort((a, b) => {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
-                })
-
+                const sortedTasks = [...userTasks].sort((a, b) => a.dueDate.localeCompare(b.dueDate))
                 setTasks(sortedTasks)
             })
+            .catch(error => console.error("Error fetching tasks:", error))
     }, [])
 
     return tasks

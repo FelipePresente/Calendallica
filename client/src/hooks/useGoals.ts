@@ -8,6 +8,7 @@ export default function useGoals() {
     useEffect(() => {
         getGoals()
             .then(setGoals)
+            .catch(error => console.error("Error fetching goals:", error))
     }, [])
 
     return goals

@@ -14,7 +14,7 @@ export default function Calendar({ dateProp }: { dateProp: Date }) {
     const tasks = useTasks()
 
     const renderCalendar = () => {
-        const taskDates = new Set(tasks.map(t => new Date(t.date).toLocaleDateString("en-CA")))
+        const taskDates = new Set(tasks.map(t => t.dueDate))
 
         const newDays: React.ReactNode[] = []
 

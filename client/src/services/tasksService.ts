@@ -7,9 +7,10 @@ export async function getTasks(): Promise<TasksResponse[]> {
         const response = await fetch(`${api_url}/tasks`, {
             credentials: 'include'
         })
+        if (!response.ok) throw new Error("Failed to fetch tasks")
         return await response.json()
     } catch (error) {
-        throw new Error("Failed to fetch tasks")
+        throw error
     }
 }
 
@@ -28,12 +29,12 @@ export async function createTask(task: Partial<TasksResponse>) {
     }
 }
 
-export async function patchTasks(task: TasksResponse) {
+export async function updateTask(id: string, data: { newTitle: string, newDescription: string }) {
     try {
-        const response = await fetch(`${api_url}/tasks/${task._id}`, {
-            method: 'PATCH',
+        const response = await fetch(`${api_url}/tasks/${id}`, {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(task),
+            body: JSON.stringify(data),
             credentials: 'include'
         })
         if (!response.ok) throw new Error("Failed to update task")
@@ -43,13 +44,15 @@ export async function patchTasks(task: TasksResponse) {
     }
 }
 
-export async function deleteTask(taskId: string) {
+export async function deleteTask(id: string) {
     try {
-        const response = await fetch(`${api_url}/tasks/${taskId}`, {
+        const response = await fetch(`${api_url}/tasks/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         })
         if (!response.ok) throw new Error("Failed to delete task")
+
+        if (response.status === 204) return
         return await response.json()
     } catch (error) {
         throw error

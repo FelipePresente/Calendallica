@@ -8,7 +8,7 @@ export interface AddTaskProps {
 }
 
 export default function AddTask({ date, onClose }: AddTaskProps) {
-    const dateObj = new Date(date)
+    const dateObj = new Date(date.replace(/-/g, '/'))
     const formattedDate = dateObj.toLocaleDateString('en-US', {
         weekday: 'long',
         year: 'numeric',
@@ -19,7 +19,7 @@ export default function AddTask({ date, onClose }: AddTaskProps) {
     const [formData, setFormdata] = useState({
         title: "",
         description: "",
-        date: date
+        dueDate: date
     })
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {

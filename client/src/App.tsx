@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import useServerWakeUp from './hooks/useServerWakeUp.ts'
 import GuestRoute from './components/GuestRoute.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import Home from './pages/Home/Home.tsx'
@@ -7,15 +6,9 @@ import Login from './pages/Login/Login.tsx'
 import SignUp from './pages/SignUp/SignUp.tsx'
 import Admin from './pages/admin/Admin.tsx'
 import Dashboard from './pages/Dashboard/Dashboard.tsx'
-import ServerWakeUp from './components/ServerWakeUp.tsx'
 import NotFound from './pages/NotFound/NotFound.tsx'
 
 function App() {
-  const api_url = import.meta.env.VITE_API_URL
-  const isServerAwake = useServerWakeUp(api_url)
-
-  if (!isServerAwake) return <ServerWakeUp />
-
   return (
     <BrowserRouter>
       <Routes>

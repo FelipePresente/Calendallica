@@ -10,17 +10,17 @@ export default function AdminSkeleton() {
 
             <div className="w-full max-w-md space-y-4">
                 <div className="flex items-center justify-between p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm">
-                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Users count</h2>
+                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Users</h2>
                     <LoadingSpinner />
                 </div>
 
                 <div className="flex items-center justify-between p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm">
-                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Tasks count</h2>
+                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Tasks</h2>
                     <LoadingSpinner />
                 </div>
 
                 <div className="flex items-center justify-between p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl shadow-xl backdrop-blur-sm">
-                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Goals count</h2>
+                    <h2 className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Goals</h2>
                     <LoadingSpinner />
                 </div>
             </div>

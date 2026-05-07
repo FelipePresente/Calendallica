@@ -22,7 +22,7 @@ export default function Goal({ goal }: GoalProps) {
         <div className="goal-cell p-5 cursor-pointer bg-zinc-950/20 border border-zinc-800/40 rounded-xl hover:border-emerald-900/50 hover:bg-emerald-900/5 transition-all shadow-sm group/item relative overflow-hidden">
 
             {isEditing && <EditGoal goal={goal} onClose={handleCloseEdit} />}
-            {isDeleting && <DeleteGoal goalId={goal._id} onClose={handleCloseDelete} />}
+            {isDeleting && <DeleteGoal goalId={goal.id} onClose={handleCloseDelete} />}
 
             <div className="absolute top-0 left-0 w-1 h-full bg-emerald-600/30 group-hover/item:bg-emerald-500 transition-colors"></div>
 

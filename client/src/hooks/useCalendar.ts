@@ -41,7 +41,7 @@ export default function useCalendar(dateProp: Date) {
         today.setHours(0, 0, 0, 0)
 
         if (clickedDate >= today) {
-            setAddingTaskDate(clickedDate.toISOString())
+            setAddingTaskDate(clickedDate.toLocaleDateString("en-CA"))
         }
     }
 

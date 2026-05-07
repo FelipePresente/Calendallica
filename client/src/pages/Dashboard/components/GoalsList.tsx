@@ -38,7 +38,7 @@ export default function GoalsList() {
 
                 {/* Goals row */}
                 <div className="list-type p-5 space-y-4 overflow-y-auto max-h-[600px] bg-zinc-900/40">
-                    {goals.map(goal => (<Goal key={goal._id} goal={goal} />))}
+                    {goals.map(goal => (<Goal key={goal.id} goal={goal} />))}
                 </div>
 
                 <div className="p-5 border-t border-zinc-800/50 bg-zinc-800/10">

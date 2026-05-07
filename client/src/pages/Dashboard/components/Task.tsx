@@ -11,7 +11,7 @@ export interface TaskProps {
 }
 
 export default function Task({ task, onDateClick }: TaskProps) {
-    const taskDate = new Date(task.date)
+    const taskDate = new Date(task.dueDate.replace(/-/g, '/'))
 
     const weekday = taskDate.toLocaleDateString('en-US', { weekday: 'long' })
     const year = taskDate.getFullYear()
@@ -41,11 +41,11 @@ export default function Task({ task, onDateClick }: TaskProps) {
 
     return (
         <div onClick={() => {
-            onDateClick(task.date)
+            onDateClick(task.dueDate)
         }} className="task-cell p-5 cursor-pointer bg-zinc-950/20 border border-zinc-800/40 rounded-xl hover:border-zinc-700 transition-all shadow-sm group/item relative">
 
             {isEditing && <EditTask task={task} onClose={handleCloseTaskEdit} />}
-            {isDeleting && <DeleteTask taskId={task._id} onClose={handleCloseTaskDelete} />}
+            {isDeleting && <DeleteTask taskId={task.id} onClose={handleCloseTaskDelete} />}
 
             <div className="flex justify-between items-start mb-2">
                 <span className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">{formattedDate}</span>

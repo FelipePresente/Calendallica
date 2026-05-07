@@ -1,5 +1,4 @@
 export interface SignUpCredentials {
     username: string,
-    password: string,
-    passwordConfirmation: string
+    password: string
 }

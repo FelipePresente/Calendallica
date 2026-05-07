@@ -7,13 +7,14 @@ export async function getGoals(): Promise<GoalsResponse[]> {
         const response = await fetch(`${api_url}/goals`, {
             credentials: 'include'
         })
+        if (!response.ok) throw new Error("Failed to fetch goals")
         return await response.json()
     } catch (error) {
-        throw new Error("Failed to fetch goals")
+        throw error
     }
 }
 
-export async function createGoal(goal: Omit<GoalsResponse, '_id'>) {
+export async function createGoal(goal: Omit<GoalsResponse, 'id'>) {
     try {
         const response = await fetch(`${api_url}/goals`, {
             method: 'POST',
@@ -28,12 +29,12 @@ export async function createGoal(goal: Omit<GoalsResponse, '_id'>) {
     }
 }
 
-export async function patchGoal(goal: GoalsResponse) {
+export async function updateGoal(id: string, data: { newTitle: string, newDescription: string }) {
     try {
-        const response = await fetch(`${api_url}/goals/${goal._id}`, {
-            method: 'PATCH',
+        const response = await fetch(`${api_url}/goals/${id}`, {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(goal),
+            body: JSON.stringify(data),
             credentials: 'include'
         })
         if (!response.ok) throw new Error("Failed to update goal")
@@ -43,13 +44,15 @@ export async function patchGoal(goal: GoalsResponse) {
     }
 }
 
-export async function deleteGoal(goalId: string) {
+export async function deleteGoal(id: string) {
     try {
-        const response = await fetch(`${api_url}/goals/${goalId}`, {
+        const response = await fetch(`${api_url}/goals/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         })
         if (!response.ok) throw new Error("Failed to delete goal")
+        
+        if (response.status === 204) return
         return await response.json()
     } catch (error) {
         throw error

@@ -1,5 +1,5 @@
 export default interface GoalsResponse {
-    _id: string,
+    id: string,
     title: string,
     description: string
 }

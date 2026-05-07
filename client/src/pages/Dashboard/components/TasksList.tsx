@@ -34,7 +34,7 @@ export default function TasksList({ onTaskClick }: TasksListProps) {
 
                 {/* Tasks row */}
                 <div className="list-type p-5 space-y-4 overflow-y-auto max-h-[600px] bg-zinc-900/40">
-                    {tasks.map(task => (<Task key={task._id} task={task} onDateClick={onTaskClick} />))}
+                    {tasks.map(task => (<Task key={task.id} task={task} onDateClick={onTaskClick} />))}
                 </div>
             </details>
         </div>
