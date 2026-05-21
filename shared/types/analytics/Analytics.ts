@@ -1,5 +1,5 @@
 export default interface Metrics {
-    totalUsers: number,
-    totalTasks: number,
-    totalGoals: number
+    user_count: number,
+    task_count: number,
+    goal_count: number
 }

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import calendallica_server.auth.TokenService;
 import calendallica_server.exception.ConflictException;
 import calendallica_server.exception.InvalidCredentialsException;
 import calendallica_server.exception.ResourceNotFoundException;
@@ -19,11 +20,13 @@ import calendallica_server.user.dto.UserUpdateDTO;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
     private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
         this.roleRepository = roleRepository;
     }
 
@@ -35,7 +38,7 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDTO create(UserSignUpDTO data) {
+    public String create(UserSignUpDTO data) {
         if (this.userRepository.existsByUsername(data.username())) {
             throw new ConflictException("Username already exists");
         }
@@ -45,12 +48,12 @@ public class UserService {
         User newUser = new User(data.username(), encryptedPassword);
 
         Role role = this.roleRepository.findByName("user")
-                .orElseThrow(() -> new ResourceNotFoundException("Role 'user' not found in database"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role 'user' not avaiable"));
 
         newUser.setRole(role);
 
-        this.userRepository.save(newUser);
-        return UserResponseDTO.fromEntity(newUser);
+        User createdUser = this.userRepository.save(newUser);
+        return this.tokenService.generateToken(createdUser);
     }
 
     public UserResponseDTO update(UserUpdateDTO data, UUID id) {

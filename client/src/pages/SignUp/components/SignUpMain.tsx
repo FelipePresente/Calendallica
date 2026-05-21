@@ -43,13 +43,13 @@ export default function SignUpMain() {
         try {
             const { username, password } = formData
             await signup({ username, password })
+
+            navigate("/dashboard")
         } catch (error: any) {
             return setErrorMessage(error.message || "An error occurred while creating your account.")
         } finally {
             setIsLoading(false)
         }
-
-        navigate('/dashboard')
     }
 
     return (

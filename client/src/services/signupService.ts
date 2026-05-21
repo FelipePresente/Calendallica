@@ -1,8 +1,8 @@
-import type { SignUpCredentials, SignUpResponse } from "../../../shared/types/signup/SignUp.ts"
+import type { SignUpCredentials } from "../../../shared/types/signup/SignUp.ts"
 
 const api_url = import.meta.env.VITE_API_URL
 
-export async function signup(credentials: SignUpCredentials): Promise<SignUpResponse> {
+export async function signup(credentials: SignUpCredentials): Promise<void> {
     try {
         const response = await fetch(`${api_url}/users`, {
             method: 'POST',
@@ -22,8 +22,6 @@ export async function signup(credentials: SignUpCredentials): Promise<SignUpResp
             } catch (e) {}
             throw new Error(message)
         }
-
-        return await response.json()
     } catch (error) {
         throw error
     }
