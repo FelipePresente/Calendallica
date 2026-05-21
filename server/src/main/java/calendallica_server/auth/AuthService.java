@@ -22,11 +22,8 @@ public class AuthService {
 
     public String login(AuthLoginDTO data) {
         User user = userRepository.findByUsername(data.username());
-        System.out.println("USER: " + user);
-        System.out.println("PASSWORD: " + user.getPassword());
 
         if (user == null || !this.passwordEncoder.matches(data.password(), user.getPassword())) {
-            System.out.println("InvalidCredentialsException");
             throw new InvalidCredentialsException("Invalid credentials");
         }
 
