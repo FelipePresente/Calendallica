@@ -31,6 +31,7 @@ public class AuthController {
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDTO getMe(@AuthenticationPrincipal User user) {
+        System.out.println(user.getUsername());
         return UserResponseDTO.fromEntity(user);
     }
 
