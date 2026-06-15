@@ -1,4 +1,4 @@
-import type { SignUpCredentials } from "../../../shared/types/signup/SignUp.ts"
+import type { SignUpCredentials } from "@/types/signup/SignUp.ts"
 
 const api_url = import.meta.env.VITE_API_URL
 

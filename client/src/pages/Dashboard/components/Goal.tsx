@@ -1,7 +1,7 @@
 import { useState } from "react"
 import EditButton from '../../../components/EditButton.tsx'
 import deleteButton from '../../../assets/delete.svg'
-import type GoalsResponse from "../../../../../shared/types/goals/Goals.ts"
+import type GoalsResponse from "@/types/goals/Goals.ts"
 import EditGoal from "./EditGoal.tsx"
 import DeleteGoal from "./DeleteGoal.tsx"
 

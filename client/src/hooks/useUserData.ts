@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import checkAuthStatus from "../services/CheckAuthService.ts"
-import type { UserStatus } from "../../../shared/types/auth/Auth.ts"
+import type { UserStatus } from "@/types/auth/Auth.ts"
 
 export default function useUserData(adminOnly: boolean) {
     const navigate = useNavigate()

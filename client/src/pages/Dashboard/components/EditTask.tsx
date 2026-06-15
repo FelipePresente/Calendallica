@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { updateTask } from "../../../services/tasksService.ts"
-import type TasksResponse from "../../../../../shared/types/tasks/Tasks.ts"
+import type TasksResponse from "@/types/tasks/Tasks.ts"
 import closeIcon from "../../../assets/close.svg"
 
 export interface TaskProps {

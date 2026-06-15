@@ -1,7 +1,7 @@
 import { useState } from "react"
 import EditButton from '../../../components/EditButton.tsx'
 import deleteButton from '../../../assets/delete.svg'
-import type TasksResponse from "../../../../../shared/types/tasks/Tasks.ts"
+import type TasksResponse from "@/types/tasks/Tasks.ts"
 import EditTask from './EditTask.tsx'
 import DeleteTask from './DeleteTask.tsx'
 

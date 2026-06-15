@@ -13,7 +13,7 @@
 5. [Components](#components)
 6. [Hooks](#hooks)
 7. [Services](#services)
-8. [Shared Types](#shared-types)
+8. [Types](#types)
 9. [Styling](#styling)
 10. [Configuration](#configuration)
 11. [Running Locally](#running-locally)
@@ -32,7 +32,7 @@ Route protection is implemented via two wrapper components: `GuestRoute` (redire
 
 ```
 client/
-├── public/
+├── .env.example
 ├── src/
 │   ├── assets/              # Static images and SVG icons
 │   ├── components/          # Shared/reusable UI components
@@ -260,12 +260,12 @@ getAnalytics(): Promise<Analytics>
 
 ---
 
-## Shared Types
+## Types
 
-Types are defined in `shared/types/` (monorepo root) and imported by both client and server.
+Types are defined in `src/types/`.
 
 ```
-shared/types/
+src/types/
 ├── analytics/Analytics.ts    → { user_count, task_count, goal_count }
 ├── auth/Auth.ts              → UserStatus, LoginCredentials
 ├── goals/Goals.ts            → GoalsResponse
@@ -273,7 +273,7 @@ shared/types/
 └── tasks/Tasks.ts            → TasksResponse
 ```
 
-This ensures the API contract is enforced at compile time on both ends.
+This ensures all data are in the correct type.
 
 ---
 

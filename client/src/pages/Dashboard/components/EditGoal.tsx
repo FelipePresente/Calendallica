@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { updateGoal } from "../../../services/goalsService.ts"
 import closeIcon from "../../../assets/close.svg"
 
-import type GoalsResponse from "../../../../../shared/types/goals/Goals.ts"
+import type GoalsResponse from "@/types/goals/Goals.ts"
 
 export interface EditGoalProps {
     goal: GoalsResponse,

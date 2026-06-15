@@ -53,7 +53,6 @@ The result is a single interface where short-term scheduling and long-term ambit
 calendallica/
 ├── client/          # React frontend
 ├── server/          # Spring Boot backend
-└── shared/types/    # TypeScript types shared between client and server
 ```
 
 ## Getting Started

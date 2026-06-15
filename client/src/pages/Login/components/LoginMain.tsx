@@ -1,7 +1,7 @@
 import { login } from '../../../services/authService.ts'
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import type { LoginCredentials } from "../../../../../shared/types/auth/Auth.ts"
+import type { LoginCredentials } from "@/types/auth/Auth.ts"
 import Orb2 from "../../../components/Orb2.tsx"
 import Logo from "../../../components/Logo.tsx"
 import SubmitButton from '../../../components/SubmitButton.tsx'

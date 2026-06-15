@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import type Analytics from "../../../shared/types/analytics/Analytics.ts"
+import type Analytics from "@/types/analytics/Analytics.ts"
 import getAnalytics from "../services/analyticsService.ts"
 
 export default function useMetrics() {

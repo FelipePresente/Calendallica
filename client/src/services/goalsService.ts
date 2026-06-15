@@ -1,4 +1,4 @@
-import type GoalsResponse from '../../../shared/types/goals/Goals.ts'
+import type GoalsResponse from '@/types/goals/Goals.ts'
 
 const api_url = import.meta.env.VITE_API_URL
 

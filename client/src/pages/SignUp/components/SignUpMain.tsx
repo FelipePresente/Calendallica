@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import type { SignUpCredentials } from '../../../../../shared/types/signup/SignUp.ts'
+import type { SignUpCredentials } from '@/types/signup/SignUp.ts'
 import { signup } from "../../../services/signupService.ts"
 import { useState } from 'react'
 import Orb2 from "../../../components/Orb2.tsx"

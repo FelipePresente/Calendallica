@@ -1,4 +1,4 @@
-import type { LoginCredentials } from '../../../shared/types/auth/Auth.ts'
+import type { LoginCredentials } from '@/types/auth/Auth.ts'
 
 const api_url = import.meta.env.VITE_API_URL
 

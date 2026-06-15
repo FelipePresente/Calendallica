@@ -1,4 +1,4 @@
-import type Metrics from '../../../shared/types/analytics/Analytics.ts'
+import type Metrics from '@/types/analytics/Analytics.ts'
 
 const api_url = import.meta.env.VITE_API_URL
 

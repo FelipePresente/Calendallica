@@ -55,6 +55,7 @@ server/src/main/java/calendallica_server/
 │   ├── RateLimitInterceptor.java
 │   ├── SecurityConfig.java
 │   ├── SecurityFilter.java
+│   ├── TaskKiller.java
 │   └── WebMvcConfig.java
 ├── exception/
 │   ├── ConflictException.java
@@ -140,7 +141,7 @@ Handles authentication sessions.
 
 ### `task`
 
-Date-bound user tasks.
+Date-bound user tasks. All tasks are deleted, every 24 hours, if they are past due.
 
 **Entity fields:** `id` (UUID), `title` (max 30), `description` (max 100), `dueDate` (LocalDate), `user` (ManyToOne, lazy), `createdAt`, `updatedAt`.
 
@@ -396,4 +397,4 @@ cd server
 ./mvnw spring-boot:run
 ```
 
-The server starts on `http://localhost:8000`. On first boot, `DataInitializer` seeds the `user` and `admin` roles.
+The server starts on `http://localhost:8000`. On first boot, `DataInitializer` seeds the `user` and `admin` roles and `TaskKiller` deletes all past due tasks.

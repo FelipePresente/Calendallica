@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import type TasksResponse from "../../../shared/types/tasks/Tasks"
+import type TasksResponse from "@/types/tasks/Tasks"
 import { getTasks } from "../services/tasksService.ts"
 
 export default function useTasks() {

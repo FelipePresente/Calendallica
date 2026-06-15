@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import Logo from "../../../components/Logo.tsx"
-import type { UserStatus } from "../../../../../shared/types/auth/Auth.ts"
+import type { UserStatus } from "@/types/auth/Auth.ts"
 import { logout } from "../../../services/authService.ts"
 import { useNavigate } from "react-router-dom"
 
