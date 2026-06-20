@@ -52,10 +52,10 @@ server/src/main/java/calendallica_server/
 │       └── AuthLoginDTO.java
 ├── config/
 │   ├── DataInitializer.java
+│   ├── ExpiredTaskCleaner.java
 │   ├── RateLimitInterceptor.java
 │   ├── SecurityConfig.java
 │   ├── SecurityFilter.java
-│   ├── TaskKiller.java
 │   └── WebMvcConfig.java
 ├── exception/
 │   ├── ConflictException.java
@@ -141,7 +141,7 @@ Handles authentication sessions.
 
 ### `task`
 
-Date-bound user tasks. All tasks are deleted, every 24 hours, if they are past due.
+Date-bound user tasks. All tasks are deleted automatically if they are older than yesterday (1-day grace period).
 
 **Entity fields:** `id` (UUID), `title` (max 30), `description` (max 100), `dueDate` (LocalDate), `user` (ManyToOne, lazy), `createdAt`, `updatedAt`.
 
@@ -149,13 +149,14 @@ Date-bound user tasks. All tasks are deleted, every 24 hours, if they are past d
 
 | DTO | Fields | Validation |
 |-----|--------|------------|
-| `TaskCreationDTO` | `title`, `description?`, `dueDate` | title: 1–50, alphanumeric+spaces+diacritics; description: max 300; dueDate: `@FutureOrPresent` |
+| `TaskCreationDTO` | `title`, `description?`, `dueDate` | title: 1–50, alphanumeric+spaces+diacritics; description: max 300; dueDate: yesterday or later |
 | `TaskUpdateDTO` | `newTitle?`, `newDescription?` | same constraints, all optional |
 | `TaskResponseDTO` | `id`, `title`, `description`, `dueDate`, `userId`, `createdAt`, `updatedAt` | — |
 
 **Business rules (`TaskService`):**
 - All reads and mutations are scoped to the authenticated user via `findByIdAndUserId` — no cross-user access.
 - Partial updates: only non-null and non-blank fields are applied.
+- Task creation allows a 1-day grace period (due date can be yesterday or later).
 
 ---
 

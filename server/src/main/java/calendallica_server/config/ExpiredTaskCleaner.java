@@ -11,10 +11,10 @@ import calendallica_server.task.TaskRepository;
 
 @Configuration
 @EnableScheduling
-public class TaskKiller implements CommandLineRunner {
+public class ExpiredTaskCleaner implements CommandLineRunner {
     private final TaskRepository taskRepository;
 
-    public TaskKiller(TaskRepository taskRepository) {
+    public ExpiredTaskCleaner(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
@@ -29,7 +29,7 @@ public class TaskKiller implements CommandLineRunner {
     }
 
     private void executeCleaning() {
-        LocalDate now = LocalDate.now();
-        taskRepository.deleteByDueDateBefore(now);
+        LocalDate limitDate = LocalDate.now().minusDays(1);
+        taskRepository.deleteByDueDateBefore(limitDate);
     }
 }

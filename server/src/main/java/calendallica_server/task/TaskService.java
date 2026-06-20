@@ -34,6 +34,10 @@ public class TaskService {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
+        if (data.dueDate().isBefore(java.time.LocalDate.now().minusDays(1))) {
+            throw new calendallica_server.exception.ConflictException("Due date must not be before yesterday");
+        }
+
         Task newTask = new Task(data.title(), data.description(), data.dueDate(), user);
 
         this.taskRepository.save(newTask);

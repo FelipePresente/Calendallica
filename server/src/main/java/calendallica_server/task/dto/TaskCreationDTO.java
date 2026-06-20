@@ -2,7 +2,6 @@ package calendallica_server.task.dto;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,7 +17,6 @@ public record TaskCreationDTO(
     String description,
 
     @NotNull(message = "Due date must not be null")
-    @FutureOrPresent(message = "Due date must not be in the past")
     LocalDate dueDate
 ) {
 }
