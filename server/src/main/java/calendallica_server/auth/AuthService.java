@@ -10,6 +10,7 @@ import calendallica_server.user.UserRepository;
 
 @Service
 public class AuthService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;

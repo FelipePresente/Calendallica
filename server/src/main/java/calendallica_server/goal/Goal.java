@@ -20,28 +20,29 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "goal")
 public class Goal {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "VARCHAR(36)")
-    UUID id;
+    private UUID id;
 
     @Column(nullable = false, length = 30)
-    String title;
+    private String title;
 
     @Column(length = 300)
-    String description;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
-    Instant createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
-    Instant updatedAt;
+    private Instant updatedAt;
 
     public Goal() {
     }

@@ -1,5 +1,6 @@
 package calendallica_server.auth;
 
+import java.time.Duration;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,17 +15,24 @@ import calendallica_server.user.User;
 
 @Service
 public class TokenService {
+
     @Value("${api.security.token.secret}")
     private String secret;
+
+    @Value("${api.security.token.issuer}")
+    private String issuer;
+
+    @Value("${api.security.token.expiration-days}")
+    private Long expirationDays;
 
     public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             return JWT.create()
-                    .withIssuer("Calendallica")
+                    .withIssuer(issuer)
                     .withSubject(user.getId().toString())
-                    .withExpiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 14))
+                    .withExpiresAt(Instant.now().plus(Duration.ofDays(expirationDays)))
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Error trying to generate JWT token", exception);
@@ -36,7 +44,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             return JWT.require(algorithm)
-                    .withIssuer("Calendallica")
+                    .withIssuer(issuer)
                     .build()
                     .verify(token)
                     .getSubject();

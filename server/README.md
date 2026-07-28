@@ -109,15 +109,11 @@ Manages user accounts.
 | DTO | Fields | Validation |
 |-----|--------|------------|
 | `UserSignUpDTO` | `username`, `password` | username: 4–16 chars, alphanumeric; password: 8–64 chars, no spaces |
-| `UserUpdateDTO` | `password`, `newUsername?`, `newPassword?` | same constraints; current password required |
 | `UserResponseDTO` | `id`, `username`, `role` | — |
 
 **Business rules (`UserService`):**
 - Username is normalized to lowercase + trimmed on input via compact constructor.
 - Signup: checks for duplicate username, encodes password with BCrypt, assigns the `user` role, and returns a JWT token.
-- Update: verifies current password, rejects new username/password that is the same as the current one, checks uniqueness of new username.
-
-**Known issue:** In `UserService.update()`, the username uniqueness check `existsByUsername(data.newUsername())` runs inside the `newPassword` block instead of the `newUsername` block. This is a logic error — the check should be in the username update branch.
 
 ---
 
@@ -150,7 +146,7 @@ Date-bound user tasks. All tasks are deleted automatically if they are older tha
 | DTO | Fields | Validation |
 |-----|--------|------------|
 | `TaskCreationDTO` | `title`, `description?`, `dueDate` | title: 1–50, alphanumeric+spaces+diacritics; description: max 300; dueDate: yesterday or later |
-| `TaskUpdateDTO` | `newTitle?`, `newDescription?` | same constraints, all optional |
+| `TaskUpdateDTO` | `title?`, `description?` | same constraints, all optional |
 | `TaskResponseDTO` | `id`, `title`, `description`, `dueDate`, `userId`, `createdAt`, `updatedAt` | — |
 
 **Business rules (`TaskService`):**
@@ -171,7 +167,7 @@ Long-term personal goals with no expiry.
 | DTO | Fields | Validation |
 |-----|--------|------------|
 | `GoalCreationDTO` | `title`, `description?` | title: 1–50, alphanumeric+spaces+diacritics; description: max 300 |
-| `GoalUpdateDTO` | `newTitle?`, `newDescription?` | same constraints, all optional |
+| `GoalUpdateDTO` | `title?`, `description?` | same constraints, all optional |
 | `GoalResponseDTO` | `id`, `title`, `description`, `userId`, `createdAt`, `updatedAt` | — |
 
 Same scoped-access pattern as tasks.
@@ -225,10 +221,8 @@ If any step fails (no cookie, invalid token, user not found), the filter passes 
 
 - Per-IP bucket: **100 requests / 1 minute** (greedy refill).
 - IP resolution: reads `X-Forwarded-For` header first (proxy-aware), falls back to `remoteAddr`.
-- Buckets are stored in a `ConcurrentHashMap` (in-memory, non-persistent).
+- Buckets are stored in an in-memory `Caffeine` cache (`expireAfterAccess` of 10 minutes, max 50,000 entries) to prevent unbounded memory growth.
 - Returns HTTP 429 with plain text body on exhaustion.
-
-**Note:** The in-memory bucket map grows unboundedly and has no eviction. In a production scenario with high cardinality of IPs this could be a memory concern.
 
 ---
 

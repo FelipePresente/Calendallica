@@ -21,6 +21,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "task")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "VARCHAR(36)")

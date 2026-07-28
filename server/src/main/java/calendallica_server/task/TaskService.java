@@ -32,7 +32,7 @@ public class TaskService {
 
     public TaskResponseDTO create(TaskCreationDTO data, UUID userId) {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (data.dueDate().isBefore(java.time.LocalDate.now().minusDays(1))) {
             throw new calendallica_server.exception.ConflictException("Due date must not be before yesterday");
@@ -49,12 +49,12 @@ public class TaskService {
         Task task = this.taskRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
-        if (data.newTitle() != null && !data.newTitle().isBlank()) {
-            task.setTitle(data.newTitle());
+        if (data.title() != null && !data.title().isBlank()) {
+            task.setTitle(data.title());
         }
 
-        if (data.newDescription() != null) {
-            task.setDescription(data.newDescription());
+        if (data.description() != null) {
+            task.setDescription(data.description());
         }
 
         this.taskRepository.save(task);

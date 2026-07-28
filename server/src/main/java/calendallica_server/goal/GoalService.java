@@ -45,12 +45,12 @@ public class GoalService {
         Goal goal = this.goalRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Goal not found"));
 
-        if (data.newTitle() != null && !data.newTitle().isBlank()) {
-            goal.setTitle(data.newTitle());
+        if (data.title() != null && !data.title().isBlank()) {
+            goal.setTitle(data.title());
         }
 
-        if (data.newDescription() != null) {
-            goal.setDescription(data.newDescription());
+        if (data.description() != null) {
+            goal.setDescription(data.description());
         }
 
         this.goalRepository.save(goal);

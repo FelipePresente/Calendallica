@@ -8,6 +8,7 @@ import calendallica_server.role.RoleRepository;
 
 @Configuration
 public class DataInitializer implements CommandLineRunner {
+
     private final RoleRepository roleRepository;
 
     public DataInitializer(RoleRepository roleRepository) {
@@ -15,7 +16,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     @Override
-    public void run(String...args) {
+    public void run(String... args) {
         if (roleRepository.count() == 0) {
             roleRepository.save(new Role("user"));
             roleRepository.save(new Role("admin"));

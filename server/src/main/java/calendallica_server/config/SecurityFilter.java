@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import calendallica_server.auth.TokenService;
-import calendallica_server.user.User;
 import calendallica_server.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
+
     private final TokenService tokenService;
     private final UserRepository userRepository;
 
@@ -46,15 +46,12 @@ public class SecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        User user = userRepository.findById(UUID.fromString(userId))
-                .orElse(null);
-
-        if (user != null) {
+        userRepository.findById(UUID.fromString(userId)).ifPresent(user -> {
             var authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().getName().toUpperCase());
             var authentication = new UsernamePasswordAuthenticationToken(user, null, List.of(authority));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        });
 
         filterChain.doFilter(request, response);
     }
