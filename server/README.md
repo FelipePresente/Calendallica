@@ -1,6 +1,6 @@
 # Calendallica — Server Documentation
 
-**Stack:** Java 17 · Spring Boot 4.0.6 · Spring Security · Spring Data JPA · MySQL · Auth0 Java JWT 4.4.0 · Bucket4j 8.10.1 · Maven
+**Stack:** Java 17 · Spring Boot 3.x · Spring Security · Spring Data JPA · MySQL · Auth0 Java JWT 4.4.0 · Bucket4j 8.10.1 · Maven
 
 ---
 
@@ -219,10 +219,10 @@ If any step fails (no cookie, invalid token, user not found), the filter passes 
 
 `RateLimitInterceptor` applies to all endpoints (`/**`) via `WebMvcConfig`.
 
-- Per-IP bucket: **100 requests / 1 minute** (greedy refill).
-- IP resolution: reads `X-Forwarded-For` header first (proxy-aware), falls back to `remoteAddr`.
-- Buckets are stored in an in-memory `Caffeine` cache (`expireAfterAccess` of 10 minutes, max 50,000 entries) to prevent unbounded memory growth.
-- Returns HTTP 429 with plain text body on exhaustion.
+- Per-IP bucket: Configurável via `api.rate-limit.capacity` e `api.rate-limit.refill-minutes` (padrão: 100 requisições / 1 minuto).
+- IP resolution: Resolvido nativamente pelo Spring MVC utilizando `ForwardedHeaderFilter` para interpretar cabeçalhos como `X-Forwarded-For` de proxies reversos de forma segura.
+- Buckets são armazenados em cache `Caffeine` em memória (`expireAfterAccess` de 10 minutos, máx 50.000 entradas) para prevenir consumo ilimitado de memória.
+- Retorna HTTP 429 com corpo texto em caso de esgotamento.
 
 ---
 
@@ -342,9 +342,16 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.type.preferred_uuid_jdbc_type=CHAR
 
 api.security.token.secret=${JWT_SECRET}
+api.security.token.issuer=${JWT_ISSUER:Calendallica}
+api.security.token.expiration-days=${JWT_EXPIRATION_DAYS:14}
 api.security.cors.origins=${CORS_ORIGINS}
 api.security.cookie.secure=${COOKIE_SECURE:false}
 api.security.cookie.samesite=${COOKIE_SAMESITE:Strict}
+
+app.roles.default=${DEFAULT_ROLE:user}
+
+api.rate-limit.capacity=${RATE_LIMIT_CAPACITY:100}
+api.rate-limit.refill-minutes=${RATE_LIMIT_REFILL_MINUTES:1}
 ```
 
 ### `application-local.properties` (development only — **never commit**)
@@ -371,9 +378,13 @@ CORS_ORIGINS=http://localhost:5173
 | `DB_USER` | MySQL user |
 | `DB_PASSWORD` | MySQL password |
 | `JWT_SECRET` | HMAC256 secret (min 32 chars recommended) |
+| `JWT_ISSUER` | JWT issuer string (default: `Calendallica`) |
+| `JWT_EXPIRATION_DAYS` | JWT expiration in days (default: `14`) |
 | `CORS_ORIGINS` | Comma-separated list of allowed frontend origins |
 | `COOKIE_SECURE` | `true` in production (HTTPS only) |
 | `COOKIE_SAMESITE` | `Strict` or `None` depending on deployment topology |
+| `RATE_LIMIT_CAPACITY` | Max requests allowed in bucket window (default: `100`) |
+| `RATE_LIMIT_REFILL_MINUTES` | Bucket refill window in minutes (default: `1`) |
 
 ---
 
@@ -392,4 +403,4 @@ cd server
 ./mvnw spring-boot:run
 ```
 
-The server starts on `http://localhost:8000`. On first boot, `DataInitializer` seeds the `user` and `admin` roles and `TaskKiller` deletes all past due tasks.
+The server starts on `http://localhost:8000`. On first boot, `DataInitializer` seeds the `user` and `admin` roles and `ExpiredTaskCleaner` deletes all past due tasks.
