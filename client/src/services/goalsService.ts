@@ -29,7 +29,7 @@ export async function createGoal(goal: Omit<GoalsResponse, 'id'>) {
     }
 }
 
-export async function updateGoal(id: string, data: { newTitle: string, newDescription: string }) {
+export async function updateGoal(id: string, data: { title: string, description: string }) {
     try {
         const response = await fetch(`${api_url}/goals/${id}`, {
             method: 'PUT',

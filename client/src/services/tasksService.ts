@@ -29,7 +29,7 @@ export async function createTask(task: Partial<TasksResponse>) {
     }
 }
 
-export async function updateTask(id: string, data: { newTitle: string, newDescription: string }) {
+export async function updateTask(id: string, data: { title: string, description: string }) {
     try {
         const response = await fetch(`${api_url}/tasks/${id}`, {
             method: 'PUT',

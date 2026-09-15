@@ -17,8 +17,8 @@ export default function EditTask({ task, onClose }: TaskProps) {
     })
 
     const [formData, setFormdata] = useState({
-        newTitle: task.title,
-        newDescription: task.description
+        title: task.title,
+        description: task.description
     })
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -61,15 +61,15 @@ export default function EditTask({ task, onClose }: TaskProps) {
 
                 <form id="editTaskForm" onSubmit={handleSubmit} className="space-y-8">
                     <div className="flex flex-col gap-2">
-                        <input type="text" name="newTitle" value={formData.newTitle} onChange={handleChange} placeholder="Title"
+                        <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Title"
                             className="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all font-bold text-lg"
                             required autoFocus maxLength={50} />
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <textarea name="newDescription" placeholder="Description" onChange={handleChange} rows={3}
+                        <textarea name="description" placeholder="Description" onChange={handleChange} rows={3}
                             className="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-indigo-600 transition-all resize-none font-medium"
-                            maxLength={300} value={formData.newDescription}></textarea>
+                            maxLength={300} value={formData.description}></textarea>
                     </div>
 
                     <button type="submit" className="w-full bg-white hover:bg-zinc-200 text-black font-black py-5 rounded-2xl transition-all cursor-pointer text-base uppercase tracking-widest shadow-xl shadow-white/5">

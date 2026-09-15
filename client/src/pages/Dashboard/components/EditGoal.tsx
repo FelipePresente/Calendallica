@@ -11,8 +11,8 @@ export interface EditGoalProps {
 
 export default function EditGoal({ goal, onClose }: EditGoalProps) {
     const [formData, setFormdata] = useState({
-        newTitle: goal.title,
-        newDescription: goal.description
+        title: goal.title,
+        description: goal.description
     })
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -52,13 +52,13 @@ export default function EditGoal({ goal, onClose }: EditGoalProps) {
 
                 <form id="editGoalForm" onSubmit={handleSubmit} className="space-y-8">
                     <div className="flex flex-col gap-2">
-                        <input name="newTitle" type="text" value={formData.newTitle} onChange={handleChange} placeholder="Goal Title"
+                        <input name="title" type="text" value={formData.title} onChange={handleChange} placeholder="Goal Title"
                             className="w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-white placeholder:text-zinc-700 outline-none focus:border-emerald-600 transition-all font-bold text-lg"
                             required autoFocus maxLength={50} />
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <textarea name="newDescription" value={formData.newDescription} onChange={handleChange} placeholder="Description" rows={3}
+                        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" rows={3}
                             className="list-type w-full bg-zinc-950 border-2 border-zinc-800 rounded-2xl px-6 py-4 text-zinc-100 placeholder:text-zinc-700 outline-none focus:border-emerald-600 transition-all resize-none font-medium"
                             maxLength={300}></textarea>
                     </div>
