@@ -1,6 +1,7 @@
 package calendallica_server.auth;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +29,9 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponseDTO> getMe(@AuthenticationPrincipal User user) {
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.ok(UserResponseDTO.fromEntity(user));
     }
 
