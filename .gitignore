@@ -1,2 +1,5 @@
 node_modules/
 .env
+application-local.properties
+**/application-local.properties
+**/*.class
