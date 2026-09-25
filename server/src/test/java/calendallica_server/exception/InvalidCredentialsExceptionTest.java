@@ -13,6 +13,6 @@ public class InvalidCredentialsExceptionTest {
             throw new InvalidCredentialsException("Invalid credentials");
         });
 
-        assertEquals("Invalid credentials", exception.getMessage());
+        assertEquals("Invalid credential", exception.getMessage());
     }
 }
