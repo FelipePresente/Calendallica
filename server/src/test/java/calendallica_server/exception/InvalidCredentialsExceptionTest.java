@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 public class InvalidCredentialsExceptionTest {
     
     @Test
-    void shouldFail() {
+    void InvalidCredentialsExceptionShouldWork() {
         Throwable exception = assertThrows(InvalidCredentialsException.class, () -> {
             throw new InvalidCredentialsException("Invalid credentials");
         });
 
-        assertEquals("Invalid credential", exception.getMessage());
+        assertEquals("Invalid credentials", exception.getMessage());
     }
 }
